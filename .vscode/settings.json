@@ -1,0 +1,82 @@
+{
+  "editor.fontSize": 24,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorTheme": "Palenight (Mild Contrast)",
+  "editor.matchBrackets": "never",
+  "editor.fontFamily": "'Fira Code', Victor Mono, monospace",
+  "editor.fontLigatures": true,
+  "auto-close-tag.activationOnLanguage": [
+    "xml",
+    "php",
+    "blade",
+    "ejs",
+    "jinja",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "plaintext",
+    "markdown",
+    "vue",
+    "liquid",
+    "erb",
+    "lang-cfml",
+    "cfml",
+    "HTML (EEx)",
+    "HTML (Eex)",
+    "plist"
+  ],
+  "auto-close-tag.disableOnLanguage": ["autoclose"],
+  "autoimport.showNotifications": true,
+  "autoimport.doubleQuotes": true,
+  "tailwindCSS.emmetCompletions": true,
+  "html.format.indentHandlebars": true,
+  "html.format.templating": true,
+  "[html]": {
+    "editor.linkedEditing": true
+  },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.fontWeight": "bold",
+  "vscode-edge-devtools.webhint": false,
+  "tabnine.experimentalAutoImports": true,
+  "editor.accessibilitySupport": "off",
+  "cSpell.userWords": ["cust", "esbenp", "nestjs", "Signup", "Userser"],
+  "git.autofetch": true,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "gitlens.views.commits.files.layout": "list",
+  "gitlens.gitCommands.skipConfirmations": [
+    "fetch:command",
+    "stash-push:command",
+    "switch:command",
+    "push:command"
+  ],
+  "git.enableSmartCommit": true,
+  "editor.formatOnPaste": true,
+  "[python]": {
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "workbench.sideBar.location": "right",
+  "files.associations": {
+    "*.html": "html"
+  },
+  "editor.accessibilityPageSize": 22,
+  "vetur.experimental.templateInterpolationService": true,
+  "editor.tabSize": 2,
+  "workbench.tree.indent": 4,
+  "npm.keybindingsChangedWarningShown": true,
+  "workbench.editor.enablePreview": false,
+  "python.formatting.provider": "none",
+  "workbench.iconTheme": "vscode-great-icons",
+  "git.openRepositoryInParentFolders": "never",
+  "explorer.compactFolders": false,
+  "prisma.showPrismaDataPlatformNotification": false,
+  "github.copilot.editor.enableAutoCompletions": true,
+  "files.autoSave": "afterDelay",
+  "WillLuke.nextjs.addTypesOnSave": true,
+  "WillLuke.nextjs.hasPrompted": true
+}
