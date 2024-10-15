@@ -10,8 +10,9 @@ export default function ViewUserConfirmation({ onCancel, user }: Props) {
     <div className="card lg:card-side bg-base-100 shadow-xl text-stone-700 mt-10">
       <figure>
         <img
-          src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.webp"
-          alt="Album"          
+          src="https://www.istockphoto.com/photo/multi-ethnic-group-of-people-gm902647950-248979115?utm_campaign=srp_photos_10&utm_content=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Favatar%2F&utm_medium=affiliate&utm_source=pexels&utm_term=avatar"
+          alt="Profile"
+          className="object-cover w-full h-48"
         />
       </figure>
       <div className="card-body">

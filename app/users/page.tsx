@@ -6,10 +6,10 @@ async function ListUserPage() {
   console.log(users);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white m-6 shadow-inner rounded">
       <table className="table table-zebra">
         <thead>
-          <tr className="text-white">
+          <tr className="text-gray-200 text-xl bg-gray-500">
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -23,9 +23,7 @@ async function ListUserPage() {
             return (
               <tr
                 key={user.id}
-                className={`${
-                  evenOrOdd === 0 ? " text-black font-semibold " : " text-white "
-                }`}
+                className="text-base text-black"
               >
                 <td>{user.name}</td>
                 <td>{user.email}</td>

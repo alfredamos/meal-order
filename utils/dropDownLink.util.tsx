@@ -6,14 +6,15 @@ import { usePathname } from "next/navigation";
 type Props = {
   path: string;
   label: string;
+  className?: string;
 };
-export default function DropDownLink({ path, label}: Props) {
+export default function DropDownLink({ path, label, className}: Props) {
   const pathname = usePathname();
   return (
     <li>
       <Link
         href={path}
-        className={path === pathname ? "text-violet-400" : "text-black"}
+        className=  ""
       >
         {label}
       </Link>

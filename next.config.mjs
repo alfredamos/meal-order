@@ -27,8 +27,8 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "th.bing.com",
-        pathname: "/th/*",
+        hostname: "www.istockphoto.com",
+        pathname: "/photo/**",
       },
     ],
   },

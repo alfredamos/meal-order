@@ -17,7 +17,7 @@ async function NavigationBar() {
   const session = await auth();
   console.log("In navbar", { session });
   return (
-    <nav className="flex justify-between items-center bg-white shadow-xl rounded-lg text-black h-8 font-semibold p-6">
+    <nav className="flex justify-between items-center bg-white shadow-xl rounded text-black font-semibold p-6">
       <NavLink path="/" label="Home" />
       <div className="flex items-center space-x-6">
         {session?.user ? (

@@ -9,7 +9,7 @@ export default function DropDownLinks({navLinks}: Props) {
     <>
       {navLinks?.map((link) => {
         return (
-          <DropDownLink path={link.path} label={link.label} key={link.path} />
+          <DropDownLink path={link.path} label={link.label} className={link.className} key={link.path} />
         );
       })}
       l
