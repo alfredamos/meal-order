@@ -21,8 +21,8 @@ export const createPizza = async (formData: FormData) => {
   });
   //----> Send back the response.
 
-  revalidatePath("/pizzas");
-  return redirect("/pizzas");
+  revalidatePath("/pizzas/list");
+  return redirect("/pizzas/list");
 };
 
 export const deletePizzaById = async ( id: string ) => {
@@ -50,6 +50,25 @@ export const editPizzaById = async (formData: FormData) => {
   revalidatePath("/pizzas");
   return redirect("/pizzas");
 };
+export const editOnePizza = async (pizza: Pizza) => {
+  //----> Get the pizza to update from request.
+  const { name, price, topping, quantity, image, description, userId, id } =
+    pizza;
+  //----> Delete the pizza from the database.
+  const editedPizza = await PizzaDb.editPizza(id, {
+    name,
+    price: +price,
+    topping,
+    quantity: +quantity,
+    image,
+    description,
+    userId,
+  });
+  //----> Send back the response.
+  revalidatePath("/pizzas");
+  return redirect("/pizzas");
+};
+
 
 export const getAllPizza = async () => {
   //----> Get all pizzas from the database.

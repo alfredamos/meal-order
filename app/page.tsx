@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { auth } from "@/auth";
 import { getAllPizza } from "@/actions/pizza.action";
 import PizzaListItems from "./pizzas/PizzaListItems";
 

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import Image from "next/image";
+//import Image from "next/image";
 
 type Props = {
   user: User;

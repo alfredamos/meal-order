@@ -3,9 +3,11 @@
 import { UserDb } from "@/db/user.db";
 import { revalidatePath } from "next/cache";
 
-export const deleteUserById = async (prevState: { id: string }) => {
-  //----> Get the user id from form.
-  const { id } = prevState;
+type Params = {
+  params: { id: string };
+};
+
+export const deleteUserById = async (id: string) => {
   //----> Delete the user from the database.
   const deletedUser = await UserDb.deletedUser(id);
   //----> Send back the response.
