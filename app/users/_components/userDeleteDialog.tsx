@@ -1,43 +1,26 @@
 "use client";
 
+import DeleteUserConfirmation from "@/app/users/_components/deleteUserConfirmation";
 import Modal from "@/components/utils/modal.util";
 import { User } from "@prisma/client";
-import { useState } from "react";
-import DeleteUserConfirmation from "./deleteUserConfirmation";
-import { useRouter } from "next/navigation";
 
 type Props = {
+  isDelete: boolean;
   user: User;
+  backToList: () => void;
+  onDelete: (id: string) => void;
 };
-export default function UserDeleteDialog({ user }: Props) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const router = useRouter();
-
-  const removeUserHandler = () => {
-    setModalIsOpen((previous) => previous);
-  };
-
-  const backToListHandler = () => {
-    console.log("At point 1", { modalIsOpen });
-    //router.push("/users");
-    setModalIsOpen((previous) => {
-      console.log("At point 2",previous);
-      return !previous;
-    });
-    console.log("At point 3", { modalIsOpen });
-  };
-
-  const userDeleteHandler = (id: string) => {
-    console.log("Delete user with id : ", id);
-  };
-
-  console.log({ modalIsOpen });
-
+export default function UserDeleteDialog({
+  backToList,
+  user,
+  isDelete,
+  onDelete,
+}: Props) {
   return (
-    <Modal open={!modalIsOpen} onClose={removeUserHandler}>
+    <Modal open={isDelete} onClose={backToList}>
       <DeleteUserConfirmation
-        onCancel={backToListHandler}
-        onDelete={userDeleteHandler}
+        onCancel={backToList}
+        onDelete={onDelete}
         user={user}
       />
     </Modal>

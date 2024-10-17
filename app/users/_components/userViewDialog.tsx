@@ -1,36 +1,18 @@
+"use client";
+
+import { User } from "@prisma/client";
 import Modal from "@/components/utils/modal.util";
-import { User, Gender } from "@prisma/client";
-import Image from "next/image";
-import ViewUserConfirmation from "./viewUserConfirmation";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import UserCardView from "./userCardView";
 
 type Props = {
   user: User;
+  onCancel: () => void;
+  isView: boolean;
 };
-export default function UserViewDialog({ user }: Props) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const router = useRouter();
-
-  const removeUserHandler = () => {
-    setModalIsOpen((previous) => previous);
-  };
-
-  const backToListHandler = () => {
-    console.log("At point 1", { modalIsOpen });
-    //router.push("/users");
-    setModalIsOpen((previous) => {
-      console.log("At point 2", previous);
-      return !previous;
-    });
-    console.log("At point 3", { modalIsOpen });
-  };
-
-  console.log({ modalIsOpen });
-
+export default function UserViewDialog({ isView, user, onCancel }: Props) {
   return (
-    <Modal open={!modalIsOpen} onClose={removeUserHandler}>
-      <ViewUserConfirmation onCancel={backToListHandler} user={user} />
+    <Modal open={isView} onClose={onCancel}>
+      <UserCardView onCancel={onCancel} user={user} />
     </Modal>
   );
 }

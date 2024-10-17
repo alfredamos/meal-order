@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@prisma/client";
 
 type Props = {
@@ -12,12 +14,32 @@ export default function DeleteUserConfirmation({
 }: Props) {
   return (
     <div className="bg-white p-6 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
-      <h2 className="font-semibold border-b-2 mb-2">User Delete Confirmation!</h2>
-      <p>Name : {user.name}</p>
-      <p>Email : {user.email}</p>
-      <p>Phone : {user.phone}</p>
-      <p>Gender : {user.gender}</p>
-      <h4 className="mb-4 mt-4 border-b-2 border-t-2 font-medium">Do you really want to delete this user?</h4>
+      <h2 className="font-semibold border-b-2 mb-2">
+        User Delete Confirmation!
+      </h2>
+      <p className="flex justify-between items-center">
+        <span>Name</span>
+        <span className="font-semibold">{user.name}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Email </span>
+        <span className="font-semibold">${user.email}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Phone </span>
+        <span className="font-semibold">{user.phone}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Genders </span>
+        <span className="font-semibold text-wrap">{user.gender}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Role</span>
+        <span className="font-semibold text-wrap">{user.role}</span>
+      </p>
+      <h4 className="mb-4 mt-4 border-b-2 border-t-2 font-medium">
+        Do you really want to delete this user?
+      </h4>
       <div className="flex justify-between items-center w-full mt-2">
         <button
           type="button"

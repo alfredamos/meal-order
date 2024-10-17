@@ -1,15 +1,23 @@
 export type NavLinkType = {
   path: string;
   label: string;
-  className?: string;
 }
 
 
+export const adminDropDownLinks: NavLinkType[] = [
+  {
+    path: "/pizzas/list",
+    label: "Pizzas",
+  },
+  {
+    path: "/users",
+    label: "Users",
+  },
+];
 export const dropDownLinks: NavLinkType[] = [
   {
     path: "/auth/change-password",
     label: "Change Password",
-    className: "mb-2"
   },
   {
     path: "/auth/edit-profile",

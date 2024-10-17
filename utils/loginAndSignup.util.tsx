@@ -22,7 +22,6 @@ export default function AuthLinks({ authLinks }: Props) {
           />
         );
       })}
-      l
     </>
   );
 }

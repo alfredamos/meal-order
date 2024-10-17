@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { authDb } from "@/db/auth.db";
 import { ChangePasswordModel } from "@/models/changePassword.model";
 import { EditProfileModel } from "@/models/editProfile.model";
@@ -14,11 +14,9 @@ import { redirect } from "next/navigation";
 
 export async function changePasswordAction(formData: FormData) {
   //----> Get the payload.
-  const changePasswordPayload = Object.fromEntries(
-    formData
-  ) as unknown as ChangePasswordModel;  
+  const {email, confirmPassword, oldPassword, newPassword} = Object.fromEntries(formData) as unknown as ChangePasswordModel;
   //----> Change the password and store the updated user credentials in the database.
-  await authDb.changePassword(changePasswordPayload);
+  await authDb.changePassword({email, confirmPassword, oldPassword, newPassword});
 
   //----> Send back the response.
   revalidatePath("/");
@@ -87,11 +85,11 @@ export async function editOneAddressByUserIdAction(
 
 export async function editProfileAction(formData: FormData) { 
   //----> Get the edit-profile from form data.
-  const editProfilePayload = Object.fromEntries(
+  const {name, email, phone, image, gender, password} = Object.fromEntries(
     formData
   ) as unknown as EditProfileModel;
   //----> edit user profile and store it in the database.
-  await authDb.editProfile(editProfilePayload);
+  await authDb.editProfile({name, email, phone, image, gender, password});
 
   //----> Send back the response.
   revalidatePath("/");

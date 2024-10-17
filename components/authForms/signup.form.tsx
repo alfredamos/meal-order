@@ -55,6 +55,20 @@ export default function SignupForm({ user }: Props) {
       </div>
       <div className="mb-6 w-full px-10">
         <label
+          htmlFor="image"
+          className="flex flex-start w-full font-medium tracking-wide"
+        >
+          Image
+        </label>
+        <input
+          id="image"
+          name="image"
+          type="text"
+          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+        />
+      </div>
+      <div className="mb-6 w-full px-10">
+        <label
           htmlFor="password"
           className="flex flex-start w-full font-medium"
         >
@@ -63,6 +77,20 @@ export default function SignupForm({ user }: Props) {
         <input
           id="password"
           name="password"
+          type="password"
+          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+        />
+      </div>
+      <div className="mb-5 w-full px-10">
+        <label
+          htmlFor="confirmPassword"
+          className="flex flex-start w-full font-medium"
+        >
+          Confirm Password
+        </label>
+        <input
+          id="password"
+          name="confirmPassword"
           type="password"
           className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
         />
@@ -81,20 +109,7 @@ export default function SignupForm({ user }: Props) {
           <option value="Female">Female</option>
         </select>
       </div>
-      <div className="mb-5 w-full px-10">
-        <label
-          htmlFor="confirmPassword"
-          className="flex flex-start w-full font-medium"
-        >
-          Confirm Password
-        </label>
-        <input
-          id="password"
-          name="confirmPassword"
-          type="password"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
-        />
-      </div>
+
       <div className="flex justify-between w-full px-10">
         <button
           type="submit"

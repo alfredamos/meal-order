@@ -1,11 +1,12 @@
 import { logoutAction } from "@/actions/auth.action";
 import { auth } from "@/auth";
 import { CSSProperties } from "react";
-import { authLinks, dropDownLinks } from "./navLinks";
+import { adminDropDownLinks, authLinks, dropDownLinks } from "./navLinks";
 import DropDownLinks from "./dropDownLinks.util";
 import NavLink from "./navLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import LogoutLink from "./logoutLink.util";
+import AdminDropDownLinks from "./adminDropDownLinks";
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
@@ -26,6 +27,9 @@ async function NavigationBar() {
               <summary>Settings</summary>
               <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                 <DropDownLinks navLinks={dropDownLinks} />
+                {session?.user?.role === "Admin" && (
+                  <AdminDropDownLinks navLinks={adminDropDownLinks} />
+                )}
               </ul>
             </details>
             <LogoutLink style={inlineBlock} />

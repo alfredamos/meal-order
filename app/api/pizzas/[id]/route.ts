@@ -1,6 +1,7 @@
 import { deletePizzaById, editOnePizza } from "@/actions/pizza.action";
 import { Pizza } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 type Params = {
@@ -37,10 +38,11 @@ export const PATCH = async (request: NextRequest, { params }: Params) => {
   const editedPizza = await editOnePizza(pizza);
 
   revalidatePath("/pizzas/list");
+  redirect(`/pizzas/${id}`);
   //----> Send back the response.
-  return NextResponse.json({
+  /* return NextResponse.json({
     pizza: editedPizza,
     message: "Pizza edited successfully.",
-  });
+  }); */
 };
 

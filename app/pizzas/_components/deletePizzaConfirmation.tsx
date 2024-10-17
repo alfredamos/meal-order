@@ -8,13 +8,32 @@ type Props = {
 export default function DeletePizzaConfirmation({onCancel, onDelete, pizza}: Props) { 
   return (
     <div className="bg-white p-6 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
-      <h2 className="font-semibold border-b-2 mb-2">User Delete Confirmation!</h2>
-      <p>Name   : {pizza.name}</p>
-      <p>Price  : {pizza.price}</p>
-      <p>tops   : {pizza.topping}</p>
-      <p>Qty    : {pizza.quantity}</p>
-      <p>Gender : {pizza.description}</p>
-      <h4 className="mb-4 mt-4 border-b-2 border-t-2 font-medium">Do you really want to delete this user?</h4>
+      <h2 className="font-semibold border-b-2 mb-2">
+        User Delete Confirmation!
+      </h2>
+      <p className="flex justify-between items-center">
+        <span>Name</span>
+        <span className="font-semibold">{pizza.name}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Price </span>
+        <span className="font-semibold">${pizza.price}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Quantity </span>
+        <span className="font-semibold">{pizza.quantity}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Toppings </span>
+        <span className="font-semibold text-wrap">{pizza.topping}</span>
+      </p>
+      <p className="flex justify-between items-center">
+        <span>Description</span>
+        <span className="font-semibold text-wrap">{pizza.description}</span>
+      </p>
+      <h4 className="mb-4 mt-4 border-b-2 border-t-2 font-medium">
+        Do you really want to delete this user?
+      </h4>
       <div className="flex justify-between items-center w-full mt-2">
         <button
           type="button"

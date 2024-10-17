@@ -8,16 +8,11 @@ type Props = {
   label: string;
   className?: string;
 };
-export default function DropDownLink({ path, label, className}: Props) {
+export default function DropDownLink({ path, label, className }: Props) {
   const pathname = usePathname();
   return (
     <li>
-      <Link
-        href={path}
-        className=  ""
-      >
-        {label}
-      </Link>
+      <Link href={path}>{label}</Link>
     </li>
   );
 }

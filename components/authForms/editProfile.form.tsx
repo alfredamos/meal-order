@@ -58,6 +58,21 @@ export default function EditProfileForm({ user }: Props) {
       </div>
       <div className="mb-6 w-full px-10">
         <label
+          htmlFor="image"
+          className="flex flex-start w-full font-medium tracking-wide"
+        >
+          Image
+        </label>
+        <input
+          id="image"
+          name="image"
+          type="text"
+          defaultValue={user.image}
+          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+        />
+      </div>
+      <div className="mb-6 w-full px-10">
+        <label
           htmlFor="password"
           className="flex flex-start w-full font-medium"
         >

@@ -29,7 +29,9 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
   const editPizzaHandler = (pizza: Pizza) => {
     console.log("pizza info edited : ", pizza);
 
-    if (!pizza) return <div>Please enter all values!</div>;
+    if (!pizza) {
+      return <div>Please enter all values!</div>;
+    }
 
     fetch(`/api/pizzas/${pizza.id}`, {
       method: "PATCH",
@@ -42,13 +44,16 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
       .then((data) => {
         console.log("data : ", data);
       })
-      .catch((error) => {
-        console.log("error : ", error);
+      .catch((error: any) => {
+        console.log("error : ", error.message);
       })
       .finally(() => {
+        setIsEditPizza((previous) => !previous);
         setRefresh(!refresh);
         router.refresh();
       });
+
+    router.refresh();
   };
 
   const backToListHandler = () => {
@@ -78,11 +83,13 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
       })
       .catch((error) => {
         console.log("error : ", error);
-      }).finally(() => {
-        setRefresh(!refresh)
+      })
+      .finally(() => {
+        setIsDeletePizza((previous) => !previous);
+        setRefresh(!refresh);
         router.refresh();
       });
-
+    router.refresh();
   };
 
   return (
