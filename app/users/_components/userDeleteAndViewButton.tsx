@@ -73,14 +73,14 @@ export default function UserDeleteAndViewButton({user}: Props) {
       )}
       <button
         type="submit"
-        className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-6 md:m-1"
+        className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-4 md:m-1"
         onClick={viewUserHandler}
       >
         view
       </button>
       <button
         type="submit"
-        className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-4"
+        className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-4 md:m-1"
         onClick={userDeleteConfirmation}
       >
         Delete

@@ -58,7 +58,7 @@
   "editor.formatOnPaste": true,
   "[python]": {
     "editor.formatOnType": true,
-    "editor.defaultFormatter": "ms-python.autopep8"
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "workbench.sideBar.location": "right",
   "files.associations": {
@@ -78,5 +78,7 @@
   "github.copilot.editor.enableAutoCompletions": true,
   "files.autoSave": "afterDelay",
   "WillLuke.nextjs.addTypesOnSave": true,
-  "WillLuke.nextjs.hasPrompted": true
+  "WillLuke.nextjs.hasPrompted": true,
+  "css.lint.unknownAtRules": "ignore"
+  
 }

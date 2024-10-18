@@ -4,15 +4,20 @@ import { CSSProperties } from "react";
 type Props = {
   path: string;
   label: string;
+  name: string;
   style?: CSSProperties;
 };
-export default function NavLink({ label, path, style }: Props) {
+export default function HomeLink({ path, name, label, style }: Props) {
+
+ 
   return (
     <Link
       href={path}
+      
       style={style}
     >
-      {label}
+      <span className="mr-4 ">{label}</span>
+      <span>{name}</span>
     </Link>
   );
 }

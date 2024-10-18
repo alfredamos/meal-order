@@ -2,6 +2,7 @@
 
 import { User } from "@prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   user: User;
@@ -10,14 +11,14 @@ type Props = {
 export default function UserCardView({ user, onCancel }: Props) {
   console.log("UserCard : ", user);
   return (
-    <div className="card lg:card-side bg-base-100 shadow-xl w-1/2 mx-auto mt-16">
+    <div className="card lg:card-side bg-base-100 shadow-xl w-1/3 mx-auto mt-16">
       <figure>
-        <img
-          src={user.image}
+        <Image
+          src={user.image as string}
           alt={user.name}
-          width={75}
-          height={100}
-          className="object-cover w-full  h-full"
+          width={400}
+          height={75}
+          className="object-cover h-full w-full"
         />
       </figure>
       <div className="card-body text-stone-700 w-full">
@@ -25,7 +26,7 @@ export default function UserCardView({ user, onCancel }: Props) {
           <Link href="/users">{user.name}</Link>
         </h2>
         <p className="flex justify-between items-center">
-          <span>Email </span>
+          <span className="mr-10">Email </span>
           <span className="font-semibold">{user.email}</span>
         </p>
         <p className="flex justify-between items-center">

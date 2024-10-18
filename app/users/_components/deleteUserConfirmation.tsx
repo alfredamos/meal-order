@@ -23,7 +23,7 @@ export default function DeleteUserConfirmation({
       </p>
       <p className="flex justify-between items-center">
         <span>Email </span>
-        <span className="font-semibold">${user.email}</span>
+        <span className="font-semibold">{user.email}</span>
       </p>
       <p className="flex justify-between items-center">
         <span>Phone </span>

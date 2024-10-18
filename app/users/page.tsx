@@ -1,14 +1,18 @@
 import { getAllUsers } from "@/actions/user.action";
 import UserDeleteAndViewButton from "./_components/userDeleteAndViewButton";
 import { auth } from "@/auth";
+import Image from "next/image";
 
 async function ListUserPage() {
   const session = await auth();
 
   if (session?.user.role !== "Admin")
-    return <div className="flex justify-center items-center border-4 border-red-700 px-6 py-6 max-w-lg mx-auto mt-60 text-4xl">You are not authorized to view this page</div>;
+    return (
+      <div className="flex justify-center items-center border-4 border-red-700 px-6 py-6 max-w-lg mx-auto mt-60 text-4xl">
+        You are not authorized to view this page
+      </div>
+    );
   console.log("ListUserPage : ", session);
-
 
   const users = await getAllUsers();
   console.log(users);
@@ -31,10 +35,12 @@ async function ListUserPage() {
             return (
               <tr key={user.id} className="text-base text-black">
                 <td>
-                  <img
-                    src={user.image}
+                  <Image
+                    src={user.image as string}
                     alt={user.name}
-                    className="object-cover w-20 h-20 rounded-full"
+                    width={80}
+                    height={60}
+                    className="object-cover h-20 w-20 rounded-full"
                   />
                 </td>
                 <td>{user.name}</td>

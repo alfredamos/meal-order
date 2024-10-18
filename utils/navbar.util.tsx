@@ -7,6 +7,8 @@ import NavLink from "./navLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import LogoutLink from "./logoutLink.util";
 import AdminDropDownLinks from "./adminDropDownLinks";
+import HomeLink from "./homeLink";
+import SignupPage from "../app/auth/signup/page";
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
@@ -16,11 +18,12 @@ export const revalidate = 3;
 
 async function NavigationBar() {
   const session = await auth();
+
   console.log("In navbar", { session });
   return (
     <nav className="flex justify-between items-center bg-white shadow-xl rounded text-black font-semibold p-6">
-      <NavLink path="/" label="Home" />
-      <div className="flex items-center space-x-6">
+      <HomeLink path="/" label="Home" name={session?.user?.name as string} />
+      <div className="flex items-center space-x-6 mr-2">
         {session?.user ? (
           <>
             <details className="dropdown" style={inlineBlock}>
