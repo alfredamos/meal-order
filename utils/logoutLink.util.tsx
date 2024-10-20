@@ -8,7 +8,7 @@ type Props = {
 export default function LogoutLink({ style }: Props) {
   return (
     <form action={logoutAction}>
-      <button type="submit" style={style}>
+      <button type="submit" style={style} className="text-black font-semibold">
         Logout
       </button>
     </form>

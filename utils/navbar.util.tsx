@@ -3,12 +3,10 @@ import { auth } from "@/auth";
 import { CSSProperties } from "react";
 import { adminDropDownLinks, authLinks, dropDownLinks } from "./navLinks";
 import DropDownLinks from "./dropDownLinks.util";
-import NavLink from "./navLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import LogoutLink from "./logoutLink.util";
 import AdminDropDownLinks from "./adminDropDownLinks";
 import HomeLink from "./homeLink";
-import SignupPage from "../app/auth/signup/page";
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
@@ -18,6 +16,8 @@ export const revalidate = 3;
 
 async function NavigationBar() {
   const session = await auth();
+
+  const style = {marginBottom: "8px"};
 
   console.log("In navbar", { session });
   return (

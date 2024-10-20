@@ -1,8 +1,7 @@
 export type NavLinkType = {
   path: string;
   label: string;
-}
-
+};
 
 export const adminDropDownLinks: NavLinkType[] = [
   {
@@ -23,7 +22,6 @@ export const dropDownLinks: NavLinkType[] = [
     path: "/auth/edit-profile",
     label: "Edit Profile",
   },
-      
 ];
 export const authLinks: NavLinkType[] = [
   {
@@ -34,5 +32,27 @@ export const authLinks: NavLinkType[] = [
     path: "/auth/signup",
     label: "Signup",
   },
-      
+];
+
+export const sideLinks: NavLinkType[] = [
+  {
+    path: "/",
+    label: "Home",
+  },
+  {
+    path: "/auth/change-password",
+    label: "Change Password",
+  },
+  {
+    path: "/auth/edit-profile",
+    label: "Edit Profile",
+  },
+  {
+    path: "/pizzas/list",
+    label: "Pizzas",
+  },
+  {
+    path: "/users",
+    label: "Users",
+  },
 ];

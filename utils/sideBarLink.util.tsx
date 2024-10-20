@@ -9,22 +9,22 @@ type Props = {
   label: string;
   style?: CSSProperties;
 };
-export default function DropDownLink({ path, label, style}: Props) {
+
+export default function SideBarLink({ path, label, style }: Props) {
   const pathname = usePathname();
   const isActive = pathname === path;
 
   console.log("NavBar, pathname : ", { pathname, path, isActive });
 
   return (
-    <li className="mb-2">
+    <li className="mb-8" style={{ marginLeft: "20px", marginBottom: "60px" }}>
       <Link
         href={path}
         className={
           isActive
-            ? "text-rose-900 border-b-2 border-rose-900 font-semibold mb-2"
-            : "text-black font-semibold mb-2"
+            ? "text-rose-900 border-b-2 border-rose-900 font-semibold inline-block"
+            : "text-black font-semibold inline-block"
         }
-        style={style}
       >
         {label}
       </Link>

@@ -8,12 +8,12 @@ export default async function PizzaListPage({}: Props) {
 
   if (session?.user.role !== "Admin")
     return <div>You are not authorized to view this page</div>;
-  
+
   const pizzas = await getAllPizza();
   console.log("PizzaListPage : ", pizzas);
 
   return (
-    <div className="overflow-x-auto bg-white m-6 shadow-inner rounded">
+    <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4">
       <table className="table table-zebra">
         <thead>
           <tr className="text-gray-200 text-xl bg-gray-500">
