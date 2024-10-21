@@ -12,7 +12,7 @@ export default function ChangePasswordForm({ user }: Props) {
       className="bg-white text-slate-800 max-w-lg flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10 mt-10"
     >
       <h4 className="font-bold text-slate-800 text-2xl mb-6">
-        ChangePassword Form
+        Change Password Form
       </h4>
       <div className="mb-6 w-full px-10">
         <label

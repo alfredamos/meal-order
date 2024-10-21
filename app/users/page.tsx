@@ -31,28 +31,29 @@ async function ListUserPage() {
           </tr>
         </thead>
         <tbody>
-          {users?.map((user) => {
-            return (
-              <tr key={user.id} className="text-base text-black">
-                <td>
-                  <Image
-                    src={user.image as string}
-                    alt={user.name}
-                    width={80}
-                    height={60}
-                    className="object-cover h-20 w-20 rounded-full"
-                  />
-                </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
-                <td>{user.gender}</td>
-                <td>
-                  <UserDeleteAndViewButton user={user} />
-                </td>
-              </tr>
-            );
-          })}
+          {users &&
+            users?.map((user) => {
+              return (
+                <tr key={user.id} className="text-base text-black">
+                  <td>
+                    <Image
+                      src={user?.image ? user.image : ""}
+                      alt={user.name}
+                      width={80}
+                      height={60}
+                      className="object-cover h-20 w-20 rounded-full"
+                    />
+                  </td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.gender}</td>
+                  <td>
+                    <UserDeleteAndViewButton user={user} />
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>

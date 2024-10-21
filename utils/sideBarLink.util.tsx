@@ -22,8 +22,8 @@ export default function SideBarLink({ path, label, style }: Props) {
         href={path}
         className={
           isActive
-            ? "text-rose-900 border-b-2 border-rose-900 font-semibold inline-block"
-            : "text-black font-semibold inline-block"
+            ? "text-rose-900 border-b-2 border-rose-900 font-semibold mb-2 hover:text-indigo-900 hover:border-b-2 hover:border-indigo-900 hover:font-bold"
+            : "text-black font-semibold mb-2 hover:text-rose-900 hover:font-bold"
         }
       >
         {label}

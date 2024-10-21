@@ -22,7 +22,7 @@ export default function PizzaEditCard({
     const editedPizza = Object.fromEntries(
       formData.entries()
     ) as unknown as Pizza;
-   onEdit(editedPizza);
+    onEdit(editedPizza);
   };
 
   return (
@@ -136,16 +136,16 @@ export default function PizzaEditCard({
         </div>
       </div>
 
-      <div className="flex justify-between w-full px-10">
+      <div className="flex w-full px-10">
         <button
           type="submit"
-          className="py-2 px-4 border-2 border-indigo-900 hover:bg-indigo-900 hover:text-white text-indigo-900 font-bold text-lg rounded-lg mr-4 w-full"
+          className="py-2 px-4 border-2 border-indigo-900 hover:bg-indigo-900 hover:text-white text-indigo-900 font-bold text-lg rounded-lg flex-1 mr-4"
         >
           Submit
         </button>
         <button
           type="button"
-          className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-white text-rose-900 font-bold text-lg rounded-lg mr-4 w-full"
+          className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-white text-rose-900 font-bold text-lg rounded-lg flex-1"
           onClick={onCancel}
         >
           Cancel

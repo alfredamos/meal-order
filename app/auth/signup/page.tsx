@@ -1,18 +1,19 @@
-import SignupForm from "@/components/authForms/signup.form"
-import { SignupModel } from "@/models/signup.model"
+import RegisterForm from "@/components/authForms/register.form";
+import SignupForm from "@/components/authForms/signup.form";
+import { SignupModel } from "@/models/signup.model";
 
-const user: Omit<SignupModel, 'gender'> = {
+const user: Omit<SignupModel, "gender"> = {
   name: "",
   email: "",
   phone: "",
   confirmPassword: "",
-  password: ""
-  }
-
+  password: "",
+};
 
 function SignupPage() {
   return (
-    <SignupForm user={user}/>
-  )
+    // <SignupForm user={user}/>
+    <RegisterForm user={user} />
+  );
 }
-export default SignupPage
+export default SignupPage;

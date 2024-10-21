@@ -10,7 +10,7 @@ export default function CancelButton() {
   return (
     <button
       type="button"
-      className="py-2 border-2 border-gray-900 px-4 bg-white hover:bg-black hover:text-white text-gray-900 text-lg font-bold rounded-lg w-full"
+      className="py-2 border-2 border-yellow-900 px-4 bg-white hover:bg-yellow-900 hover:text-white text-yellow-900 text-lg font-bold rounded-lg w-full"
       onClick={backButtonHandler}
     >
       Cancel
