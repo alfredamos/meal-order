@@ -23,7 +23,7 @@ export default function EditProfileForm({ user }: Props) {
           name="name"
           type="text"
           defaultValue={user.name}
-          className="border-2 bg-slate-200 p-2 rounded-lg text-black w-full"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 p-2 rounded-lg text-black w-full"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -38,7 +38,7 @@ export default function EditProfileForm({ user }: Props) {
           name="email"
           type="email"
           defaultValue={user.email}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -53,7 +53,7 @@ export default function EditProfileForm({ user }: Props) {
           name="phone"
           type="tel"
           defaultValue={user.phone}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -68,7 +68,7 @@ export default function EditProfileForm({ user }: Props) {
           name="image"
           type="text"
           defaultValue={user.image}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -83,7 +83,7 @@ export default function EditProfileForm({ user }: Props) {
           name="password"
           type="password"
           defaultValue=""
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -94,7 +94,7 @@ export default function EditProfileForm({ user }: Props) {
           id="gender"
           name="gender"
           defaultValue={user.gender}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         >
           <option>Select Gender</option>
           <option value="Male">Male</option>
@@ -108,7 +108,7 @@ export default function EditProfileForm({ user }: Props) {
         >
           Submit
         </button>
-        <CancelButton />
+        <CancelButton className="w-full" />
       </div>
     </form>
   );

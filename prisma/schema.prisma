@@ -13,20 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Address {
-  id            String      @id @default(uuid())
-  street        String      @db.VarChar(255)
-  city          String      @db.VarChar(255)
-  postCode      String      @db.VarChar(255)
-  state         String      @db.VarChar(255)
-  isSameAddress Boolean     @default(true)
-  addressType   AddressType @default(Same)
-  user          User        @relation(fields: [userId], references: [id])
-  userId        String
-
-  @@map("addresses")
-}
-
 model CartItem {
   id       String  @id @default(uuid())
   name     String
@@ -41,17 +27,17 @@ model CartItem {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  name      String    @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  phone     String    @db.VarChar(255)
-  image     String?   @db.VarChar(255)
-  gender    Gender    @default(Male)
-  password  String    @db.VarChar(255)
-  role      Role      @default(User)
-  orders    Order[]
-  addresses Address[]
-  pizzas    Pizza[]
+  id       String  @id @default(uuid())
+  name     String  @db.VarChar(255)
+  email    String  @unique @db.VarChar(255)
+  phone    String  @db.VarChar(255)
+  image    String? @db.VarChar(255)
+  gender   Gender  @default(Male)
+  password String  @db.VarChar(255)
+  role     Role    @default(User)
+  orders   Order[]
+  address  String? @db.Text
+  pizzas   Pizza[]
 
   @@map("users")
 }

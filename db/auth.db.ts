@@ -3,21 +3,21 @@ import { StatusCodes } from "http-status-codes";
 import prisma from "./prisma.db";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { Address, Role, User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import { AuthResponseModel } from "@/models/authResponse.model";
 import { ChangePasswordModel } from "@/models/changePassword.model";
 import { EditProfileModel } from "@/models/editProfile.model";
 import { LoginModel } from "@/models/login.model";
 import { SignupModel } from "@/models/signup.model";
 import { UserInfoModel } from "@/models/userInfo.model";
-import { UserPayload } from "@/models/userPayload.model";
 
 export class AuthDb {
   constructor() {}
 
   async changePassword(changePasswordModel: ChangePasswordModel) {
     //----> Destructure the payload.
-    const { email, oldPassword, newPassword, confirmPassword } = changePasswordModel;
+    const { email, oldPassword, newPassword, confirmPassword } =
+      changePasswordModel;
 
     //----> Check for password match
     if (!this.matchPassword(newPassword, confirmPassword)) {
@@ -29,7 +29,7 @@ export class AuthDb {
 
     //----> Check that the old password is correct.
     await this.comparePassword(oldPassword, user.password);
-   
+
     //----> Hash the new password.
     const hashNewPassword = await this.passwordHarsher(newPassword);
 
@@ -52,102 +52,6 @@ export class AuthDb {
     const { password, ...rest } = currentUser;
 
     return rest;
-  }
-
-  async deleteAllUserAddressesByUserId(userId: string) {
-    //----> Check for availability of user addresses.
-    const retrieveAllAddresses = await this.getUserById(userId, true);
-
-    //----> Delete the user credentials from the database.
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        ...retrieveAllAddresses,
-        addresses: {
-          deleteMany: {},
-        },
-      },
-      include: {
-        addresses: true,
-      },
-    });
-    //----> Clean up the user credentials.
-    await prisma.user.delete({ where: { id: userId } });
-  }
-
-  async deleteOneAddressByUserId(addressId: string, userId: string) {
-    //----> Check for the existence of user in the database.
-    const { addresses, ...rest } = await this.getUserById(userId, true);
-    //----> Filter out the cart-item to be deleted.
-    const filteredAddresses = this.addressFilter(addresses, addressId);
-
-    //----> Delete the user info from the database.
-    const deletedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        ...filteredAddresses,
-        addresses: {
-          deleteMany: [{ id: addressId }],
-        },
-      },
-      include: {
-        addresses: true,
-      },
-    });
-    //----> Check to see if there is any cart-item left.
-    if (filteredAddresses.length === 0) {
-      //----> Delete the user.
-      console.log("No more cart-item to delete");
-      await prisma.user.delete({ where: { id: userId } });
-      return {} as User;
-    }
-    return deletedUser;
-  }
-
-  async editAllAddressesByUserId(userId: string, userPayload: UserPayload) {
-    //----> Check for the existence of user in the db.
-    await this.getUserById(userId);
-    //----> Get the userToEdit from the request body.
-    const { addresses, ...rest } = userPayload;
-
-    //----> Store the edited user info in the database.
-    const editedUser = await prisma.user.update({
-      where: { id: userId },
-      data: { ...rest },
-    });
-    //----> Edit all addresses.
-    const updatedAddresses = await this.updateAllAddresses(addresses, userId);
-
-    return { updatedAddresses, editedUser };
-  }
-
-  async editOneAddressByUserId(addressId: string, userId: string, userPayload: UserPayload) {
-    //----> Destructure the user payload.
-    const { addresses, ...user } = userPayload;
-    //----> Check for the existence of user in the db.
-    await this.getUserById(userId);
-
-    //----> Filter out the address to edit.
-    const addressToEdit = this.addressFilter(addresses, addressId);
-
-    //----> Store the edited user info in the database.
-    const editedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        ...user,
-        addresses: {
-          update: {
-            where: { id: addressId, userId: userId },
-            data: { ...addressToEdit },
-          },
-        },
-      },
-      include: {
-        addresses: true,
-      },
-    });
-
-    return editedUser;
   }
 
   async editProfile(editProfileModel: EditProfileModel) {
@@ -198,7 +102,7 @@ export class AuthDb {
 
   async signup(signupModel: SignupModel) {
     //----> Destructure the payload.
-    console.log("In signup-db, user : ", signupModel)
+    console.log("In signup-db, user : ", signupModel);
     const { email, password, confirmPassword, ...rest } = signupModel;
 
     //----> Check for password match, check for existence of user.
@@ -209,40 +113,7 @@ export class AuthDb {
 
     //----> Store the new user in the database.
     const newUser = await prisma.user.create({
-      data: { ...rest, password: hashNewPassword, email },
-    });
-
-    const { password: userPassword, ...restOfData } = newUser;
-
-    return restOfData;
-  }
-
-  async signupWithMultipleAddresses(userPayload: UserPayload) {
-    //----> Destructure the userWithAddressesPayload.
-    const { addresses, ...user } = userPayload;
-    console.log({ userPayload });
-
-    //----> Destructure the user part of the payload.
-    const { email, password, confirmPassword, ...rest } = user;
-
-    //----> Check for password match, check for existence of user.
-    await this.signupUtil(confirmPassword, email, password);
-    //----> Hash the new password.
-    const hashNewPassword = await this.passwordHarsher(password);
-
-    //----> Store the new user in the database.
-    const newUser = await prisma.user.create({
-      data: {
-        ...rest,
-        password: hashNewPassword,
-        email,
-        addresses: {
-          create: [...addresses],
-        },
-      },
-      include: {
-        addresses: true,
-      },
+      data: { ...rest, role: Role.User, password: hashNewPassword, email },
     });
 
     const { password: userPassword, ...restOfData } = newUser;
@@ -282,24 +153,6 @@ export class AuthDb {
     return restOfData;
   }
 
-  private async updateAllAddresses(addresses: Address[], userId: string) {
-    const addressesUpdater = addresses?.map(async (address) => {
-      return await prisma.address.update({
-        data: { ...address },
-        where: { id: address.id, userId },
-      });
-    });
-
-    //----> Update all addresses with Promise All.
-    const updateAllAddresses = await Promise.all(addressesUpdater);
-
-    return updateAllAddresses;
-  }
-
-  private addressFilter(addresses: Address[], addressId: string): Address[] {
-    return addresses?.filter((address) => address.id !== addressId);
-  }
-
   private matchPassword(newPassword: string, oldPassword: string) {
     const isMatch = newPassword.normalize() === oldPassword.normalize();
 
@@ -310,7 +163,7 @@ export class AuthDb {
     //----> Get the user.
     const user = await prisma.user.findUnique({
       where: { id },
-      include: { addresses: includeAddresses },
+      // include: { addresses: includeAddresses },
     });
     //----> Check for existence of user.
     if (!user) {
@@ -345,7 +198,10 @@ export class AuthDb {
     return user;
   }
 
-  private async comparePassword(oldPassword: string, oldPasswordHashed: string) {
+  private async comparePassword(
+    oldPassword: string,
+    oldPasswordHashed: string
+  ) {
     //----> Compare the new password with old password.
     const isMatch = await bcrypt.compare(oldPassword, oldPasswordHashed);
 

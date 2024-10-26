@@ -1,13 +1,7 @@
-import { User } from "@prisma/client";
 import { signupAction } from "@/actions/auth.action";
-import { SignupModel } from "@/models/signup.model";
-import Link from "next/link";
 import CancelButton from "./cancelButton";
 
-type Props = {
-  user: Omit<SignupModel, "gender">;
-};
-export default function SignupForm({ user }: Props) {
+export default function SignupForm() {
   return (
     <form
       action={signupAction}
@@ -22,7 +16,7 @@ export default function SignupForm({ user }: Props) {
           id="name"
           name="name"
           type="text"
-          className="border-2 bg-slate-200 p-2 rounded-lg text-black w-full"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 p-2 rounded-lg text-black w-full"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -36,7 +30,7 @@ export default function SignupForm({ user }: Props) {
           id="email"
           name="email"
           type="email"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -50,7 +44,7 @@ export default function SignupForm({ user }: Props) {
           id="phone"
           name="phone"
           type="tel"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -64,7 +58,7 @@ export default function SignupForm({ user }: Props) {
           id="image"
           name="image"
           type="text"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -78,7 +72,7 @@ export default function SignupForm({ user }: Props) {
           id="password"
           name="password"
           type="password"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-5 w-full px-10">
@@ -92,7 +86,7 @@ export default function SignupForm({ user }: Props) {
           id="password"
           name="confirmPassword"
           type="password"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -102,7 +96,7 @@ export default function SignupForm({ user }: Props) {
         <select
           id="gender"
           name="gender"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         >
           <option>Select Gender</option>
           <option value="Male">Male</option>
@@ -117,7 +111,7 @@ export default function SignupForm({ user }: Props) {
         >
           Submit
         </button>
-        <CancelButton />
+        <CancelButton className="w-full" />
       </div>
     </form>
   );

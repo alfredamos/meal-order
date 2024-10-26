@@ -4,6 +4,7 @@ import LogoutLink from "./logoutLink.util";
 import { CSSProperties } from "react";
 import { sideLinks } from "./navLinks";
 import SideBarLink from "./sideBarLink.util";
+import { Role } from "@prisma/client";
 
 const margins: CSSProperties = {
   marginLeft: "25px",
@@ -19,18 +20,33 @@ const marginBottom: CSSProperties = {
 
 export default async function SideBar() {
   const session = await auth();
+  const isAdmin = session?.user?.role === Role.Admin;
+
+  console.log("isAdmin : ", isAdmin);
   return (
-    <aside className="w-70 font-semibold">
+    <aside className="w-70 font-semibold mr-6">
       {session?.user ? (
         <ul className="flex flex-col space-y-10 mt-10 text-semibold">
-          {sideLinks.map((link) => (
-            <SideBarLink
-              label={link.label}
-              path={link.path}
-              style={margins}
-              key={link.path}
-            />
-          ))}
+          {sideLinks.map((link) =>
+            link.admin && isAdmin ? (
+              <SideBarLink
+                path={link.path}
+                label={link.label}
+                style={margins}
+                key={link.path}
+              />
+            ) : (
+              !link.admin && (
+                <SideBarLink
+                  path={link.path}
+                  label={link.label}
+                  style={margins}
+                  key={link.path}
+                />
+              )
+            )
+          )}
+
           <li className="px-4 mb-10" style={marginBottom}>
             <LogoutLink style={inlineBlock} />
           </li>

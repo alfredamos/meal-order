@@ -7,4 +7,5 @@ export class EditProfileModel {
   image?: string = "";
   gender: Gender = Gender.Male;
   password: string = "";
+  address: string = "";
 }

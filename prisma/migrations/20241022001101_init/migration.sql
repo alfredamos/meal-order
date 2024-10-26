@@ -1,17 +1,4 @@
 -- CreateTable
-CREATE TABLE `addresses` (
-    `id` VARCHAR(191) NOT NULL,
-    `street` VARCHAR(255) NOT NULL,
-    `city` VARCHAR(255) NOT NULL,
-    `postCode` VARCHAR(255) NOT NULL,
-    `state` VARCHAR(255) NOT NULL,
-    `addressType` VARCHAR(255) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `cartItems` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
@@ -29,9 +16,11 @@ CREATE TABLE `users` (
     `name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `phone` VARCHAR(255) NOT NULL,
+    `image` VARCHAR(255) NULL,
     `gender` ENUM('Female', 'Male') NOT NULL DEFAULT 'Male',
     `password` VARCHAR(255) NOT NULL,
     `role` ENUM('User', 'Staff', 'Admin') NOT NULL DEFAULT 'User',
+    `address` TEXT NULL,
 
     UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -66,9 +55,6 @@ CREATE TABLE `pizzas` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `addresses` ADD CONSTRAINT `addresses_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `cartItems` ADD CONSTRAINT `cartItems_pizzaId_fkey` FOREIGN KEY (`pizzaId`) REFERENCES `pizzas`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

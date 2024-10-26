@@ -13,7 +13,7 @@ export default function DeleteUserConfirmation({
   user,
 }: Props) {
   return (
-    <div className="bg-white p-6 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
+    <div className="bg-white p-8 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
       <h2 className="font-semibold border-b-2 mb-2">
         User Delete Confirmation!
       </h2>

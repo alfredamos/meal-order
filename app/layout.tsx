@@ -18,15 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className} bg-stone-950 text-stone-100 h-screen w-screen`}
-      >
+      <body className={`${inter.className}`}>
         <NavBar />
         <main className="grid grid-cols-12">
-          <section className="col-span-1 bg-gray-300 h-screen">
+          <section className="col-span-1 bg-gray-300 min-h-screen">
             <SideBar />
           </section>
-          <section className="col-span-11">{children}</section>
+          <section className="col-span-11 bg-stone-950 min-h-screen">
+            {children}
+          </section>
         </main>
       </body>
     </html>

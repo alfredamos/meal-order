@@ -24,7 +24,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           name="name"
           type="text"
           defaultValue={pizza.name}
-          className="border-2 bg-slate-200 p-2 rounded-lg text-black w-full"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 p-2 rounded-lg text-black w-full"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -39,7 +39,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           name="price"
           type="number"
           defaultValue={pizza.price}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -54,7 +54,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           name="topping"
           type="text"
           defaultValue={pizza.topping}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -69,7 +69,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           name="quantity"
           type="number"
           defaultValue={pizza.quantity}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -81,7 +81,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           type="text"
           name="image"
           defaultValue={pizza.image}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-5 w-full px-10">
@@ -95,10 +95,15 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
           id="description"
           name="description"
           defaultValue={pizza.description}
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
-      <input id="userId" name="userId" defaultValue={pizza.userId} type="hidden" />
+      <input
+        id="userId"
+        name="userId"
+        defaultValue={pizza.userId}
+        type="hidden"
+      />
       <input id="id" name="id" defaultValue={pizza?.id} type="hidden" />
       <div className="flex justify-between w-full px-10">
         <button
@@ -107,7 +112,7 @@ export default function PizzaForm({ action, formName, pizza }: Props) {
         >
           Submit
         </button>
-        <CancelButton />
+        <CancelButton className="w-full" />
       </div>
     </form>
   );

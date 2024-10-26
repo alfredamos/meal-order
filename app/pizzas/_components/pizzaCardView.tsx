@@ -10,7 +10,7 @@ type Props = {
 export default function PizzaCardView({ pizza, onCancel }: Props) {
   console.log("PizzaCard : ", pizza);
   return (
-    <div className="card lg:card-side bg-base-100 shadow-xl w-1/2 mx-auto mt-16">
+    <div className="card lg:card-side bg-base-100 shadow-xl w-3/5 mx-auto mt-16">
       <figure>
         <img
           src={pizza.image}
@@ -33,8 +33,8 @@ export default function PizzaCardView({ pizza, onCancel }: Props) {
           <span className="font-semibold">{pizza.quantity}</span>
         </p>
         <p className="flex justify-between items-center">
-          <span>Toppings </span>
-          <span className="font-semibold">{pizza.topping}</span>
+          <span className="block mr-5">Toppings </span>
+          <span className="font-semibold text-wrap">{pizza.topping}</span>
         </p>
         <p className="flex justify-between items-center">
           <span>Description</span>

@@ -7,7 +7,7 @@ type Props = {
 };
 export default function DeletePizzaConfirmation({onCancel, onDelete, pizza}: Props) { 
   return (
-    <div className="bg-white p-6 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
+    <div className="bg-white p-8 max-width-2xl text-black rounded-lg shadow-xl w-1/4">
       <h2 className="font-semibold border-b-2 mb-2">
         User Delete Confirmation!
       </h2>
@@ -24,8 +24,8 @@ export default function DeletePizzaConfirmation({onCancel, onDelete, pizza}: Pro
         <span className="font-semibold">{pizza.quantity}</span>
       </p>
       <p className="flex justify-between items-center">
-        <span>Toppings </span>
-        <span className="font-semibold text-wrap">{pizza.topping}</span>
+        <span className="block mr-6 text-wrap">Toppings </span>
+        <span className="font-semibold w-full text-wrap">{pizza.topping}</span>
       </p>
       <p className="flex justify-between items-center">
         <span>Description</span>

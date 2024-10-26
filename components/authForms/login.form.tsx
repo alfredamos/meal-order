@@ -20,7 +20,7 @@ export default function LoginForm() {
           id="email"
           name="email"
           type="email"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="mb-6 w-full px-10">
@@ -34,7 +34,7 @@ export default function LoginForm() {
           id="password"
           name="password"
           type="password"
-          className="border-2 bg-slate-200 w-full p-2 rounded-lg text-black"
+          className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"
         />
       </div>
       <div className="flex justify-between w-full px-10 mb-6">
@@ -44,7 +44,7 @@ export default function LoginForm() {
         >
           Submit
         </button>
-        <CancelButton />
+        <CancelButton className="w-full" />
       </div>
     </form>
   );
