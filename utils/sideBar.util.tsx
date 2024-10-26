@@ -1,10 +1,13 @@
 import { auth } from "@/auth";
-import Link from "next/link";
 import LogoutLink from "./logoutLink.util";
-import { CSSProperties } from "react";
-import { sideLinks } from "./navLinks";
+import { CSSProperties} from "react";
 import SideBarLink from "./sideBarLink.util";
 import { Role } from "@prisma/client";
+import { sideLinks } from "./navLinks";
+import NavLink from "./navLink.util";
+import { FaUser } from "react-icons/fa";
+import { RiLoginBoxLine } from "react-icons/ri";
+
 
 const margins: CSSProperties = {
   marginLeft: "25px",
@@ -22,48 +25,44 @@ export default async function SideBar() {
   const session = await auth();
   const isAdmin = session?.user?.role === Role.Admin;
 
-  console.log("isAdmin : ", isAdmin);
   return (
     <aside className="w-70 font-semibold mr-6">
       {session?.user ? (
         <ul className="flex flex-col space-y-10 mt-10 text-semibold">
-          {sideLinks.map((link) =>
-            link.admin && isAdmin ? (
+          {sideLinks.map(({ path, label, icon, admin }) =>
+            admin && isAdmin ? (
               <SideBarLink
-                path={link.path}
-                label={link.label}
+                path={path}
+                label={label}
                 style={margins}
-                key={link.path}
+                icon={icon}
+                key={path}
               />
             ) : (
-              !link.admin && (
+              !admin && (
                 <SideBarLink
-                  path={link.path}
-                  label={link.label}
+                  path={path}
+                  label={label}
                   style={margins}
-                  key={link.path}
+                  icon={icon}
+                  key={path}
                 />
               )
             )
           )}
 
           <li className="px-4 mb-10" style={marginBottom}>
-            <LogoutLink style={inlineBlock} />
+            <LogoutLink style={inlineBlock} type="sideBar" />
           </li>
         </ul>
       ) : (
-        // <ul className="flex flex-col items-stretch mt-10 font-semibold text-base">
-        <ul className="flex flex-col items-stretch mt-10 font-semibold">
+        <ul className="flex flex-col justify-end items-center mt-10 font-semibold text-indigo-900">
           <li className="px-4" style={{ marginBottom: "80px" }}>
-            <Link href="/auth/login" className="text-black">
-              Login
-            </Link>
+            <NavLink path="/auth/signup" label="Signup" style={inlineBlock} type="sideBar" icon={<FaUser size={40} />} />
           </li>
-          <li className="px-4">
-            <Link href="/auth/signup" className="text-black">
-              Signup
-            </Link>
-          </li>
+          <li className="px-4" style={marginBottom}>
+            <NavLink path="/auth/login" label="Login" style={inlineBlock} type="sideBar" icon={<RiLoginBoxLine size={40}/>} />
+          </li> 
         </ul>
       )}
     </aside>

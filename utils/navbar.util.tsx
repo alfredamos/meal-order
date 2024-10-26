@@ -1,4 +1,3 @@
-import { logoutAction } from "@/actions/auth.action";
 import { auth } from "@/auth";
 import { CSSProperties } from "react";
 import { adminDropDownLinks, authLinks, dropDownLinks } from "./navLinks";
@@ -36,10 +35,10 @@ async function NavigationBar() {
                   )}
                 </ul>
               </details>
-              <LogoutLink style={inlineBlock} />
+              <LogoutLink style={inlineBlock} type="dropDown" />
             </>
           ) : (
-            <LoginAndSignupLinks authLinks={authLinks} />
+            <LoginAndSignupLinks authLinks={authLinks} type="navbar" />
           )}
         </div>
       </nav>

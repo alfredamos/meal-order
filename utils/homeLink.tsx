@@ -20,13 +20,12 @@ export default function HomeLink({ path, name, label, style }: Props) {
         <span
           className={
             isActive
-              ? "text-rose-900 border-b-2 border-rose-900 font-semibold mb-2 hover:text-indigo-900 hover:border-b-2 hover:border-indigo-900 hover:font-bold mr-4"
+              ? "text-rose-900 font-semibold mb-2 hover:text-indigo-900 hover:border-b-2 hover:border-indigo-900 hover:font-bold mr-4"
               : "text-black font-semibold mb-2 hover:text-rose-900 hover:font-bold mr-4"
           }
         >
-          {label}
+           Welcome {name}
         </span>
-        <span>{name}</span>
       </Link>
     </>
   );

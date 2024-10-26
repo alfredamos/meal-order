@@ -1,18 +1,28 @@
 import Link from "next/link";
-import { CSSProperties } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 
 type Props = {
   path: string;
   label: string;
   style?: CSSProperties;
+  icon: ReactNode;
+  type: "navbar" | "sideBar";
 };
-export default function NavLink({ label, path, style }: Props) {
+export default function NavLink({ icon, label, path, style, type }: Props) {
+  console.log({ icon, label, path, style, type });
+  
   return (
     <Link
       href={path}
       style={style}
     >
-      {label}
+      {type === "navbar" ? (
+        <span>{label}</span>
+      ) : (
+        <>
+          {icon}
+        </>
+      )}
     </Link>
   );
 }

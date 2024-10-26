@@ -8,8 +8,9 @@ const inlineBlock: CSSProperties = {
 
 export type Props = {
   authLinks: NavLinkType[];
+  type: "navbar" | "sideBar";
 };
-export default function AuthLinks({ authLinks }: Props) {
+export default function AuthLinks({ authLinks, type }: Props) {
   return (
     <>
       {authLinks?.map((link) => {
@@ -19,6 +20,8 @@ export default function AuthLinks({ authLinks }: Props) {
             label={link.label}
             style={inlineBlock}
             key={link.path}
+            type={type}
+            icon={link.icon}
           />
         );
       })}
