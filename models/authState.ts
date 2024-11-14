@@ -1,8 +1,9 @@
 import { User } from "@prisma/client";
+import { AuthResponseModel } from "./authResponse.model";
 
 export class AuthState {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
-  currentUser: User | null = null;
+  currentUser: AuthResponseModel  = new  AuthResponseModel();
   token: string | null = null;
 }

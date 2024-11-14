@@ -1,5 +1,6 @@
 import { Pizza } from "@prisma/client";
 import Link from "next/link";
+import Image from "next/image"
 
 type Props = {
   pizza: Pizza;
@@ -8,9 +9,11 @@ export default function PizzaItem({pizza}: Props) {
   return (
     <div className="card card-compact bg-base-100 w-full shadow-xl text-stone-700 m-2">
       <figure>
-        <img
+        <Image
           src={pizza.image}
           alt={pizza.name}
+          height={80}
+          width={80}
           className="object-cover w-full h-48"
         />
       </figure>

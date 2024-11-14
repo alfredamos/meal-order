@@ -1,4 +1,11 @@
-import { AdminUserModel } from "./adminUser.model";
+import { Role } from "@prisma/client";
 
-export class UserResponseModel extends AdminUserModel{
+export class UserResponseModel {
+  id: string = "";
+  name!: string;
+  email!: string;
+  gender!: string;
+  phone!: string;
+  role!: Role;
+  token?: string;
 }

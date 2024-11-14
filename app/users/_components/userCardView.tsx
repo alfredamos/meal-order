@@ -11,40 +11,45 @@ type Props = {
 export default function UserCardView({ user, onCancel }: Props) {
   console.log("UserCard : ", user);
   return (
-    <div className="card lg:card-side bg-base-100 shadow-xl w-1/3 mx-auto mt-16">
-      <figure>
+    <div className="bg-slate-100 max-w-lg shadow-2xl flex flex-col gap-2 rounded-2xl overflow-hidden items-center justify-center">
+      <div className="flex 1 w-full h-full">
         <Image
           src={user.image as string}
           alt={user.name}
-          width={400}
-          height={75}
-          className="object-cover h-full w-full"
+          width={200}
+          height={200}
+          className="object-cover w-full h-72"
         />
-      </figure>
-      <div className="card-body text-stone-700 w-full">
-        <h2 className="card-title">
-          <Link href="/users">{user.name}</Link>
-        </h2>
-        <p className="flex justify-between items-center">
-          <span className="mr-10">Email </span>
-          <span className="font-semibold">{user.email}</span>
-        </p>
-        <p className="flex justify-between items-center">
-          <span>Phone </span>
-          <span className="font-semibold">{user.phone}</span>
-        </p>
-        <p className="flex justify-between items-center">
-          <span>Gender </span>
-          <span className="font-semibold">{user.gender}</span>
-        </p>
-        <p className="flex justify-between items-center">
-          <span>Role</span>
-          <span className="font-semibold">{user.role}</span>
-        </p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary" onClick={onCancel}>
-            Back
-          </button>
+      </div>
+      <div className="flex 1 p-10">
+        <div className="flex flex-col">
+          <h2 className="card-title">
+            <Link href="/pizzas">{user.name}</Link>
+          </h2>
+          <p className="flex justify-between items-center">
+            <span className="font-light">Email </span>
+            <span className="font-semibold">{user.email}</span>
+          </p>
+          <p className="flex justify-between items-center">
+            <span className="font-light">Phone </span>
+            <span className="font-semibold">{user.phone}</span>
+          </p>
+          <p className="flex justify-between items-center">
+            <span className="font-light mr-5">Gender </span>
+            <span className="font-semibold text-wrap">{user.gender}</span>
+          </p>
+          <p className="flex justify-between items-center">
+            <span className="font-light">Role</span>
+            <span className="font-semibold">{user.role}</span>
+          </p>
+          <div className="flex justify-center items-center mt-4 w-full">
+            <button
+              className="btn btn-primary w-40 font-bold uppercase w-full"
+              onClick={onCancel}
+            >
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
