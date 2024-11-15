@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import UserDeleteAndViewButton from "./userDeleteAndViewButton";
 import Image from "next/image";
 import { useState, FormEvent } from "react";
+import Link from "next/link"
 
 type Props = {
   users: User[];
@@ -27,7 +28,7 @@ export default function UserListTable({ users }: Props) {
   };
 
   return (
-    <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4">
+    <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
       <form onClick={searchHandler}>
         <div className="flex justify-between items-center mb-5 mt-5 w-3/4 mx-auto">
           <input
@@ -42,7 +43,7 @@ export default function UserListTable({ users }: Props) {
           </button>
         </div>
       </form>
-      <table className="table table-zebra">
+      <table className="table table-zebra border-1 border-gray-200 p-3">
         <thead>
           <tr className="text-gray-200 text-xl bg-gray-500">
             <th>Image</th>
@@ -78,6 +79,14 @@ export default function UserListTable({ users }: Props) {
           })}
         </tbody>
       </table>
+      <div className="flex items-center justify-end my-8">
+        <Link
+          href="/pizzas/new"
+          className="bg-indigo-500 text-indigo-100 px-12 py-4 rounded-lg uppercase font-bold"
+        >
+          Add Pizza
+        </Link>
+      </div>
     </div>
   );
 }

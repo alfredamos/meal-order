@@ -81,7 +81,7 @@ export default function PizzaListTable({ pizzas }: Props) {
           })}
         </tbody>
       </table>
-      <div className="flex items-center justify-end my-4">
+      <div className="flex items-center justify-end my-8">
         <Link
           href="/pizzas/new"
           className="bg-indigo-500 text-indigo-100 px-12 py-4 rounded-lg uppercase font-bold"

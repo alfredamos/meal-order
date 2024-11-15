@@ -117,24 +117,24 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
           isView={isViewPizza}
         />
       )}
-      <div className="flex justify-between items-center w-full mt-2">
+      <div className="flex items-center w-full mt-2">
         <button
           type="submit"
-          className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-4 md:m-1"
+          className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-2"
           onClick={viewPizzaHandler}
         >
           view
         </button>
         <button
           type="submit"
-          className="py-2 px-4 border-2 border-yellow-500 hover:bg-orange-400 hover:text-yellow-100 text-orange-400 font-bold text-base rounded-lg mr-4 md:m-1"
+          className="py-2 px-4 border-2 border-yellow-500 hover:bg-orange-400 hover:text-yellow-100 text-orange-400 font-bold text-base rounded-lg mr-2"
           onClick={pizzaEditConfirmation}
         >
           Edit
         </button>
         <button
           type="submit"
-          className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-4 md:m-1"
+          className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-2"
           onClick={pizzaDeleteConfirmation}
         >
           Delete

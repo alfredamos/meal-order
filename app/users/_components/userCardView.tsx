@@ -23,28 +23,28 @@ export default function UserCardView({ user, onCancel }: Props) {
       </div>
       <div className="flex 1 p-10">
         <div className="flex flex-col">
-          <h2 className="card-title">
-            <Link href="/pizzas">{user.name}</Link>
+          <h2 className="card-title mb-2">
+            <Link href="/users">{user.name}</Link>
           </h2>
           <p className="flex justify-between items-center">
-            <span className="font-light">Email </span>
+            <span className="font-light mr-8">Email </span>
             <span className="font-semibold">{user.email}</span>
           </p>
           <p className="flex justify-between items-center">
-            <span className="font-light">Phone </span>
+            <span className="font-light mr-8">Phone </span>
             <span className="font-semibold">{user.phone}</span>
           </p>
           <p className="flex justify-between items-center">
-            <span className="font-light mr-5">Gender </span>
+            <span className="font-light mr-8">Gender </span>
             <span className="font-semibold text-wrap">{user.gender}</span>
           </p>
           <p className="flex justify-between items-center">
-            <span className="font-light">Role</span>
+            <span className="font-light mr-8">Role</span>
             <span className="font-semibold">{user.role}</span>
           </p>
-          <div className="flex justify-center items-center mt-4 w-full">
+          <div className="flex justify-center items-center mt-10 w-full">
             <button
-              className="btn btn-primary w-40 font-bold uppercase w-full"
+              className="btn btn-primary w-40 font-bold uppercase"
               onClick={onCancel}
             >
               Back
