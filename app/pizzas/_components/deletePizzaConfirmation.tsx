@@ -13,7 +13,7 @@ export default function DeletePizzaConfirmation({
   return (
     <div className="bg-white p-12 max-width-2xl text-black rounded-2xl shadow-2xl w-1/4">
       <h2 className="font-semibold border-b-2 text-3xl">
-        User Delete Confirmation!
+        <span>User Delete Confirmation!</span>
       </h2>
       <p className="flex justify-between items-center py-2 mt-2">
         <span className="font-light">Name</span>
@@ -36,7 +36,9 @@ export default function DeletePizzaConfirmation({
         <span className="font-semibold text-wrap">{pizza.description}</span>
       </p>
       <h4 className="mb-4 mt-4 border-b-2 border-t-2 font-semibold py-4 text-xl">
-        Do you really want to delete this user?
+        <span>
+          Do you really want to delete this user?
+        </span>
       </h4>
       <div className="flex justify-between items-center w-full mt-2">
         <button

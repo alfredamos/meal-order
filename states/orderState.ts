@@ -1,12 +1,8 @@
 import { OrderModel } from "@/models/orderModel";
 import { OrderProduct } from "@/models/orderProduct.model";
+import { CartItem } from "@prisma/client";
 
 export class OrderState{
-  customerId: string = ""
   orders: OrderProduct[] = [];
-  ordersFromDb: OrderModel[] = [];
-  order: OrderProduct = null!;
-  totalCost: number = 0;
-  quantities: number = 0;
 
 }

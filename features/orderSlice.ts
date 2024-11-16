@@ -4,11 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: OrderState = {
   orders: [],
-  customerId: "",
-  ordersFromDb: [],
-  order: new OrderProduct,
-  totalCost: 0,
-  quantities: 0
+ 
 };
 
 export const orderSlice = createSlice({
@@ -19,5 +15,19 @@ export const orderSlice = createSlice({
       state.orders = state.orders.concat(action.payload.order);
     },
    
+    editOrder: (state, action: PayloadAction<{order: OrderProduct}>) => {
+      const findIndex = state.orders.findIndex(order => order.order.id === action.payload.order.order.id)
+      state.orders[findIndex] = action.payload.order;
+    },
+    deleteOrder: (state, action: PayloadAction<{order: OrderProduct}>) => {
+      state.orders.filter(
+        (order) => order.order.id === action.payload.order.order.id
+      );
+    },
+   
   },
 });
+
+export const { createOrder, deleteOrder, editOrder } =
+  orderSlice.actions;
+export default orderSlice.reducer;
