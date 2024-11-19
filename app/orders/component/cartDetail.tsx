@@ -1,23 +1,24 @@
 import { CartItem } from "@prisma/client";
+import Link from "next/link";
 import { Fragment } from "react";
 
 type Props = {
   carts: CartItem[];
-  backToPizza: () => void;
-  addToCart: (cartItems: CartItem[]) => void;
+  /*  backToPizza: () => void;
+  addToCart: (cartItems: CartItem[]) => void; */
 };
 
-export default function PizzaAddToCartConfirmation({
-  addToCart,
-  backToPizza,
+export default function CartDetail({
+  /* addToCart,
+  backToPizza, */
   carts,
 }: Props) {
   let total = 0;
 
   return (
-    <div className="bg-white p-12 max-width-2xl text-black rounded-2xl shadow-2xl w-1/4">
+    <div className="bg-white p-12 max-width-4xl text-black rounded-2xl shadow-2xl w-1/4 mx-auto mt-10">
       <h2 className="font-semibold border-b-2 text-3xl">
-        <span>Add To Cart Confirmation</span>
+        <span>Pizza Order Detail</span>
       </h2>
       {carts?.map((cart) => {
         const subTotal = cart.price * cart.quantity;
@@ -49,20 +50,22 @@ export default function PizzaAddToCartConfirmation({
         <span className="font-semibold text-wrap">{total}</span>
       </p>
       <div className="flex gap-2 justify-between items-center w-full mt-8">
-        <button
+        <Link
           type="button"
           className="flex-1 border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold"
-          onClick={() => addToCart(carts)}
+          href="/orders/cart"
+          // onClick={() => addToCart(carts)}
         >
           Add To Cart
-        </button>
-        <button
+        </Link>
+        <Link
           type="button"
+          href="/pizzas"
           className="flex-1 border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold"
-          onClick={backToPizza}
+          // onClick={backToPizza}
         >
           Back To Pizza
-        </button>
+        </Link>
       </div>
     </div>
   );

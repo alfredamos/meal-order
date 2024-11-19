@@ -16,7 +16,7 @@ export default function HomeLink({ path, name, label, style }: Props) {
 
   return (
     <>
-      <Link href={path} style={style}>
+      <Link href={path} style={style} className="relative">
         <span
           className={
             isActive
@@ -24,7 +24,7 @@ export default function HomeLink({ path, name, label, style }: Props) {
               : "text-black font-semibold mb-2 hover:text-rose-900 hover:font-bold mr-4"
           }
         >
-           Welcome {name}
+          Welcome {name}
         </span>
       </Link>
     </>

@@ -1,7 +1,6 @@
 "use client";
 
 import { CartItem, Pizza } from "@prisma/client";
-//import PizzaItem from "./PizzaItem";
 import { useState } from "react";
 import AddPizzaItem from "./_components/addPizzaItem";
 import Image from "next/image";
@@ -44,6 +43,7 @@ export default function PizzaListItems({ pizzas }: Props) {
 
   const toCart = (cartItems: CartItem[]) => {
     console.log("The cart-items to cart : ", {cartItems})
+    router.push("/orders/cart")
   }
 
   return (

@@ -22,20 +22,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <NavBar />
-        <main className="grid grid-cols-12">
-          <section className="hidden md:block md:col-span-1 bg-gray-300 min-h-screen">
-            <SideBar />
-          </section>
-          <section className="col-span-12 md:col-span-11 bg-stone-950 min-h-screen">
-            <ReduxContext>
-              <QueryClientContext>
+        <ReduxContext>
+          <QueryClientContext>
+            <NavBar />
+            <main className="grid grid-cols-12">
+              <section className="hidden md:block md:col-span-1 bg-gray-300 min-h-screen">
+                <SideBar />
+              </section>
+              <section className="col-span-12 md:col-span-11 bg-stone-950 min-h-screen">
                 {children}
-                <ReactQueryDevtools />
-              </QueryClientContext>
-            </ReduxContext>
-          </section>
-        </main>
+              </section>
+            </main>
+          </QueryClientContext>
+        </ReduxContext>
       </body>
     </html>
   );
