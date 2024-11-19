@@ -10,8 +10,6 @@ async function DetailPizzaPage({ params }: Params) {
   const pizzaId = params.id;
   const pizza = await getPizzaById(pizzaId);
 
-  console.log("DetailPizzaPage : ", pizza);
-
   return <PizzaCard pizza={pizza} />;
 }
 export default DetailPizzaPage;

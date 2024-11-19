@@ -15,17 +15,6 @@ type Props = {
   pizzas: Pizza[];
 };
 
-const initialPizza: Pizza = {
-  name: "",
-  image: "",
-  description: "",
-  id: "",
-  quantity: 0,
-  price: 0,
-  topping: "",
-  userId: "",
-};
-
 export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems ?? []; //---> Retrieve cartItems from redux store
   console.log("Initial-redux", { cartItems });
@@ -52,6 +41,10 @@ export default function PizzaListItems({ pizzas }: Props) {
     setIsAddToCart(false);
     router.refresh();
   };
+
+  const toCart = (cartItems: CartItem[]) => {
+    console.log("The cart-items to cart : ", {cartItems})
+  }
 
   return (
     <>
@@ -94,6 +87,7 @@ export default function PizzaListItems({ pizzas }: Props) {
         <AddPizzaItem
           isAddToCart={isAddToCart}
           carts={cartItems}
+          addToCart={toCart}
           backToList={backToList}
         />
       )}

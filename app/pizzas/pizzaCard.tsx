@@ -1,34 +1,81 @@
-import { Pizza } from "@prisma/client";
+"use client"
+
+import { useCart } from "@/features/cartItemSlice";
+import { makeCartItems } from "@/utils/makeCartItems";
+import { CartItem, Pizza } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import AddPizzaItem from "./_components/addPizzaItem";
 
 type Props = {
   pizza: Pizza;
 };
 export default function PizzaCard({ pizza }: Props) {
-  console.log("PizzaCard : ", pizza);
+  const cartItems = useCart()?.cartItems ?? []; //---> Retrieve cartItems from redux store
+  console.log("Initial-redux", { cartItems });
+  //----> Set states for the following
+  const [isAddToCart, setIsAddToCart] = useState(false);
+  //const [carts, setCarts] = useState<CartItem[]>(cartItems);
+
+  //----> Get dispatch function
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const addToCart = (pizza: Pizza) => {
+    console.log("Add to cart");
+    setIsAddToCart((previous) => !previous);
+
+    makeCartItems(pizza, cartItems, dispatch);
+
+    router.refresh();
+  };
+
+  const backToList = () => {
+    console.log("You must close now!!!");
+    setIsAddToCart(false);
+    router.refresh();
+  };
+
+  const toCart = (cartItems: CartItem[]) => {
+    console.log("The cart-items to cart : ", { cartItems });
+  };
+  
   return (
-    <div className="card lg:card-side bg-base-100 shadow-xl w-1/2 h-1/2 mx-auto mt-16">
-      <figure>
-        <img
-          src={pizza.image}
-          alt={pizza.name}
-          width={100}
-          height={100}
-          className="object-cover w-full  h-full"
-        />
-      </figure>
-      <div className="card-body text-stone-700">
-        <h2 className="card-title">
-          <Link href="/pizzas">{pizza.name}</Link>
-        </h2>
-        <p>${pizza.price}</p>
-        <p>{pizza.description}</p>
-        <p>Click the button to order your pizza!</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+    <>
+      <div className="card lg:card-side bg-base-100 shadow-xl w-1/2 h-1/2 mx-auto mt-16">
+        <figure className="flex-1">
+          <Image
+            src={pizza.image}
+            alt={pizza.name}
+            width={100}
+            height={100}
+            className="object-cover w-full  h-full"
+          />
+        </figure>
+        <div className="card-body text-stone-700 flex-1">
+          <h2 className="card-title">
+            <Link href="/pizzas">{pizza.name}</Link>
+          </h2>
+          <p>${pizza.price}</p>
+          <p>{pizza.description}</p>
+          <p>Click the button to order your pizza!</p>
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary" onClick={() => addToCart(pizza)}>Buy Now</button>
+          </div>
         </div>
       </div>
-    </div>
+      {isAddToCart && (
+        <AddPizzaItem
+          isAddToCart={isAddToCart}
+          carts={cartItems}
+          addToCart={toCart}
+          backToList={backToList}
+        />
+      )}
+    </>
   );
 }

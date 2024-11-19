@@ -3,21 +3,29 @@
 import Modal from "@/components/utils/modal.util";
 //import Modal from "@/utils/modal";
 import { CartItem } from "@prisma/client";
+import PizzaAddCartConfirmation from "../pizzaAddCartConfirmation";
 
 type Props = {
   carts: CartItem[];
   isAddToCart: boolean;
+  addToCart: (cartItems: CartItem[]) => void;
   backToList: () => void;
 };
 
 export default function AddPizzaItem({
+  addToCart,
   backToList,
   isAddToCart,
   carts,
 }: Props) {
   return (
     <Modal open={isAddToCart} onClose={backToList}>
-      <div className="bg-white p-12 max-width-auto text-black rounded-2xl shadow-2xl w-1/4">
+      <PizzaAddCartConfirmation
+        addToCart={addToCart}
+        backToPizza={backToList}
+        carts={carts}
+      />
+      {/* <div className="bg-white p-12 max-width-auto text-black rounded-2xl shadow-2xl w-1/4">
         {!!carts &&
           carts?.map((cart) => {
             return (
@@ -43,7 +51,7 @@ export default function AddPizzaItem({
             Back To Pizza
           </button>
         </div>
-      </div>
+      </div> */}
     </Modal>
   );
 }
