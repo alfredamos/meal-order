@@ -1,6 +1,8 @@
+import { AllState } from "@/states/allState";
 import { PizzaState } from "@/states/pizzaState";
 import { Pizza } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 
 const initialState: PizzaState = {
   pizzas: [],
@@ -26,3 +28,6 @@ export const pizzaSlice = createSlice({
 
 export const { createPizza, deletePizza, editPizza } = pizzaSlice.actions;
 export default pizzaSlice.reducer;
+
+
+export const usePizza = () => useSelector((state: AllState) => state.pizzaState);

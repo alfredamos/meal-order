@@ -44,7 +44,7 @@ export default function PizzaCardView({ pizza, onCancel }: Props) {
           </p>
           <div className="flex justify-center items-center mt-4 w-full">
             <button
-              className="btn btn-primary w-40 font-bold uppercase w-full"
+              className="btn btn-primary font-bold uppercase w-full"
               onClick={onCancel}
             >
               Back

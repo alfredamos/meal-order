@@ -1,6 +1,8 @@
+import { AllState } from "@/states/allState";
 import { UserState } from "@/states/userState";
 import { User } from "@prisma/client";
 import { createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 
 const initialState: UserState = {
   users: [],
@@ -26,3 +28,5 @@ export const userSlice = createSlice({
 
 export const { createUser, deleteUser, editUser } = userSlice.actions;
 export default userSlice.reducer;
+
+export const useUser = () => useSelector((state: AllState) => state.userState);

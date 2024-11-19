@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "../utils/navbar.util";
 import SideBar from "@/utils/sideBar.util";
-import ReducerContext from "@/utils/reducerContext";
+import ReduxContext from "@/utils/reduxContext";
+import QueryClientContext from "@/utils/queryClientContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,12 @@ export default function RootLayout({
             <SideBar />
           </section>
           <section className="col-span-12 md:col-span-11 bg-stone-950 min-h-screen">
-            <ReducerContext>{children}</ReducerContext>
+            <ReduxContext>
+              <QueryClientContext>
+                {children}
+                <ReactQueryDevtools />
+              </QueryClientContext>
+            </ReduxContext>
           </section>
         </main>
       </body>

@@ -2,6 +2,7 @@
 
 import { Pizza } from "@prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   pizza: Pizza;
@@ -11,7 +12,7 @@ export default function PizzaViewDialog({ pizza }: Props) {
     <dialog id="my_modal_1" className="modal">
       <div className="card lg:card-side bg-base-100 shadow-xl w-1/2 mx-auto mt-16">
         <figure>
-          <img
+          <Image
             src={pizza.image}
             alt={pizza.name}
             width={100}

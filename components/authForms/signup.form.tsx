@@ -83,7 +83,7 @@ export default function SignupForm() {
           Confirm Password
         </label>
         <input
-          id="password"
+          id="confirmPassword"
           name="confirmPassword"
           type="password"
           className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"

@@ -74,7 +74,7 @@ export default function PizzaListTable({ pizzas }: Props) {
                 <td>{pizza.description}</td>
                 <td>{pizza.topping}</td>
                 <td>
-                  <PizzaDeleteViewEditButton pizza={pizza} />
+                  <PizzaDeleteViewEditButton pizza={pizza} id={pizza?.id} />
                 </td>
               </tr>
             );

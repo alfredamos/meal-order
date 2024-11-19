@@ -15,8 +15,6 @@ export default function SideBarLink({ path, label, style, icon }: Props) {
   const pathname = usePathname();
   const isActive = pathname === path;
 
-  console.log("NavBar, pathname : ", { pathname, path, isActive });
-
   return (
     <li className="mb-8" style={{ marginLeft: "20px", marginBottom: "60px" }}>
       <Link href={path}>

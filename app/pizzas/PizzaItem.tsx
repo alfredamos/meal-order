@@ -1,11 +1,33 @@
-import { Pizza } from "@prisma/client";
+"use client";
+
+import { CartItem, Pizza } from "@prisma/client";
 import Link from "next/link";
-import Image from "next/image"
+import Image from "next/image";
+import { useState } from "react";
+import { useCart } from "@/hooks/useCart";
+import { useDispatch } from "react-redux";
+import AddPizzaItem from "./_components/addPizzaItem";
 
 type Props = {
   pizza: Pizza;
-}
-export default function PizzaItem({pizza}: Props) {
+  onCart: (isCart: boolean) => void;
+};
+export default function PizzaItem({ onCart, pizza }: Props) {
+  const cart = useCart();
+  const dispatch = useDispatch();
+
+  const [isAddToCart, setIsAddToCart] = useState(false);
+  const [carts, setCarts] = useState<CartItem[]>(cart?.cartItems);
+
+  const addCartItems = (pizza: Pizza) => {
+    console.log({ pizza });
+    setIsAddToCart((previous) => {
+      onCart(!previous);
+      return !previous;
+    });
+    //onCart(isAddToCart);
+  };
+
   return (
     <div className="card card-compact bg-base-100 w-full shadow-xl text-stone-700 m-2">
       <figure>
@@ -24,7 +46,12 @@ export default function PizzaItem({pizza}: Props) {
         <p>${pizza.price}</p>
         <p>{pizza.description}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => addCartItems(pizza)}
+          >
+            Buy Now
+          </button>
         </div>
       </div>
     </div>

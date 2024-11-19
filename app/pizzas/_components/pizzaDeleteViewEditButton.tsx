@@ -6,17 +6,23 @@ import { useState } from "react";
 import PizzaDeleteDialog from "./pizzaDeleteDialog";
 import PizzaViewDialog from "./pizzaViewDialog";
 import PizzaEditDialog from "./pizzaEditDialog";
+import { useDeletePizza } from "@/hooks/useDeletePizza";
+import { useEditPizza } from "@/hooks/useEditPizza";
 
 type Props = {
   pizza: Pizza;
+  id: string;
 };
 
-export default function PizzaDeleteViewEditButton({ pizza }: Props) {
+export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   const router = useRouter();
   const [isDeletePizza, setIsDeletePizza] = useState(false);
   const [isEditPizza, setIsEditPizza] = useState(false);
   const [isViewPizza, setIsViewPizza] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const { mutate: removePizza } = useDeletePizza();
+  const { mutate: updatePizza } = useEditPizza();
 
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
@@ -33,26 +39,10 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
       return <div>Please enter all values!</div>;
     }
 
-    fetch(`/api/pizzas/${pizza.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(pizza),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data : ", data);
-      })
-      .catch((error: any) => {
-        console.log("error : ", error.message);
-      })
-      .finally(() => {
-        setIsEditPizza((previous) => !previous);
-        setRefresh(!refresh);
-        router.refresh();
-      });
+    updatePizza({ id, pizza });
 
+    setIsEditPizza((previous) => !previous);
+    setRefresh(!refresh);
     router.refresh();
   };
 
@@ -71,24 +61,11 @@ export default function PizzaDeleteViewEditButton({ pizza }: Props) {
   const deletePizzaHandler = (id: string) => {
     console.log("pizza info deleted : ", id);
 
-    fetch(`/api/pizzas/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data : ", data);
-      })
-      .catch((error) => {
-        console.log("error : ", error);
-      })
-      .finally(() => {
-        setIsDeletePizza((previous) => !previous);
-        setRefresh(!refresh);
-        router.refresh();
-      });
+    removePizza(id);
+
+    setIsDeletePizza((previous) => !previous);
+    setRefresh(!refresh);
+
     router.refresh();
   };
 

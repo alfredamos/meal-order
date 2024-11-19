@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UserDeleteDialog from "./userDeleteDialog";
 import UserViewDialog from "./userViewDialog";
+import { useDeleteUser } from "@/hooks/useDeleteUser";
 
 type Props = {
   user: User;
@@ -14,6 +15,8 @@ export default function UserDeleteAndViewButton({user}: Props) {
   const [isDeleteUser, setIsDeleteUser] = useState(false);
   const [isViewUser, setIsViewUser] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const {mutate: deleteUser} = useDeleteUser();
 
   const userDeleteConfirmation = () => {
     setIsDeleteUser((previous) => !previous);
@@ -33,24 +36,10 @@ export default function UserDeleteAndViewButton({user}: Props) {
   const deleteUserHandler = (id: string) => {
     console.log("user info deleted : ", id);
 
-    fetch(`/api/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data : ", data);
-      })
-      .catch((error) => {
-        console.log("error : ", error);
-      })
-      .finally(() => {
-        setIsDeleteUser((previous) => !previous);
-        setRefresh(!refresh);
-        router.refresh();
-      });
+    deleteUser(id);
+   
+    setIsDeleteUser((previous) => !previous);
+    setRefresh(!refresh);
     router.refresh();
   };
 

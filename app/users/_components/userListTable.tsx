@@ -4,7 +4,7 @@ import { User } from "@prisma/client";
 import UserDeleteAndViewButton from "./userDeleteAndViewButton";
 import Image from "next/image";
 import { useState, FormEvent } from "react";
-import Link from "next/link"
+import Link from "next/link";
 
 type Props = {
   users: User[];
@@ -81,10 +81,10 @@ export default function UserListTable({ users }: Props) {
       </table>
       <div className="flex items-center justify-end my-8">
         <Link
-          href="/pizzas/new"
+          href="/auth/signup"
           className="bg-indigo-500 text-indigo-100 px-12 py-4 rounded-lg uppercase font-bold"
         >
-          Add Pizza
+          Add User
         </Link>
       </div>
     </div>

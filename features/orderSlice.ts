@@ -1,6 +1,8 @@
 import { OrderState } from "@/states/orderState";
 import { OrderProduct } from "@/models/orderProduct.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AllState } from "@/states/allState";
+import { useSelector } from "react-redux";
 
 const initialState: OrderState = {
   orders: [],
@@ -31,3 +33,5 @@ export const orderSlice = createSlice({
 export const { createOrder, deleteOrder, editOrder } =
   orderSlice.actions;
 export default orderSlice.reducer;
+
+export const useOrder = () => useSelector((state: AllState) => state.orderState);
