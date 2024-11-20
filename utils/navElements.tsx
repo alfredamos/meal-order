@@ -9,6 +9,8 @@ import LoginAndSignupLinks from "./loginAndSignup.util";
 import { dropDownLinks, adminDropDownLinks, authLinks } from "./navLinks";
 import { useCart } from "@/features/cartItemSlice";
 import { CSSProperties } from "react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import Link from "next/link";
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
@@ -19,7 +21,9 @@ type Props = {
 };
 
 export default function NavElements({ session }: Props) {
-  const cartItems = useCart().cartItems;
+  const { storedCartItems } = useLocalStorage();
+  console.log("local-storage, cart-items : ", { storedCartItems });
+  const cartItems = useCart().cartItems ?? storedCartItems;
 
   const totalQuantity = cartItems?.reduce(
     (accumulator, current) => current.quantity + accumulator,
@@ -43,7 +47,9 @@ export default function NavElements({ session }: Props) {
                 : "hidden"
             }
           >
-            {totalQuantity ? totalQuantity : undefined}
+            <Link href="/orders/cart">
+              {totalQuantity ? totalQuantity : undefined}
+            </Link>
           </div>
         </div>
         <HomeLink path="/" label="Home" name={session?.user?.name as string} />

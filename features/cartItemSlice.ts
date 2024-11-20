@@ -5,8 +5,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
 const initialState: CartItemState = {
-  cartItems: [],
-  customerId: ""
+  cartItems: JSON.parse(localStorage.getItem("carts")!) ?? [],
+  customerId: "",
 };
 
 export const cartItemSlice = createSlice({
@@ -14,8 +14,7 @@ export const cartItemSlice = createSlice({
   initialState,
   reducers: {
     createCartItem: (state, action: PayloadAction<{ cartItem: CartItem }>) => {
-      
-      console.log("In create-cart-item, action : ", action.payload.cartItem)
+      console.log("In create-cart-item, action : ", action.payload.cartItem);
       state.cartItems.push(action.payload.cartItem);
     },
     deleteCartItem: (state, action: PayloadAction<{ cartItemId: string }>) => {
@@ -33,7 +32,8 @@ export const cartItemSlice = createSlice({
   },
 });
 
-export const { createCartItem, deleteCartItem, editCartItem } = cartItemSlice.actions;
+export const { createCartItem, deleteCartItem, editCartItem } =
+  cartItemSlice.actions;
 export default cartItemSlice.reducer;
 
-export const useCart= () =>useSelector((state: AllState) => state.cartState);
+export const useCart = () => useSelector((state: AllState) => state.cartState);

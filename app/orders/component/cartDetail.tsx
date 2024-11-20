@@ -16,7 +16,7 @@ export default function CartDetail({
   let total = 0;
 
   return (
-    <div className="bg-white p-12 max-width-4xl text-black rounded-2xl shadow-2xl w-1/4 mx-auto mt-10">
+    <div className="bg-white p-12 overflow-y-auto scrollbar max-w-2xl  max-h-80 text-black rounded-xl shadow-2xl mx-auto mt-20">
       <h2 className="font-semibold border-b-2 text-3xl">
         <span>Pizza Order Detail</span>
       </h2>
@@ -49,10 +49,10 @@ export default function CartDetail({
         <span className="font-light">Total</span>
         <span className="font-semibold text-wrap">{total}</span>
       </p>
-      <div className="flex gap-2 justify-between items-center w-full mt-8">
+      <div className="flex gap-2 justify-center items-center w-full mt-8">
         <Link
           type="button"
-          className="flex-1 border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold"
+          className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
           href="/orders/cart"
           // onClick={() => addToCart(carts)}
         >
@@ -61,7 +61,7 @@ export default function CartDetail({
         <Link
           type="button"
           href="/pizzas"
-          className="flex-1 border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold"
+          className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
           // onClick={backToPizza}
         >
           Back To Pizza

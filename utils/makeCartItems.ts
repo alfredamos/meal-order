@@ -3,6 +3,7 @@ import { findCartItem } from "./findCartItem";
 import { v4 as uuidv4 } from "uuid";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createCartItem, editCartItem } from "@/features/cartItemSlice";
+import { store } from "@/store";
 
 const initialCart: CartItem = {
   id: "",
@@ -21,6 +22,7 @@ export function makeCartItems(
   const cart = findCartItem(pizza, carts)!;
 
   let cartItem: CartItem;
+  let allCartItems: CartItem[] = [];
   let cartItems: CartItem[] = [...carts];
 
   if (!!cart) {
@@ -30,7 +32,12 @@ export function makeCartItems(
       carti.id !== cart.id ? cartItem : carti
     );
     dispatch(editCartItem({ cartItem }));
-    return { cartItems: [...newCartItems, cartItem] };
+
+    allCartItems = [...newCartItems, cartItem];
+
+    localStorage.removeItem("carts");
+
+    return { cartItems: allCartItems };
   } else if (!cart) {
     cartItem = {
       id: uuidv4(),
@@ -43,8 +50,20 @@ export function makeCartItems(
 
     dispatch(createCartItem({ cartItem }));
 
-    return { cartItems: [...cartItems, cartItem] };
-  }
+    allCartItems = [...cartItems, cartItem];
 
-  return { cartItems: [] };
+    localStorage.removeItem("carts");
+
+    storeCartItems();
+  }
+  
+  return { cartItems: allCartItems };
+}
+
+function storeCartItems() {
+  localStorage.removeItem("carts");
+
+  const cartItems = store.getState()?.cartState?.cartItems;
+
+  localStorage.setItem("carts", JSON.stringify(cartItems));
 }

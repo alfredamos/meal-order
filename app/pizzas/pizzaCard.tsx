@@ -14,7 +14,7 @@ type Props = {
   pizza: Pizza;
 };
 export default function PizzaCard({ pizza }: Props) {
-  const cartItems = useCart()?.cartItems ?? []; //---> Retrieve cartItems from redux store
+  const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
   console.log("Initial-redux", { cartItems });
   //----> Set states for the following
   const [isAddToCart, setIsAddToCart] = useState(false);
@@ -42,6 +42,8 @@ export default function PizzaCard({ pizza }: Props) {
 
   const toCart = (cartItems: CartItem[]) => {
     console.log("The cart-items to cart : ", { cartItems });
+     localStorage.setItem("carts", JSON.stringify(cartItems));
+     router.push("/orders/cart")
   };
   
   return (

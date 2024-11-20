@@ -2,9 +2,11 @@
 
 import { useCart } from "@/features/cartItemSlice"
 import CartDetail from "../component/cartDetail"
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 function AddToCartPage() {
-  const cartItems = useCart()?.cartItems;
+   const { storedCartItems } = useLocalStorage();
+  const cartItems = useCart()?.cartItems ?? storedCartItems ;
 
   return (
     <CartDetail carts={cartItems}/>

@@ -15,7 +15,7 @@ export default function PizzaAddToCartConfirmation({
   let total = 0;
 
   return (
-    <div className="bg-white p-12 max-width-2xl text-black rounded-2xl shadow-2xl w-1/4">
+    <div className="bg-white p-12 overflow-y-auto scrollbar max-width-2xl max-h-80 text-black rounded-2xl shadow-2xl">
       <h2 className="font-semibold border-b-2 text-3xl">
         <span>Add To Cart Confirmation</span>
       </h2>
