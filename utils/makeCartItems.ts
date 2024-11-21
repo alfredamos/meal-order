@@ -3,16 +3,6 @@ import { findCartItem } from "./findCartItem";
 import { v4 as uuidv4 } from "uuid";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createCartItem, editCartItem } from "@/features/cartItemSlice";
-import { store } from "@/store";
-
-const initialCart: CartItem = {
-  id: "",
-  name: "",
-  price: 0,
-  quantity: 0,
-  pizzaId: "",
-  orderId: "",
-};
 
 export function makeCartItems(
   pizza: Pizza,
@@ -29,7 +19,7 @@ export function makeCartItems(
     let quantity = Number(cart.quantity);
     cartItem = { ...cart, quantity: quantity + 1 };
     const newCartItems = cartItems?.filter((carti) =>
-      carti.id !== cart.id ? cartItem : carti
+      carti?.id !== cart?.id ? cartItem : carti
     );
     dispatch(editCartItem({ cartItem }));
 
@@ -53,17 +43,7 @@ export function makeCartItems(
     allCartItems = [...cartItems, cartItem];
 
     localStorage.removeItem("carts");
-
-    storeCartItems();
   }
-  
+
   return { cartItems: allCartItems };
-}
-
-function storeCartItems() {
-  localStorage.removeItem("carts");
-
-  const cartItems = store.getState()?.cartState?.cartItems;
-
-  localStorage.setItem("carts", JSON.stringify(cartItems));
 }

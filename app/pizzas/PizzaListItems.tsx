@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { makeCartItems } from "@/utils/makeCartItems";
 import { useDispatch } from "react-redux";
 import { useCart } from "@/features/cartItemSlice";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type Props = {
   pizzas: Pizza[];
@@ -45,7 +44,7 @@ export default function PizzaListItems({ pizzas }: Props) {
   const toCart = (cartItems: CartItem[]) => {
     console.log("The cart-items to cart : ", {cartItems})
 
-    localStorage.setItem("carts", JSON.stringify(cartItems));
+    localStorage.setItem("carts", JSON.stringify(cartItems?.filter(cart => cart?.quantity !== 0)));
     router.push("/orders/cart")
   }
 

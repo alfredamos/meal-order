@@ -1,11 +1,16 @@
+"use client";
+
 import { AllState } from "@/states/allState";
 import { CartItemState } from "@/states/cartItemState";
 import { CartItem } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
+const defaultValue = () =>
+  JSON.parse(localStorage.getItem("carts")!) as CartItem[];
+
 const initialState: CartItemState = {
-  cartItems: JSON.parse(localStorage.getItem("carts")!) ?? [],
+  cartItems: defaultValue() ?? [],
   customerId: "",
 };
 

@@ -1,6 +1,11 @@
+"use client";
+
 import { CartItem } from "@prisma/client";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { deleteCartItem, editCartItem } from "@/features/cartItemSlice";
 
 type Props = {
   carts: CartItem[];
@@ -8,45 +13,129 @@ type Props = {
   addToCart: (cartItems: CartItem[]) => void; */
 };
 
-export default function CartDetail({
-  /* addToCart,
-  backToPizza, */
-  carts,
-}: Props) {
+export default function CartDetail({ carts }: Props) {
+  const [cartItems, setCartItems] = useState<CartItem[]>(carts);
+
+  const dispatch = useDispatch();
+
   let total = 0;
 
-  return (
+  const increaseQuantity = (cartId: string) => {
+    console.log("Increase quantity of cart-id : ", cartId);
+    const newCartItems = cartItems?.map((cart) => {
+      if (cart.id === cartId) {
+        const newCart = { ...cart, quantity: cart.quantity + 1 };
+        dispatch(editCartItem({ cartItem: newCart }));
+
+        return newCart;
+      }
+
+      return cart;
+    }) as CartItem[];
+
+    setCartItems(newCartItems);
+    localStorage.setItem("carts", JSON.stringify(newCartItems));
+  };
+
+  const decreaseQuantity = (cartId: string) => {
+    console.log("Decrease quantity of cart-id : ", cartId);
+
+    const newCartItems = cartItems?.map((cart) => {
+      if (cart.id === cartId) {
+        const newCart = { ...cart, quantity: cart.quantity - 1 };
+        if (cart?.quantity === 0) dispatch(deleteCartItem({ cartItemId: cart.id }));       
+        if(cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
+        
+        return newCart;
+      }
+
+      return cart;
+    }).filter(cart => cart?.quantity !== 0) as CartItem[];
+
+    setCartItems(newCartItems);
+    localStorage.setItem(
+      "carts",
+      JSON.stringify(newCartItems)
+    );
+  };
+
+  const removePizza = (cartId: string) => {
+    console.log("Increase quantity of cart-id : ", cartId);
+
+    const newCartItems = cartItems?.filter((cart) => {
+      if (cart.id === cartId) {
+        dispatch(deleteCartItem({ cartItemId: cart.id }));
+        return;
+      }
+
+      return cart;
+    }) as CartItem[];
+
+    setCartItems(newCartItems);
+    localStorage.setItem("carts", JSON.stringify(newCartItems));
+  };
+
+  return cartItems?.length < 1 ? (
+    <div className="bg-white p-12 shadow-xl rounded-lg text-indigo-500 max-w-md flex justify-center items-center font-bold mx-auto mt-96 text-4xl">
+      No order to display
+    </div>
+  ) : (
     <div className="bg-white p-12 overflow-y-auto scrollbar max-w-2xl  max-h-80 text-black rounded-xl shadow-2xl mx-auto mt-20">
       <h2 className="font-semibold border-b-2 text-3xl">
-        <span>Pizza Order Detail</span>
+        <span>Order Detail</span>
       </h2>
-      {carts?.map((cart) => {
-        const subTotal = cart.price * cart.quantity;
+      {cartItems?.map((cart) => {
+        const subTotal = cart?.price * cart?.quantity;
         total += subTotal;
-        return (
-          <Fragment key={cart.id}>
-            <p className="flex justify-between items-center py-2 mt-2">
-              <span className="font-light">Product</span>
-              <span className="font-semibold">{cart.name}</span>
-            </p>
-            <p className="flex justify-between items-center py-2">
-              <span className="font-light">Price </span>
-              <span className="font-semibold">${cart.price}</span>
-            </p>
-            <p className="flex justify-between items-center py-2">
-              <span className="font-light">Quantity </span>
-              <span className="font-semibold">{cart.quantity}</span>
-            </p>
+        if (Number.isNaN(total)) total = Number("");
 
-            <p className="flex justify-between items-center py-2 border-t-2 border-b-2">
-              <span className="font-light">Sub Total</span>
-              <span className="font-semibold text-wrap">{subTotal}</span>
-            </p>
-          </Fragment>
+        return (
+          !!cart && (
+            <Fragment key={cart.id}>
+              <p className="flex justify-between items-center py-2 mt-2">
+                <span className="font-light">Product</span>
+                <span className="font-semibold">{cart.name}</span>
+                <span>
+                  <FaPlus
+                    size="20px"
+                    className="cursor-pointer text-indigo-900"
+                    onClick={() => increaseQuantity(cart.id)}
+                  />
+                </span>
+              </p>
+              <p className="flex justify-between items-center py-2 mt-2">
+                <span className="font-light">Price </span>
+                <span className="font-semibold">${cart.price}</span>
+                <span>
+                  <FaMinus
+                    size="20px"
+                    className="cursor-pointer text-amber-500"
+                    onClick={() => decreaseQuantity(cart.id)}
+                  />
+                </span>
+              </p>
+              <p className="flex justify-between items-center py-2 mt-2 mb-2">
+                <span className="font-light">Quantity </span>
+                <span className="font-semibold">{cart.quantity}</span>
+                <span>
+                  <FaTrash
+                    size="20px"
+                    className="cursor-pointer text-rose-700"
+                    onClick={() => removePizza(cart.id)}
+                  />
+                </span>
+              </p>
+
+              <p className="flex justify-between items-center py-2 border-t-2 border-b-2">
+                <span className="font-semibold">Sub Total</span>
+                <span className="font-semibold text-wrap">{subTotal}</span>
+              </p>
+            </Fragment>
+          )
         );
       })}
       <p className="flex justify-between items-center py-2 border-b-2 mt-8">
-        <span className="font-light">Total</span>
+        <span className="font-semibold">Total</span>
         <span className="font-semibold text-wrap">{total}</span>
       </p>
       <div className="flex gap-2 justify-center items-center w-full mt-8">

@@ -9,7 +9,6 @@ import LoginAndSignupLinks from "./loginAndSignup.util";
 import { dropDownLinks, adminDropDownLinks, authLinks } from "./navLinks";
 import { useCart } from "@/features/cartItemSlice";
 import { CSSProperties } from "react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Link from "next/link";
 
 const inlineBlock: CSSProperties = {
@@ -21,12 +20,10 @@ type Props = {
 };
 
 export default function NavElements({ session }: Props) {
-  const { storedCartItems } = useLocalStorage();
-  console.log("local-storage, cart-items : ", { storedCartItems });
-  const cartItems = useCart().cartItems ?? storedCartItems;
+  const cartItems = useCart().cartItems;
 
   const totalQuantity = cartItems?.reduce(
-    (accumulator, current) => current.quantity + accumulator,
+    (accumulator, current) => current?.quantity + accumulator,
     0
   );
 
