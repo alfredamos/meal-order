@@ -8,7 +8,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { makeCartItems } from "@/utils/makeCartItems";
 import { useDispatch } from "react-redux";
-import { useCart } from "@/features/cartItemSlice";
+import {
+  deleteCartItem,
+  editCartItem,
+  useCart,
+} from "@/features/cartItemSlice";
 
 type Props = {
   pizzas: Pizza[];
@@ -18,8 +22,7 @@ export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
   console.log("Initial-redux", { cartItems });
   //----> Set states for the following
-  const [isAddToCart, setIsAddToCart] = useState(false);
-  //const [carts, setCarts] = useState<CartItem[]>(cartItems);
+  const [isAddToCart, setIsAddToCart] = useState(false);  
 
   //----> Get dispatch function
   const dispatch = useDispatch();
@@ -42,11 +45,60 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-    console.log("The cart-items to cart : ", {cartItems})
+    console.log("The cart-items to cart : ", { cartItems });
 
-    localStorage.setItem("carts", JSON.stringify(cartItems?.filter(cart => cart?.quantity !== 0)));
-    router.push("/orders/cart")
-  }
+    localStorage.setItem(
+      "carts",
+      JSON.stringify(cartItems?.filter((cart) => cart?.quantity !== 0))
+    );
+    router.push("/orders/cart");
+  };
+
+  const increaseQuantity = (cartId: string) => {
+    console.log("Increase quantity of cart-id : ", cartId);
+
+    const newCartItems = cartItems?.map((cart) => {
+      if (cart.id === cartId) {
+
+        const newCart = {
+          ...cart,
+          quantity: cart.quantity >= 19 ? 20 : cart.quantity + 1,
+        };
+        dispatch(editCartItem({ cartItem: newCart }));
+
+        return newCart;
+      }
+
+      return cart;
+    }) as CartItem[];
+
+    localStorage.setItem("carts", JSON.stringify(newCartItems));
+  };
+
+  const decreaseQuantity = (cartId: string) => {
+    console.log("Decrease quantity of cart-id : ", cartId);
+
+    const newCartItems = cartItems
+      ?.map((cart) => {
+
+        if (cart.id === cartId) {
+          const newCart = {
+            ...cart,
+            quantity: cart.quantity <= 1 ? 1 : cart.quantity - 1,
+          };
+          if (cart?.quantity === 0)
+            dispatch(deleteCartItem({ cartItemId: cart.id }));
+          if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
+
+          return newCart;
+        }
+
+        return cart;
+      })
+      .filter((cart) => cart?.quantity !== 0) as CartItem[];
+
+    localStorage.setItem("carts", JSON.stringify(newCartItems));
+  };
 
   return (
     <>
@@ -91,6 +143,8 @@ export default function PizzaListItems({ pizzas }: Props) {
           carts={cartItems}
           addToCart={toCart}
           backToList={backToList}
+          decreaseQuantity={decreaseQuantity}
+          increaseQuantity={increaseQuantity}
         />
       )}
     </>

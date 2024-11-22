@@ -1,94 +1,28 @@
 "use client";
 
-import { deleteCartItem, editCartItem } from "@/features/cartItemSlice";
 import { CartItem } from "@prisma/client";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { MouseEvent } from "react";
 
 type Props = {
   carts: CartItem[];
-  backToPizza: () => void;
   addToCart: (carts: CartItem[]) => void;
+  backToPizza: () => void;
+  decreaseQuantity: (cartId: string) => void;
+  increaseQuantity: (cartId: string) => void;
 };
 
-export default function PizzaAddToCartConfirmation({
-  addToCart,
-  backToPizza,
-  carts,
-}: Props) {
-  const [quantity, setQuantity] = useState(1);
-  const [cartItems, setCartItems] = useState<CartItem[]>(carts);
+export default function PizzaAddToCartConfirmation({ carts, addToCart, backToPizza, decreaseQuantity, increaseQuantity}: Props) {
 
   let total = 0;
 
-  const dispatch = useDispatch();
-
-  const increaseQuantity = (e: MouseEvent, cartId: string) => {
-    console.log("Event: ", { e });
-    console.log("Increase quantity of cart-id : ", cartId);
-
-   setQuantity((previous) => {
-      if (previous >= 20) return previous;
-      return previous + 1;
-    }); 
-
-    const newCartItems = cartItems?.map((cart) => {
-      if (cart.id === cartId) {
-        const newCart = {
-          ...cart,
-          quantity: quantity >= 19 ? 20 : quantity + 1,
-        };
-        dispatch(editCartItem({ cartItem: newCart }));
-
-        return newCart;
-      }
-
-      return cart;
-    }) as CartItem[];
-
-    setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
-  };
-
-  const decreaseQuantity = (e: MouseEvent, cartId: string) => {
-    console.log("Event: ", { e });
-    console.log("Decrease quantity of cart-id : ", cartId);
-
-    setQuantity((previous) => {
-      if (previous <= 1) return previous;
-      return previous - 1;
-    });
-
-    const newCartItems = cartItems
-      ?.map((cart) => {
-        if (cart.id === cartId) {
-          const newCart = {
-            ...cart,
-            quantity: quantity <= 1 ? 1 : quantity -1,
-          };
-          if (cart?.quantity === 0)
-            dispatch(deleteCartItem({ cartItemId: cart.id }));
-          if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
-
-          return newCart;
-        }
-
-        return cart;
-      })
-      .filter((cart) => cart?.quantity !== 0) as CartItem[];
-
-    setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
-  };
-
+ 
   return (
     <div className="bg-white p-12 overflow-y-auto scrollbar max-width-2xl max-h-80 text-black rounded-2xl shadow-2xl">
       <h2 className="font-semibold border-b-2 text-3xl">
         <span>Add To Cart Confirmation</span>
       </h2>
-      {cartItems?.map((cart) => {
+      {carts?.map((cart) => {
         const subTotal = cart?.price * cart?.quantity;
         total += subTotal;
 
@@ -106,12 +40,12 @@ export default function PizzaAddToCartConfirmation({
             <p className="flex justify-between items-center py-2 mt-2">
               <span className="font-light">Quantity </span>
               <span className=" flex gap-4 justify-center items-center font-semibold">
-                <button onClick={(e) => decreaseQuantity(e, cart.id)}>
+                <button className="border border-none" onClick={() => decreaseQuantity(cart.id)}>
                   <FaMinus size="20px" className="text-rose-500" />
                 </button>
 
-                {quantity}
-                <button onClick={(e) => increaseQuantity(e, cart.id)}>
+                {cart.quantity}
+                <button className="border border-none" onClick={() => increaseQuantity(cart.id)}>
                   <FaPlus size="20px" className="text-indigo-500" />
                 </button>
               </span>

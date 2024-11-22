@@ -15,17 +15,17 @@ export function makeCartItems(
   let allCartItems: CartItem[] = [];
   let cartItems: CartItem[] = [...carts];
 
-  if (!!cart) {
+  if (cart?.quantity > 0) {
     let quantity = Number(cart.quantity);
     cartItem = { ...cart, quantity: quantity + 1 };
-    const newCartItems = cartItems?.filter((carti) =>
-      carti?.id !== cart?.id ? cartItem : carti
+    const newCartItems = cartItems?.filter((carte) =>
+      carte?.id !== cart?.id ? cartItem : carte
     );
     dispatch(editCartItem({ cartItem }));
 
     allCartItems = [...newCartItems, cartItem];
 
-    localStorage.removeItem("carts");
+    //localStorage.removeItem("carts");
 
     return { cartItems: allCartItems };
   } else if (!cart) {
@@ -42,7 +42,7 @@ export function makeCartItems(
 
     allCartItems = [...cartItems, cartItem];
 
-    localStorage.removeItem("carts");
+ //   localStorage.removeItem("carts");
   }
 
   return { cartItems: allCartItems };

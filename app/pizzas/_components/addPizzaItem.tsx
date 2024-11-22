@@ -10,6 +10,8 @@ type Props = {
   isAddToCart: boolean;
   addToCart: (cartItems: CartItem[]) => void;
   backToList: () => void;
+  decreaseQuantity: (cartId: string) => void;
+  increaseQuantity: (cartId: string) => void;
 };
 
 export default function AddPizzaItem({
@@ -17,6 +19,7 @@ export default function AddPizzaItem({
   backToList,
   isAddToCart,
   carts,
+  decreaseQuantity, increaseQuantity
 }: Props) {
   return (
     <Modal open={isAddToCart} onClose={backToList}>
@@ -24,6 +27,8 @@ export default function AddPizzaItem({
         addToCart={addToCart}
         backToPizza={backToList}
         carts={carts}
+        decreaseQuantity={decreaseQuantity}
+        increaseQuantity={increaseQuantity}
       />
       
     </Modal>
