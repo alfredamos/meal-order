@@ -5,15 +5,11 @@ import Link from "next/link";
 import { Fragment, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { deleteCartItem, editCartItem } from "@/features/cartItemSlice";
+import { deleteCartItem, editCartItem, useCart } from "@/features/cartItemSlice";
 
-type Props = {
-  carts: CartItem[];
-  /*  backToPizza: () => void;
-  addToCart: (cartItems: CartItem[]) => void; */
-};
 
-export default function CartDetail({ carts }: Props) {
+export default function CartDetail() {
+  const carts = useCart()?.cartItems;
   const [cartItems, setCartItems] = useState<CartItem[]>(carts);
 
   const dispatch = useDispatch();
@@ -40,23 +36,23 @@ export default function CartDetail({ carts }: Props) {
   const decreaseQuantity = (cartId: string) => {
     console.log("Decrease quantity of cart-id : ", cartId);
 
-    const newCartItems = cartItems?.map((cart) => {
-      if (cart.id === cartId) {
-        const newCart = { ...cart, quantity: cart.quantity - 1 };
-        if (cart?.quantity === 0) dispatch(deleteCartItem({ cartItemId: cart.id }));       
-        if(cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
-        
-        return newCart;
-      }
+    const newCartItems = cartItems
+      ?.map((cart) => {
+        if (cart.id === cartId) {
+          const newCart = { ...cart, quantity: cart.quantity - 1 };
+          if (cart?.quantity === 0)
+            dispatch(deleteCartItem({ cartItemId: cart.id }));
+          if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
 
-      return cart;
-    }).filter(cart => cart?.quantity !== 0) as CartItem[];
+          return newCart;
+        }
+
+        return cart;
+      })
+      .filter((cart) => cart?.quantity !== 0) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem(
-      "carts",
-      JSON.stringify(newCartItems)
-    );
+    localStorage.setItem("carts", JSON.stringify(newCartItems));
   };
 
   const removePizza = (cartId: string) => {
@@ -82,7 +78,7 @@ export default function CartDetail({ carts }: Props) {
   ) : (
     <div className="bg-white p-12 overflow-y-auto scrollbar max-w-2xl  max-h-80 text-black rounded-xl shadow-2xl mx-auto mt-20">
       <h2 className="font-semibold border-b-2 text-3xl">
-        <span>Order Detail</span>
+        <span>Order Details</span>
       </h2>
       {cartItems?.map((cart) => {
         const subTotal = cart?.price * cart?.quantity;
@@ -94,19 +90,19 @@ export default function CartDetail({ carts }: Props) {
             <Fragment key={cart.id}>
               <p className="flex justify-between items-center py-2 mt-2">
                 <span className="font-light">Product</span>
-                <span className="font-semibold">{cart.name}</span>
+                <span className="font-semibold text-end">{cart.name}</span>
                 <span>
                   <FaPlus
                     size="20px"
-                    className="cursor-pointer text-indigo-900"
+                    className="cursor-pointer text-indigo-900 text-end"
                     onClick={() => increaseQuantity(cart.id)}
                   />
                 </span>
               </p>
               <p className="flex justify-between items-center py-2 mt-2">
                 <span className="font-light">Price </span>
-                <span className="font-semibold">${cart.price}</span>
-                <span>
+                <span className="font-semibold text-end">${cart.price}</span>
+                <span className="text-end">
                   <FaMinus
                     size="20px"
                     className="cursor-pointer text-amber-500"
@@ -116,8 +112,8 @@ export default function CartDetail({ carts }: Props) {
               </p>
               <p className="flex justify-between items-center py-2 mt-2 mb-2">
                 <span className="font-light">Quantity </span>
-                <span className="font-semibold">{cart.quantity}</span>
-                <span>
+                <span className="font-semibold text-end">{cart.quantity}</span>
+                <span className="text-end">
                   <FaTrash
                     size="20px"
                     className="cursor-pointer text-rose-700"
@@ -142,16 +138,14 @@ export default function CartDetail({ carts }: Props) {
         <Link
           type="button"
           className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
-          href="/orders/cart"
-          // onClick={() => addToCart(carts)}
+          href="/orders/checkout"
         >
-          Add To Cart
+          Checkout
         </Link>
         <Link
           type="button"
           href="/pizzas"
           className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
-          // onClick={backToPizza}
         >
           Back To Pizza
         </Link>

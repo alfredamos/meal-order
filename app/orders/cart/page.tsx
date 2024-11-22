@@ -1,13 +1,15 @@
-"use client"
 
-import { useCart } from "@/features/cartItemSlice"
+import { auth } from "@/auth";
 import CartDetail from "../component/cartDetail"
 
-function AddToCartPage() {
-  const cartItems = useCart()?.cartItems;
+async function AddToCartPage() {
+   const session = await auth();
+
+   if (!session) return <div>Invalid credentials, please login again!</div>;
+
 
   return (
-    <CartDetail carts={cartItems}/>
+    <CartDetail />
   )
 }
 export default AddToCartPage
