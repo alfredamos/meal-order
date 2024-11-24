@@ -2,6 +2,7 @@
 
 import { convertToSubCurrency } from '@/utils/convertToSubCurrency';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { errorMonitor } from 'events';
 import { FormEvent, useEffect, useState } from 'react';
 
 type Props = {
@@ -21,7 +22,7 @@ export default function StripeCheckout({total}: Props) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(convertToSubCurrency(total))
+      body: JSON.stringify({amount: convertToSubCurrency(total)})
     }).then(res => res.json()).then(data => setClientSecret(data.clientSecrete))
   }, [total])
 
@@ -49,24 +50,33 @@ export default function StripeCheckout({total}: Props) {
     });
 
     if (error){
+      //----> This point is only reached if there's an immediate error when
+      //----> confirming the payment. Show the error to your customer (for example, payment details incomplete)
       setErrorMessage(error.message!);
     }else {
-
+      //----> The payment UI automatically closes with a success animation.
+      //----> Your customer is redirected to your `return_url`
     }
 
     setLoading(false);
 
     if(!clientSecret || !stripe || !elements){
       return (
-        <div></div>
+        <div className="flex items-center justify-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white" role="status">
+            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0  ![clip:rect(0,0,0,0,0)]">Loading...</span>
+          </div>
+        </div>
       );
     }
   }
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      
+    <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
+      {clientSecret && <PaymentElement/>}
+      {errorMessage  && <div>{errorMessage}</div>}
+      <button disabled={!stripe || loading} className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse">{!loading ? `$${total}` : "Processing..."}</button>
     </form>
   )
 }
