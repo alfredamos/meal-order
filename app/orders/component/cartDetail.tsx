@@ -5,8 +5,12 @@ import Link from "next/link";
 import { Fragment, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { deleteCartItem, editCartItem, useCart } from "@/features/cartItemSlice";
-
+import {
+  deleteCartItem,
+  editCartItem,
+  useCart,
+} from "@/features/cartItemSlice";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
@@ -20,7 +24,10 @@ export default function CartDetail() {
     console.log("Increase quantity of cart-id : ", cartId);
     const newCartItems = cartItems?.map((cart) => {
       if (cart.id === cartId) {
-        const newCart = { ...cart, quantity: cart.quantity + 1 };
+        const newCart = {
+          ...cart,
+          quantity: cart.quantity >= 20 ? 20 : cart.quantity + 1,
+        };
         dispatch(editCartItem({ cartItem: newCart }));
 
         return newCart;
@@ -39,7 +46,10 @@ export default function CartDetail() {
     const newCartItems = cartItems
       ?.map((cart) => {
         if (cart.id === cartId) {
-          const newCart = { ...cart, quantity: cart.quantity - 1 };
+          const newCart = {
+            ...cart,
+            quantity: cart.quantity <= 1 ? 1 : cart.quantity - 1,
+          };
           if (cart?.quantity === 0)
             dispatch(deleteCartItem({ cartItemId: cart.id }));
           if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
@@ -72,8 +82,18 @@ export default function CartDetail() {
   };
 
   return cartItems?.length < 1 ? (
-    <div className="bg-white p-12 shadow-xl rounded-lg text-indigo-500 max-w-md flex justify-center items-center font-bold mx-auto mt-96 text-4xl">
-      No order to display
+    <div className="bg-white p-12 shadow-xl rounded-lg max-w-lg flex justify-center items-center font-bold mx-auto mt-80">
+      <p className="flex flex-col gap-10">
+        <span className="text-4xl">No order to display</span>
+        <span className="flex justify-end items-center">
+          <Link href="/pizzas" className="text-indigo-500">
+            <span className="flex gap-2 justify-center items-center">
+              <FaArrowLeft size="20px"/>
+              <span className="text-2xl">Home</span>
+            </span>
+          </Link>
+        </span>
+      </p>
     </div>
   ) : (
     <div className="bg-white p-12 overflow-y-auto scrollbar max-w-2xl  max-h-80 text-black rounded-xl shadow-2xl mx-auto mt-20">

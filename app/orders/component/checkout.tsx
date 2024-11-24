@@ -10,6 +10,7 @@ const carts = useCart()?.cartItems;
 
   let total = 0;
 
+
   return carts?.length < 1 ? (
     <div className="bg-white p-12 shadow-xl rounded-lg text-indigo-500 max-w-md flex justify-center items-center font-bold mx-auto mt-96 text-4xl">
       No order to display
