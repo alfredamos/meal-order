@@ -44,6 +44,7 @@ model User {
 
 model Order {
   id            String     @id @default(uuid())
+  paymentId     String     @unique @db.VarChar(255)
   orderDate     DateTime
   shippingDate  DateTime?
   deliveryDate  DateTime?

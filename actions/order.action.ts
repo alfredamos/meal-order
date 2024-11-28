@@ -2,6 +2,7 @@
 
 import { orderDb } from "@/db/order.db";
 import prisma from "@/db/prisma.db";
+import { OrderPayload } from "@/models/orderPayload.model";
 import { OrderProduct } from "@/models/orderProduct.model";
 import { Order } from "@prisma/client";
 
@@ -15,6 +16,14 @@ export const createOrder = async (formData: FormData) => {
     //----> Send back the response.
     return createdOrder;
   };
+
+export const orderCreate = async (orderPayload: OrderPayload) => {
+  //----> Store the new order info in the database.
+  const createdOrder = await orderDb.orderCreate(orderPayload);
+
+  //----> Send back the response.
+  return createdOrder;
+}
 
 export const deleteAllCartItemByOrderId = async (prevState: {orderId: string}) => {
     //----> Get the order id from params.

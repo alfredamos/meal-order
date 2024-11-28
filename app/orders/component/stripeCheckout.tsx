@@ -1,82 +1,124 @@
 "use client";
 
-import { convertToSubCurrency } from '@/utils/convertToSubCurrency';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { errorMonitor } from 'events';
-import { FormEvent, useEffect, useState } from 'react';
+import {
+  useStripe,
+  useElements,
+  PaymentElement,
+  AddressElement,
+} from "@stripe/react-stripe-js";
+import { FormEvent, useEffect, useState } from "react";
+import { CartItem } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { OrderPayload } from "@/models/orderPayload.model";
+import { orderCreate } from "@/actions/order.action";
+import { useDispatch } from "react-redux";
+import { emptyCartItem } from "@/features/cartItemSlice";
 
 type Props = {
   total: number;
-}
+  cartItems: CartItem[];
+  userId: string;
+  paymentId: string;
+};
 
-export default function StripeCheckout({total}: Props) {
+export default function StripeCheckout({
+  total: totalPrice,
+  userId,
+  cartItems,
+  paymentId,
+}: Props) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState("");
-  const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({amount: convertToSubCurrency(total)})
-    }).then(res => res.json()).then(data => setClientSecret(data.clientSecrete))
-  }, [total])
+  const dispatch = useDispatch();
 
+  const router = useRouter();
+
+  const totalQuantity = cartItems?.reduce(
+    (subTotalQuantity, current) => subTotalQuantity + current.quantity,
+    0
+  );
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
 
-    if(!stripe || !elements){
-      return;
+    try {
+      setLoading(true);
+
+      if (!elements || !stripe) return;
+
+      const results = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `http://localhost:3000/orders/payment-success?amount=${totalPrice}`,
+        },
+         redirect: "if_required",
+      });
+
+      if (results.error) {
+        //----> the error here.
+        setErrorMessage(results?.error?.message!);
+      } else {
+        //----> Save the order here
+        //----> paymentId = results.paymentIntent.id
+        //----> use router to redirect here
+        const orderPayload: OrderPayload = {
+          paymentId,
+          userId,
+          cartItems,
+          totalPrice,
+          totalQuantity,
+          orderDate: new Date(),
+        };
+
+        await orderCreate(orderPayload);
+
+        dispatch(emptyCartItem());
+
+        localStorage.remove("carts");
+
+
+       router.replace(
+         `http://localhost:3000/orders/payment-success?amount=${totalPrice}`
+       );
+      }
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(true);
     }
+  };
 
-    const {error: submitError} = await elements.submit();
-
-    if (submitError){
-      setErrorMessage(submitError.message!);
-      setLoading(false);
-      return;
-    }
-
-    const {error} = await stripe.confirmPayment({
-      elements, 
-      clientSecret,
-      confirmParams: {return_url: `http://www.localhost:3000/payment-success?amount=${total}`}
-    });
-
-    if (error){
-      //----> This point is only reached if there's an immediate error when
-      //----> confirming the payment. Show the error to your customer (for example, payment details incomplete)
-      setErrorMessage(error.message!);
-    }else {
-      //----> The payment UI automatically closes with a success animation.
-      //----> Your customer is redirected to your `return_url`
-    }
-
-    setLoading(false);
-
-    if(!clientSecret || !stripe || !elements){
-      return (
-        <div className="flex items-center justify-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white" role="status">
-            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0  ![clip:rect(0,0,0,0,0)]">Loading...</span>
-          </div>
-        </div>
-      );
-    }
-  }
-
+  const onBackToCheckOut = () => {
+    router.push("/orders/checkout");
+  };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
-      {clientSecret && <PaymentElement/>}
-      {errorMessage  && <div>{errorMessage}</div>}
-      <button disabled={!stripe || loading} className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse">{!loading ? `$${total}` : "Processing..."}</button>
+      <PaymentElement />
+      <AddressElement
+        options={{
+          mode: "shipping",
+          allowedCountries: ["Nigeria", "Canada", "USA"],
+        }}
+      />
+      <div className="flex justify-center gap-6 mt-6">
+        <button
+          type="submit"
+          className="bg-indigo-500 text-indigo-100 px-6 py-2 rounded-md flex-1 font-bold uppercase"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={onBackToCheckOut}
+          className="bg-rose-500 text-rose-100 px-6 py-2 rounded-md flex-1 uppercase font-bold"
+        >
+          Cancel
+        </button>
+      </div>
     </form>
-  )
+  );
 }

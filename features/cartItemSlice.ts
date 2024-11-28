@@ -34,10 +34,13 @@ export const cartItemSlice = createSlice({
       );
       state.cartItems[index] = action.payload.cartItem;
     },
+    emptyCartItem: (state) => {
+      state.cartItems = [];
+    }
   },
 });
 
-export const { createCartItem, deleteCartItem, editCartItem } =
+export const { createCartItem, deleteCartItem, editCartItem, emptyCartItem } =
   cartItemSlice.actions;
 export default cartItemSlice.reducer;
 

@@ -11,10 +11,13 @@ import {
   useCart,
 } from "@/features/cartItemSlice";
 import { FaArrowLeft } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
   const [cartItems, setCartItems] = useState<CartItem[]>(carts);
+
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -81,6 +84,14 @@ export default function CartDetail() {
     localStorage.setItem("carts", JSON.stringify(newCartItems));
   };
 
+  const makeCheckout = () => {
+    router.push("/orders/checkout");
+  };
+
+  const backToPizzas = () => {
+    router.push("/pizzas");
+  };
+
   return cartItems?.length < 1 ? (
     <div className="bg-white p-12 shadow-xl rounded-lg max-w-lg flex justify-center items-center font-bold mx-auto mt-80">
       <p className="flex flex-col gap-10">
@@ -88,7 +99,7 @@ export default function CartDetail() {
         <span className="flex justify-end items-center">
           <Link href="/pizzas" className="text-indigo-500">
             <span className="flex gap-2 justify-center items-center">
-              <FaArrowLeft size="20px"/>
+              <FaArrowLeft size="20px" />
               <span className="text-2xl">Home</span>
             </span>
           </Link>
@@ -155,20 +166,20 @@ export default function CartDetail() {
         <span className="font-semibold text-wrap">{total}</span>
       </p>
       <div className="flex gap-2 justify-center items-center w-full mt-8">
-        <Link
+        <button
           type="button"
           className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
-          href="/orders/checkout"
+          onClick={makeCheckout}
         >
           Checkout
-        </Link>
-        <Link
+        </button>
+        <button
           type="button"
-          href="/pizzas"
+          onClick={backToPizzas}
           className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
         >
           Back To Pizza
-        </Link>
+        </button>
       </div>
     </div>
   );
