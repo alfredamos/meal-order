@@ -47,7 +47,6 @@ export const deleteOneCartItemByOrderId = async (prevState: {cartItemId: string;
     //----> Check to see if there is any cart-item left.
     if (filteredCartItems.length === 0) {
       //----> Delete the order.
-      console.log("No more cart-item to delete");
       await prisma.order.delete({ where: { id: orderId } });
       
       return { message: "Order is successfully deleted!", order: {} as Order}; 
@@ -67,7 +66,6 @@ export const deleteOrderById = async (prevState: {id: string}) => {
 
 export const deleteOrdersByUserId = async (prevState:{userId: string}) => {
     const {userId} = prevState;
-    console.log("I'm in delete all orders by customerId", { userId });
 
     //----> Delete orders user id.
     await orderDb.deleteOrdersByUserId(userId);
@@ -125,9 +123,6 @@ export const getOrderById = async (prevState: {id: string}) => {
   };
 
 export const orderDelivered = async (orderId: string) => {
-    //----> Extract the order id from params.
-    console.log("Order delivered!!!");
-
     //----> Update the delivering information.
     const updatedOrder = await orderDb.orderDelivered(orderId);
     //----> Send back the response
@@ -135,9 +130,6 @@ export const orderDelivered = async (orderId: string) => {
   };
 
 export const orderShipped = async (orderId: string) => {
-    //----> Extract the order id from params.
-    console.log("Order Shipped!!!");
-
     //----> Update the shipping information.
     const updatedOrder = await orderDb.orderShipped(orderId);
     //----> Send back the response

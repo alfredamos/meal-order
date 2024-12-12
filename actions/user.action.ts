@@ -1,11 +1,6 @@
 "use server";
 
 import { UserDb } from "@/db/user.db";
-import { revalidatePath } from "next/cache";
-
-type Params = {
-  params: { id: string };
-};
 
 export const deleteUserById = async (id: string) => {
   //----> Delete the user from the database.
