@@ -4,6 +4,8 @@ import { orderDelivered, orderShipped } from "@/actions/order.action";
 import { editOrder} from "@/features/orderSlice";
 import { OrderModel } from "@/models/orderModel";
 import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
+import { Status } from "@prisma/client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -41,7 +43,11 @@ export default function PendingOrdersClient({orders}: Props) {
       shippingDate: updatedOrder.shippingDate?.toDateString(),
     };
 
-    setAllOrders(orders => orders.map(order => order.id === orderId ? mappedUpdatedOrder : order));
+    setAllOrders((orders) =>
+      orders
+        .map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+        ?.filter((ord) => ord.status === Status.Pending)
+    );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
@@ -58,7 +64,9 @@ export default function PendingOrdersClient({orders}: Props) {
     };
 
     setAllOrders((orders) =>
-      orders.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+      orders
+        .map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+        ?.filter((ord) => ord.status === Status.Pending)
     );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
@@ -66,8 +74,11 @@ export default function PendingOrdersClient({orders}: Props) {
 
    if (!allOrders?.length) {
      return (
-       <div className="flex justify-center items-center mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
+       <div className="flex flex-col justify-between items-end mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
          <h1 className="text-3xl">There are no orders to display!</h1>
+         <span className="mt-32 text-indigo-900 flex justify-end">
+           <Link href="/pizzas">Go Home</Link>
+         </span>
        </div>
      );
    }
@@ -88,7 +99,7 @@ export default function PendingOrdersClient({orders}: Props) {
           </tr>
         </thead>
         <tbody>
-          {orders?.map((order) => (
+          {allOrders?.map((order) => (
             <tr className="text-base text-black" key={order.id}>
               <td>{order.id}</td>
               <td>
@@ -103,7 +114,7 @@ export default function PendingOrdersClient({orders}: Props) {
 
               <td>{order.totalPrice}</td>
               <td>{order.totalQuantity}</td>
-              <td>{order.orderDate.toDateString()}</td>
+              <td>{order.orderDate}</td>
               <td>{order.status}</td>
               <td>{order.user?.name}</td>
               <td>

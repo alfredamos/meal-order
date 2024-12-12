@@ -1,9 +1,10 @@
 "use client";
 
 import { orderDelivered, orderShipped } from "@/actions/order.action";
-import { editOrder, updateOrders } from "@/features/orderSlice";
+import { editOrder } from "@/features/orderSlice";
 import { OrderModel } from "@/models/orderModel";
 import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -16,17 +17,28 @@ export default function AllOrdersClient({ orders }: Props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const mappedOrders: OrderModelDatesString[] = orders?.map(order => ({...order, orderDate: order.orderDate.toDateString(), deliveryDate: order.deliveryDate?.toDateString(), shippingDate: order.shippingDate?.toDateString()}));
-     setAllOrders([...mappedOrders]);
-
-  }, [orders])
+    const mappedOrders: OrderModelDatesString[] = orders?.map((order) => ({
+      ...order,
+      orderDate: order.orderDate.toDateString(),
+      deliveryDate: order.deliveryDate?.toDateString(),
+      shippingDate: order.shippingDate?.toDateString(),
+    }));
+    setAllOrders([...mappedOrders]);
+  }, [orders]);
 
   const deliveredOrderHandler = async (orderId: string) => {
-    const updatedOrder = (await orderDelivered(orderId));
+    const updatedOrder = await orderDelivered(orderId);
 
-    const mappedUpdatedOrder: OrderModelDatesString = {...updatedOrder, deliveryDate: updatedOrder.deliveryDate?.toDateString(), orderDate: updatedOrder.orderDate.toDateString(), shippingDate: updatedOrder.shippingDate?.toDateString()}
+    const mappedUpdatedOrder: OrderModelDatesString = {
+      ...updatedOrder,
+      deliveryDate: updatedOrder.deliveryDate?.toDateString(),
+      orderDate: updatedOrder.orderDate.toDateString(),
+      shippingDate: updatedOrder.shippingDate?.toDateString(),
+    };
 
-    setAllOrders(orders => orders.map(order => order.id === orderId ? mappedUpdatedOrder : order));
+    setAllOrders((orders) =>
+      orders.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+    );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
@@ -42,15 +54,20 @@ export default function AllOrdersClient({ orders }: Props) {
       shippingDate: updatedOrder.shippingDate?.toDateString(),
     };
 
-    setAllOrders(orders => orders.map(order => order.id === orderId ? mappedUpdatedOrder : order));
+    setAllOrders((orders) =>
+      orders.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+    );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
 
   if (!allOrders?.length) {
     return (
-      <div className="flex justify-center items-center mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
+      <div className="flex flex-col justify-between items-end mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
         <h1 className="text-3xl">There are no orders to display!</h1>
+        <span className="mt-32 text-indigo-900 flex justify-end">
+          <Link href="/pizzas">Go Home</Link>
+        </span>
       </div>
     );
   }

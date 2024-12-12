@@ -2,11 +2,12 @@
 
 import { orderDelivered } from "@/actions/order.action";
 import { editOrder } from "@/features/orderSlice";
-import { useOrder } from "@/hooks/useOrder";
 import { OrderModel } from "@/models/orderModel";
 import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Link from "next/link";
+import { Status } from "@prisma/client";
 
 type Props = {
   orders: OrderModel[];
@@ -23,6 +24,7 @@ export default function ShippedOrdersClient({ orders }: Props) {
       deliveryDate: order.deliveryDate?.toDateString(),
       shippingDate: order.shippingDate?.toDateString(),
     }));
+
     setAllOrders([...mappedOrders]);
   }, [orders]);
 
@@ -36,7 +38,8 @@ export default function ShippedOrdersClient({ orders }: Props) {
       shippingDate: updatedOrder.shippingDate?.toDateString(),
     };
 
-    setAllOrders((orders) => orders.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))
+    setAllOrders((orders) =>
+      orders?.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))?.filter(ord => ord.status === Status.Shipped)
     );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
@@ -44,8 +47,11 @@ export default function ShippedOrdersClient({ orders }: Props) {
 
   if (!allOrders?.length) {
     return (
-      <div className="flex justify-center items-center mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
+      <div className="flex flex-col justify-between items-end mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
         <h1 className="text-3xl">There are no orders to display!</h1>
+        <p className="mt-32 text-indigo-900 flex justify-end">
+          <Link href="/pizzas">Go Home</Link>
+        </p>
       </div>
     );
   }

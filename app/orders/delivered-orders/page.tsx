@@ -4,22 +4,22 @@ import { OrderModel } from "@/models/orderModel";
 import { Status } from "@prisma/client";
 
 export default async function DeliveredOrders() {
-   const session = await auth();
+  const session = await auth();
 
-   if (session?.user.role !== "Admin")
-     return <div>You are not authorized to view this page</div>;
+  if (session?.user.role !== "Admin")
+    return <div>You are not authorized to view this page</div>;
 
   const orders = (await getAllOrders()).filter(
     (order) => order.status === Status.Delivered
   ) as OrderModel[];
 
-   if (!orders?.length) {
-     return (
-       <div className="flex justify-center items-center mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
-         <h1 className="text-3xl">There are no orders to display!</h1>
-       </div>
-     );
-   }
+  if (!orders?.length) {
+    return (
+      <div className="flex justify-center items-center mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
+        <h1 className="text-3xl">There are no orders to display!</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
@@ -33,7 +33,6 @@ export default async function DeliveredOrders() {
             <th>Date Order</th>
             <th>Status</th>
             <th>Order By</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
