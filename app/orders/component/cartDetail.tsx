@@ -12,6 +12,9 @@ import {
 } from "@/features/cartItemSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { LocalStorageService } from "@/app/services/localStorage.service";
+
+const localStorageService = new LocalStorageService<CartItem[]>
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
@@ -40,7 +43,7 @@ export default function CartDetail() {
     }) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts")
   };
 
   const decreaseQuantity = (cartId: string) => {
@@ -65,7 +68,7 @@ export default function CartDetail() {
       .filter((cart) => cart?.quantity !== 0) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   const removePizza = (cartId: string) => {
@@ -81,7 +84,7 @@ export default function CartDetail() {
     }) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   const makeCheckout = () => {

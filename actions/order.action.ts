@@ -89,20 +89,6 @@ export const editAllCartItemsByOrderId = async (prevState: OrderProduct) => {
     return { ...editedOrder, orders: updatedCartItems };
   };
 
-export const editOneCartItemByOrderId = async (prevState: {cartItemId: string, orderProduct: OrderProduct}) => {
-    //----> Retrieve the orderId and orderId from request params.
-    const { cartItemId} = prevState;
-    const { cartItems, order} = prevState.orderProduct;
-    //----> Edit one cart item by order id.
-    const editedOrder = await orderDb.editOneCartItemByOrderId(
-      cartItemId,
-      order.id,
-      cartItems
-    );
-
-    //----> Send back the response.
-    return editedOrder;
-  };
 
 export const editOrderById = async (formData: FormData) => {
     //----> Get the order payload to edit from request.
@@ -122,9 +108,7 @@ export const getAllOrders = async () => {
     return allOrders;
   };
 
-export const getAllOrdersByUserId = async (prevState: {userId: string}) => {
-    //----> Get query params.
-    const { userId } = prevState;
+export const getAllOrdersByUserId = async (userId: string) => {
     //----> Get all orders from the database.
     const allOrders = await orderDb.getAllOrdersByUserId(userId);
     //----> Send back the response.
@@ -140,9 +124,8 @@ export const getOrderById = async (prevState: {id: string}) => {
     return order;
   };
 
-export const orderDelivered = async (prevState: {orderId: string}) => {
+export const orderDelivered = async (orderId: string) => {
     //----> Extract the order id from params.
-    const { orderId } = prevState;
     console.log("Order delivered!!!");
 
     //----> Update the delivering information.
@@ -151,9 +134,8 @@ export const orderDelivered = async (prevState: {orderId: string}) => {
     return updatedOrder;
   };
 
-export const orderShipped = async (prevState: {orderId: string}) => {
+export const orderShipped = async (orderId: string) => {
     //----> Extract the order id from params.
-    const { orderId } = prevState;
     console.log("Order Shipped!!!");
 
     //----> Update the shipping information.

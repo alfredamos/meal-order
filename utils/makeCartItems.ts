@@ -25,8 +25,6 @@ export function makeCartItems(
 
     allCartItems = [...newCartItems, cartItem];
 
-    //localStorage.removeItem("carts");
-
     return { cartItems: allCartItems };
   } else if (!cart) {
     cartItem = {
@@ -35,6 +33,7 @@ export function makeCartItems(
       price: pizza.price,
       quantity: 1,
       pizzaId: pizza.id,
+      image: pizza.image,
       orderId: "",
     };
 
@@ -42,7 +41,6 @@ export function makeCartItems(
 
     allCartItems = [...cartItems, cartItem];
 
- //   localStorage.removeItem("carts");
   }
 
   return { cartItems: allCartItems };

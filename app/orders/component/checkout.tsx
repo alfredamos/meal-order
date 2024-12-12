@@ -1,7 +1,6 @@
 "use client";
 
 import { useCart } from "@/features/cartItemSlice";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment} from "react";
 

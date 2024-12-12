@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mysql" 
   url      = env("DATABASE_URL")
 }
 
@@ -20,6 +20,7 @@ model CartItem {
   quantity Int
   pizzaId  String?
   orderId  String?
+  image    String
   pizza    Pizza?  @relation(fields: [pizzaId], references: [id])
   order    Order?  @relation(fields: [orderId], references: [id])
 
@@ -50,6 +51,7 @@ model Order {
   deliveryDate  DateTime?
   totalQuantity Int
   isShipped     Boolean    @default(false)
+  isPending     Boolean    @default(true)
   isDelivered   Boolean    @default(false)
   totalPrice    Float
   cartItems     CartItem[]

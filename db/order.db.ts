@@ -15,15 +15,16 @@ export class OrderDb {
 
     const createdOrder = await prisma.order.create({
       data: {
-        ...rest 
+        ...rest,
       },
-     
     });
 
-    const createdCartItems = await this.createCartItems(cartItems, createdOrder?.id);
+    const createdCartItems = await this.createCartItems(
+      cartItems,
+      createdOrder?.id
+    );
 
-   
-    return {createdOrder, cartItems: createdCartItems};
+    return { createdOrder, cartItems: createdCartItems };
   }
 
   async createOrder(cartItems: CartItem[], order: Order) {
@@ -159,44 +160,6 @@ export class OrderDb {
     return { editedOrder, updatedCartItems };
   }
 
-  async editOneCartItemByOrderId(
-    cartItemId: string,
-    orderId: string,
-    cartItems: CartItem[]
-  ) {
-    //----> Check for the existence of order in the db.
-    const order = await this.getOrderById(orderId);
-
-    //----> Massage cartItems.
-    const cartItemsMod = this.cartItemsModInput(cartItems);
-    //----> Filter out the cart-item to edit.
-    const cartItemToEdit = this.findCartItem(cartItemsMod, cartItemId);
-
-    //----> Adjust the total-cost and total-quantity on order.
-    const modifiedOrder = this.adjustTotalPriceAndTotalQuantity(
-      order,
-      cartItemsMod
-    );
-    //----> Store the edited order info in the database.
-    const editedOrder = await prisma.order.update({
-      where: { id: orderId },
-      data: {
-        ...modifiedOrder,
-        cartItems: {
-          update: {
-            where: { id: cartItemId, orderId },
-            data: { ...cartItemToEdit },
-          },
-        },
-      },
-      include: {
-        cartItems: true,
-      },
-    });
-
-    return editedOrder;
-  }
-
   async editOrder(id: string, orderToEdit: Order) {
     //----> Check for the existence of order in the db.
     await this.getOrderById(id);
@@ -257,6 +220,10 @@ export class OrderDb {
       data: {
         ...deliveredOrder,
       },
+      include: {
+        cartItems: true,
+        user: true,
+      },
     });
 
     return updatedOrder;
@@ -274,6 +241,10 @@ export class OrderDb {
       where: { id: orderId },
       data: {
         ...shippedOrder,
+      },
+      include: {
+        cartItems: true,
+        user: true,
       },
     });
 
@@ -295,6 +266,7 @@ export class OrderDb {
   private shippingInfo(order: Order) {
     //----> Update the order shipping info.
     order.isShipped = true; //----> Order shipped.
+    order.isPending = false;
     order.shippingDate = new Date(); //----> Order shipping date.
     order.status = Status.Shipped; //----> Order status.
 
@@ -367,6 +339,7 @@ export class OrderDb {
 
     return updatedCartItems;
   }
+
   private updateAllCartItems(cartItems: CartItem[], orderId: string) {
     //----> Edit all cart-items at once.
     const editedAllCarItems = cartItems.map(async (cart) => {

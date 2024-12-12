@@ -1,8 +1,6 @@
-import { OrderModel } from "@/models/orderModel";
-import { OrderProduct } from "@/models/orderProduct.model";
-import { CartItem } from "@prisma/client";
+import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
 
 export class OrderState{
-  orders: OrderProduct[] = [];
+  orders: OrderModelDatesString[] = [];
 
 }
