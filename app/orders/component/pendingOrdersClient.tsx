@@ -1,7 +1,11 @@
-"use client"
+"use client";
 
-import { orderDelivered, orderShipped } from "@/actions/order.action";
-import { editOrder} from "@/features/orderSlice";
+import {
+  deleteOrderById,
+  orderDelivered,
+  orderShipped,
+} from "@/actions/order.action";
+import { deleteOrder, editOrder } from "@/features/orderSlice";
 import { OrderModel } from "@/models/orderModel";
 import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
 import { Status } from "@prisma/client";
@@ -13,25 +17,23 @@ type Props = {
   orders: OrderModel[];
 };
 
-export default function PendingOrdersClient({orders}: Props) {
-  const [allOrders, setAllOrders] = useState<OrderModelDatesString[]>([])
+export default function PendingOrdersClient({ orders }: Props) {
+  const [allOrders, setAllOrders] = useState<OrderModelDatesString[]>([]);
   const dispatch = useDispatch();
 
+  console.log({ allOrders });
 
-   console.log({allOrders})
+  useEffect(() => {
+    console.log({ orders });
+    const mappedOrders: OrderModelDatesString[] = orders?.map((order) => ({
+      ...order,
+      orderDate: order.orderDate.toDateString(),
+      deliveryDate: order.deliveryDate?.toDateString(),
+      shippingDate: order.shippingDate?.toDateString(),
+    }));
 
-   useEffect(() => {
-      console.log({orders})
-     const mappedOrders: OrderModelDatesString[] = orders?.map((order) => ({
-       ...order,
-       orderDate: order.orderDate.toDateString(),
-       deliveryDate: order.deliveryDate?.toDateString(),
-       shippingDate: order.shippingDate?.toDateString(),
-     }));
-
-     setAllOrders([...mappedOrders]);
-
-   }, [orders]);
+    setAllOrders([...mappedOrders]);
+  }, [orders]);
 
   const deliveredOrderHandler = async (orderId: string) => {
     const updatedOrder = await orderDelivered(orderId);
@@ -53,7 +55,7 @@ export default function PendingOrdersClient({orders}: Props) {
   };
 
   const shippedOrderHandler = async (orderId: string) => {
-    console.log("In pending-orders, orderId : ", orderId)
+    console.log("In pending-orders, orderId : ", orderId);
     const updatedOrder = await orderShipped(orderId);
 
     const mappedUpdatedOrder: OrderModelDatesString = {
@@ -72,16 +74,33 @@ export default function PendingOrdersClient({orders}: Props) {
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
 
-   if (!allOrders?.length) {
-     return (
-       <div className="flex flex-col justify-between items-end mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
-         <h1 className="text-3xl">There are no orders to display!</h1>
-         <span className="mt-32 text-indigo-900 flex justify-end">
-           <Link href="/pizzas">Go Home</Link>
-         </span>
-       </div>
-     );
-   }
+  const deleteOrderHandler = async (orderId: string) => {
+    const deletedOrder = await deleteOrderById(orderId);
+
+    const mappedDeletedOrder: OrderModelDatesString = {
+      ...deletedOrder,
+      deliveryDate: deletedOrder.deliveryDate?.toDateString(),
+      orderDate: deletedOrder.orderDate.toDateString(),
+      shippingDate: deletedOrder.shippingDate?.toDateString(),
+    };
+
+    setAllOrders((orders) =>
+      orders.filter((order) => (order.id !== orderId))
+    );
+
+    dispatch(deleteOrder({ order: mappedDeletedOrder }));
+  };
+
+  if (!allOrders?.length) {
+    return (
+      <div className="flex flex-col justify-between items-end mx-auto my-auto bg-white text-black max-w-lg px-12 py-40 rounded-lg shadow-lg mt-24">
+        <h1 className="text-3xl">There are no orders to display!</h1>
+        <span className="mt-32 text-indigo-900 flex justify-end">
+          <Link href="/pizzas">Go Home</Link>
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
@@ -133,6 +152,14 @@ export default function PendingOrdersClient({orders}: Props) {
                   onClick={() => shippedOrderHandler(order.id)}
                 >
                   Shipped
+                </button>
+                <button
+                  disabled={order.isShipped || order.isDelivered}
+                  type="button"
+                  className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg m-2"
+                  onClick={() => deleteOrderHandler(order.id)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

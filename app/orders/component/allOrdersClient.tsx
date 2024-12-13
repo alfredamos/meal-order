@@ -1,7 +1,7 @@
 "use client";
 
-import { orderDelivered, orderShipped } from "@/actions/order.action";
-import { editOrder } from "@/features/orderSlice";
+import { deleteOrderById, orderDelivered, orderShipped } from "@/actions/order.action";
+import { deleteOrder, editOrder } from "@/features/orderSlice";
 import { OrderModel } from "@/models/orderModel";
 import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
 import Link from "next/link";
@@ -59,6 +59,23 @@ export default function AllOrdersClient({ orders }: Props) {
     );
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
+  };
+
+  const deleteOrderHandler = async (orderId: string) => {
+    const deletedOrder = await deleteOrderById(orderId);
+
+    const mappedDeletedOrder: OrderModelDatesString = {
+      ...deletedOrder,
+      deliveryDate: deletedOrder.deliveryDate?.toDateString(),
+      orderDate: deletedOrder.orderDate.toDateString(),
+      shippingDate: deletedOrder.shippingDate?.toDateString(),
+    };
+
+    setAllOrders((orders) =>
+      orders.filter((order) => (order.id !== orderId))
+    );
+
+    dispatch(deleteOrder({ order: mappedDeletedOrder }));
   };
 
   if (!allOrders?.length) {
@@ -122,6 +139,14 @@ export default function AllOrdersClient({ orders }: Props) {
                   onClick={() => shippedOrderHandler(order.id)}
                 >
                   Shipped
+                </button>
+                <button
+                  disabled={order.isShipped || order.isDelivered}
+                  type="button"
+                  className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg m-2"
+                  onClick={() => deleteOrderHandler(order.id)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

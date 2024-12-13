@@ -56,8 +56,7 @@ export const deleteOneCartItemByOrderId = async (prevState: {cartItemId: string;
     return deletedOrder;
   };
 
-export const deleteOrderById = async (prevState: {id: string}) => {
-    const {id} = prevState;
+export const deleteOrderById = async (id: string) => {
     //----> Delete all associated cart-items.
     const deletedOrder = await orderDb.deleteOrderById(id);
     //----> Send back the response.

@@ -115,10 +115,11 @@ export class OrderDb {
       },
       include: {
         cartItems: true,
+        user: true
       },
     });
     //----> Delete the order info from the database.
-    const deletedOrder = await prisma.order.delete({ where: { id } });
+    const deletedOrder = await prisma.order.delete({ where: { id } ,include: {cartItems: true, user: true}});
 
     return deletedOrder;
   }
