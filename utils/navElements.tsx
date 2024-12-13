@@ -27,6 +27,10 @@ export default function NavElements({ session }: Props) {
     0
   );
 
+  const dropdownCloseHandler = () => {
+
+  }
+
   return (
     <header>
       <nav className="border-solid border-2 border-gray-300 flex justify-between items-center bg-zinc-100 shadow-xl rounded text-black font-semibold py-6 px-4 mt-2">
@@ -50,7 +54,7 @@ export default function NavElements({ session }: Props) {
           </div>
         </div>
         <HomeLink path="/" label="Home" name={session?.user?.name as string} />
-        <div className="flex items-center gap-2 mr-2">
+        <div className="flex items-center gap-2 mr-2" onMouseLeave={}>
           {session?.user ? (
             <>
               <details className="dropdown" style={inlineBlock}>

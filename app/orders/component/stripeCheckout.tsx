@@ -14,31 +14,31 @@ import { orderCreate } from "@/actions/order.action";
 import { useDispatch } from "react-redux";
 import { emptyCartItem } from "@/features/cartItemSlice";
 import { LocalStorageService } from "@/app/services/localStorage.service";
+import { sumTotal } from "@/utils/sumTotal";
 
 const localStorageService = new LocalStorageService<CartItem[]>
 
 type Props = {
-  total: number;
   cartItems: CartItem[];
   userId: string;
   paymentId: string;
 };
 
 export default function StripeCheckout({
-  total: totalPrice,
   userId,
   cartItems,
   paymentId,
 }: Props) {
   const stripe = useStripe();
   const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [_errorMessage, setErrorMessage] = useState("");
+  const [_loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const router = useRouter();
 
+  const totalPrice = sumTotal(cartItems);
   const totalQuantity = cartItems?.reduce(
     (subTotalQuantity, current) => subTotalQuantity + current.quantity,
     0

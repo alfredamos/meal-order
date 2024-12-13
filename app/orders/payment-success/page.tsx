@@ -15,9 +15,9 @@ export default function PaymentSuccessPage({
         </div>
         <Link
           href="/pizzas"
-          className="flex justify-end items-end text-indigo-100 mt-6"
+          className="flex justify-end items-end text-indigo-100 mt-6 font-bold"
         >
-          Back To Pizzas
+          Back Home
         </Link>
       </div>
     </main>

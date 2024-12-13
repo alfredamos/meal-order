@@ -7,7 +7,9 @@ import StripeCheckout from "./stripeCheckout";
 import { useCart } from "@/hooks/useCart";
 import { sumTotal } from "@/utils/sumTotal";
 import { createPaymentIntent } from "@/actions/stripe.action";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 const STRIPE_PUBLIC_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!;
 
@@ -19,52 +21,98 @@ if (STRIPE_PUBLIC_KEY === undefined) {
 const stripePromise = loadStripe(STRIPE_PUBLIC_KEY!);
 
 type Props = {
-  userId: string 
-}
+  userId: string;
+};
 
 export default function PaymentByStripe({ userId }: Props) {
   const cartItems = useCart()?.cartItems;
- 
+
   const [clientSecret, setClientSecret] = useState<string | null>("");
   const [paymentId, setPaymentId] = useState<string | null>("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [_isLoading, setIsLoading] = useState(false);
 
-  const total = sumTotal(cartItems);
+  let total = 0;
 
   const initiateStripe = async () => {
     setIsLoading(true);
-    const amount = convertToSubCurrency(total);
-    const {client_secret, id} = await createPaymentIntent(amount, "description");
-    console.log({clientSecret: client_secret, paymentId: id})
-    
+    const totalPrice = convertToSubCurrency(sumTotal(cartItems));
+    const { client_secret, id } = await createPaymentIntent(totalPrice,"description");
+    console.log({ clientSecret: client_secret, paymentId: id });
+
     setClientSecret(client_secret);
     setPaymentId(id);
-    setIsLoading(false)
-  
+    setIsLoading(false);
   };
 
   return (
     <main className="max-w-3xl mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500">
-    {
-      !clientSecret &&  <div className="mb-10">
-        <h1 className="text-4xl font-extrabold mb-2">
-          Please pay for your order!
-        </h1>
-        <h2 className="text-2xl">
-          Your total order is : <span>${total}</span>
-        </h2>
-        <button
-          // disabled={isLoading}
-          className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
-          onClick={initiateStripe}
-          type="button"
-        >
-          pay
-          {/* {!isLoading ? `$${total}` : "Processing..."} */}
-        </button>
-      </div>
-    }
-     
+      {
+        !clientSecret && (
+          <div className="bg-white p-8 overflow-y-auto scrollbar max-w-4xl max-h-96 text-black rounded-xl shadow-2xl mx-auto my-auto">
+            <h2 className="font-semibold border-b-2 text-3xl">
+              <span>Checkout Details</span>
+            </h2>
+            {cartItems?.map((cart) => {
+             const subTotal = cart?.price * cart?.quantity;
+             total += subTotal;
+             if (Number.isNaN(total)) total = Number("");
+              return (
+                <Fragment key={cart.id}>
+                  <p className="py-2 mt-2">
+                    <Image
+                      className="object-cover w-full h-48 rounded-lg"
+                      width={80}
+                      height={80}
+                      alt={cart.name}
+                      src={cart.image}
+                    />
+                  </p>
+                  <p className="flex justify-between items-center py-2 mt-2">
+                    <span className="font-light">Price </span>
+                    <span className="font-semibold text-end">
+                      ${cart.price}
+                    </span>
+                  </p>
+                  <p className="flex justify-between items-center py-2 mt-2 mb-2">
+                    <span className="font-light">Quantity </span>
+                    <span className="font-semibold text-end">
+                      {cart.quantity}
+                    </span>
+                  </p>
+
+                  <p className="flex justify-between items-center py-2 border-t-2 border-b-2">
+                    <span className="font-semibold">Sub Total</span>
+                    <span className="font-semibold text-wrap">{subTotal}</span>
+                  </p>
+                </Fragment>
+              );
+            })}
+
+            <p className="flex justify-between items-center py-2 border-b-2 mt-8">
+              <span className="font-semibold">Total</span>
+              <span className="font-semibold text-wrap">{total}</span>
+            </p>
+            <div className="flex gap-2 justify-center items-center w-full mt-8">
+              <button
+                type="button"
+                className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
+                onClick={initiateStripe}
+              >
+                Pay
+              </button>
+              <Link
+                type="button"
+                href="/orders/checkout"
+                className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
+              >
+                Back To Checkout
+              </Link>
+            </div>
+          </div>
+        )
+
+      }
+
       {!!clientSecret && (
         <Elements
           stripe={stripePromise}
@@ -72,7 +120,11 @@ export default function PaymentByStripe({ userId }: Props) {
             clientSecret: clientSecret,
           }}
         >
-          <StripeCheckout total={total} cartItems={cartItems} userId={userId} paymentId={paymentId as string}/>
+          <StripeCheckout
+            cartItems={cartItems}
+            userId={userId}
+            paymentId={paymentId as string}
+          />
         </Elements>
       )}
     </main>
