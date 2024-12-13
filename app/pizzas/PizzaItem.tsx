@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import { useDispatch } from "react-redux";
-import AddPizzaItem from "./_components/addPizzaItem";
 
 type Props = {
   pizza: Pizza;
@@ -16,8 +15,8 @@ export default function PizzaItem({ onCart, pizza }: Props) {
   const cart = useCart();
   const dispatch = useDispatch();
 
-  const [isAddToCart, setIsAddToCart] = useState(false);
-  const [carts, setCarts] = useState<CartItem[]>(cart?.cartItems);
+  const [_isAddToCart, setIsAddToCart] = useState(false);
+  const [_carts, _setCarts] = useState<CartItem[]>(cart?.cartItems);
 
   const addCartItems = (pizza: Pizza) => {
     console.log({ pizza });
@@ -25,7 +24,7 @@ export default function PizzaItem({ onCart, pizza }: Props) {
       onCart(!previous);
       return !previous;
     });
-    //onCart(isAddToCart);
+    
   };
 
   return (

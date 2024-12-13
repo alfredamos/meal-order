@@ -15,7 +15,7 @@ export default function PizzaListTable({ pizzas }: Props) {
 
   const searchHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("searchTerm : ", searchTerm);
+    
     setEnteredPizzas(
       pizzas.filter(
         (pizza) =>

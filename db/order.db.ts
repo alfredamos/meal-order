@@ -3,7 +3,6 @@ import prisma from "./prisma.db";
 import { CartItem, Order, Status } from "@prisma/client";
 import catchError from "http-errors";
 import { OrderPayload } from "@/models/orderPayload.model";
-import { connect } from "http2";
 
 export class OrderDb {
   constructor() {}
@@ -28,21 +27,13 @@ export class OrderDb {
   }
 
   async createOrder(cartItems: CartItem[], order: Order) {
-    //----> Get the total quantity and total price into order.
-    console.log("Before modifier");
-    const modifiedOrder = this.adjustTotalPriceAndTotalQuantity(
-      order,
-      cartItems
-    );
-    console.log("After modifier");
-    console.log({ modifiedOrder, cartItems });
     //----> Store the new order info in the database.
     const createdOrder = await prisma.order.create({
       data: {
-        ...modifiedOrder,
+        ...order,
         orderDate: new Date(),
         cartItems: {
-          create: [...(cartItems as CartItem[])],
+          create: [...cartItems ],
         },
       },
       include: {
@@ -203,7 +194,6 @@ export class OrderDb {
   }
 
   async orderDelivered(orderId: string) {
-    console.log("Order delivered!!!");
     //----> Get the order.
     const order = await this.getOrderById(orderId);
 
@@ -231,12 +221,10 @@ export class OrderDb {
   }
 
   async orderShipped(orderId: string) {
-    console.log("Order shipped!!!");
     //----> Get the order.
     const order = await this.getOrderById(orderId);
     //----> Update the shipping information.
     const shippedOrder = this.shippingInfo(order);
-    console.log({ shippedOrder });
     //----> Update the order in the database.
     const updatedOrder = await prisma.order.update({
       where: { id: orderId },
@@ -302,7 +290,6 @@ export class OrderDb {
     order: Order,
     cartItems: CartItem[] = []
   ): Order {
-    console.log({ order, cartItems });
     //----> Calculate both the total cost and total quantity.
     const totalQuantity = cartItems?.reduce(
       (acc, current) => acc + current.quantity,

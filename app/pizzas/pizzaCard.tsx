@@ -48,6 +48,10 @@ export default function PizzaCard({ pizza }: Props) {
      localStorageService.setLocalStorage(cartItems, "carts");
      router.push("/orders/cart")
   };
+
+  const quantityIncrease = () => {}
+
+  const quantityDecrease = () => {}
   
   return (
     <>
@@ -79,6 +83,8 @@ export default function PizzaCard({ pizza }: Props) {
           carts={cartItems}
           addToCart={toCart}
           backToList={backToList}
+          decreaseQuantity={quantityDecrease}
+          increaseQuantity={quantityIncrease}
         />
       )}
     </>

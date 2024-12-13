@@ -8,7 +8,7 @@ import LogoutLink from "./logoutLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import { dropDownLinks, adminDropDownLinks, authLinks } from "./navLinks";
 import { useCart } from "@/features/cartItemSlice";
-import { CSSProperties } from "react";
+import { CSSProperties, useState } from "react";
 import Link from "next/link";
 
 const inlineBlock: CSSProperties = {
@@ -21,15 +21,12 @@ type Props = {
 
 export default function NavElements({ session }: Props) {
   const cartItems = useCart().cartItems;
+  const [open, setOpen] = useState(true);
 
   const totalQuantity = cartItems?.reduce(
     (accumulator, current) => current?.quantity + accumulator,
     0
   );
-
-  const dropdownCloseHandler = () => {
-
-  }
 
   return (
     <header>
@@ -54,7 +51,7 @@ export default function NavElements({ session }: Props) {
           </div>
         </div>
         <HomeLink path="/" label="Home" name={session?.user?.name as string} />
-        <div className="flex items-center gap-2 mr-2" onMouseLeave={}>
+        <div className={open ? "flex items-center gap-2 mr-2" : "hidden"}>
           {session?.user ? (
             <>
               <details className="dropdown" style={inlineBlock}>

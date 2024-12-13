@@ -48,14 +48,12 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-    console.log("The cart-items to cart : ", { cartItems });
 
     localStorageService.setLocalStorage(cartItems, "carts")
     router.push("/orders/cart");
   };
 
   const increaseQuantity = (cartId: string) => {
-    console.log("Increase quantity of cart-id : ", cartId);
 
     const newCartItems = cartItems?.map((cart) => {
       if (cart.id === cartId) {
@@ -76,8 +74,6 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const decreaseQuantity = (cartId: string) => {
-    console.log("Decrease quantity of cart-id : ", cartId);
-
     const newCartItems = cartItems
       ?.map((cart) => {
 

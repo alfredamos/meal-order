@@ -71,7 +71,6 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function logoutAction() {
-  console.log("logout action clicked!!!");
   await signOut({ redirectTo: "/auth/login" });
 }
 

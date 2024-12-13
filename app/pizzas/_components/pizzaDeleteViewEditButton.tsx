@@ -33,7 +33,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   };
 
   const editPizzaHandler = (pizza: Pizza) => {
-    console.log("pizza info edited : ", pizza);
 
     if (!pizza) {
       return <div>Please enter all values!</div>;
@@ -47,7 +46,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   };
 
   const backToListHandler = () => {
-    console.log("At point 1", { isDeletePizza });
     if (isDeletePizza) setIsDeletePizza((previous) => !previous);
     if (isEditPizza) setIsEditPizza((previous) => !previous);
     if (isViewPizza) setIsViewPizza((previous) => !previous);
@@ -59,8 +57,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   };
 
   const deletePizzaHandler = (id: string) => {
-    console.log("pizza info deleted : ", id);
-
     removePizza(id);
 
     setIsDeletePizza((previous) => !previous);

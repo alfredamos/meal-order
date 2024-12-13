@@ -102,7 +102,6 @@ export class AuthDb {
 
   async signup(signupModel: SignupModel) {
     //----> Destructure the payload.
-    console.log("In signup-db, user : ", signupModel);
     const { email, password, confirmPassword, ...rest } = signupModel;
 
     //----> Check for password match, check for existence of user.
