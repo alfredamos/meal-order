@@ -5,6 +5,8 @@ import Image from "next/image";
 import PizzaDeleteViewEditButton from "./pizzaDeleteViewEditButton";
 import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { deletePizza, editPizza } from "@/features/pizzaSlice";
 
 type Props = {
   pizzas: Pizza[];
@@ -13,9 +15,11 @@ export default function PizzaListTable({ pizzas }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [enteredPizzas, setEnteredPizzas] = useState<Pizza[]>(pizzas);
 
+  const dispatch = useDispatch();
+
   const searchHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     setEnteredPizzas(
       pizzas.filter(
         (pizza) =>
@@ -25,6 +29,24 @@ export default function PizzaListTable({ pizzas }: Props) {
       )
     );
     setSearchTerm("");
+  };
+
+  const deletePizzaHandler = (pizzaId: string) => {
+    setEnteredPizzas((oldEnteredPizzas) =>
+      oldEnteredPizzas?.filter((pizza) => pizza.id !== pizzaId)
+    );
+
+    dispatch(deletePizza({ pizzaId }));
+  };
+
+  const editPizzaHandler = (updatedPizza: Pizza) => {
+    setEnteredPizzas((oldEnteredPizzas) =>
+      oldEnteredPizzas?.map((pizza) =>
+        pizza.id === updatedPizza.id ? updatedPizza : pizza
+      )
+    );
+
+    dispatch(editPizza({ pizza: updatedPizza }));
   };
 
   return (
@@ -60,13 +82,13 @@ export default function PizzaListTable({ pizzas }: Props) {
             return (
               <tr key={pizza.id} className="text-base text-black">
                 <td>
-                  <Image
+                 <Image
                     src={pizza.image}
                     alt={pizza.name}
                     width={80}
                     height={80}
                     className="object-cover w-20 h-20"
-                  />
+                  /> 
                 </td>
                 <td>{pizza.name}</td>
                 <td>{pizza.price}</td>
@@ -74,7 +96,12 @@ export default function PizzaListTable({ pizzas }: Props) {
                 <td>{pizza.description}</td>
                 <td>{pizza.topping}</td>
                 <td>
-                  <PizzaDeleteViewEditButton pizza={pizza} id={pizza?.id} />
+                  <PizzaDeleteViewEditButton
+                    pizza={pizza}
+                    id={pizza?.id}
+                    onDelete={deletePizzaHandler}
+                    onEdit={editPizzaHandler}
+                  />
                 </td>
               </tr>
             );

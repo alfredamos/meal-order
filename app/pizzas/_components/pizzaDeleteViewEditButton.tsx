@@ -12,9 +12,11 @@ import { useEditPizza } from "@/hooks/useEditPizza";
 type Props = {
   pizza: Pizza;
   id: string;
+  onDelete: (pizzaId: string) => void;
+  onEdit: (pizza: Pizza) => void;
 };
 
-export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
+export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit }: Props) {
   const router = useRouter();
   const [isDeletePizza, setIsDeletePizza] = useState(false);
   const [isEditPizza, setIsEditPizza] = useState(false);
@@ -22,7 +24,7 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   const [refresh, setRefresh] = useState(false);
 
   const { mutate: removePizza } = useDeletePizza();
-  const { mutate: updatePizza } = useEditPizza();
+  const { mutate: updatePizza, data: updatedPizza } = useEditPizza();
 
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
@@ -38,7 +40,12 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
       return <div>Please enter all values!</div>;
     }
 
+    pizza.id = id;
+
     updatePizza({ id, pizza });
+
+    onEdit(pizza)
+
 
     setIsEditPizza((previous) => !previous);
     setRefresh(!refresh);
@@ -58,6 +65,8 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
 
   const deletePizzaHandler = (id: string) => {
     removePizza(id);
+
+    onDelete(id)
 
     setIsDeletePizza((previous) => !previous);
     setRefresh(!refresh);
