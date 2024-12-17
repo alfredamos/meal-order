@@ -9,8 +9,9 @@ import { useDeleteUser } from "@/hooks/useDeleteUser";
 
 type Props = {
   user: User;
+  onDelete: (userId: string) => void;
 }
-export default function UserDeleteAndViewButton({user}: Props) {
+export default function UserDeleteAndViewButton({user, onDelete}: Props) {
   const router = useRouter();
   const [isDeleteUser, setIsDeleteUser] = useState(false);
   const [isViewUser, setIsViewUser] = useState(false);
@@ -37,6 +38,8 @@ export default function UserDeleteAndViewButton({user}: Props) {
     console.log("user info deleted : ", id);
 
     deleteUser(id);
+
+    onDelete(id);
    
     setIsDeleteUser((previous) => !previous);
     setRefresh(!refresh);
