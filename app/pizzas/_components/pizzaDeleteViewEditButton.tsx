@@ -6,8 +6,7 @@ import { useState } from "react";
 import PizzaDeleteDialog from "./pizzaDeleteDialog";
 import PizzaViewDialog from "./pizzaViewDialog";
 import PizzaEditDialog from "./pizzaEditDialog";
-import { useDeletePizza } from "@/hooks/useDeletePizza";
-import { useEditPizza } from "@/hooks/useEditPizza";
+import {deletePizzaById, editPizzaById} from "@/actions/pizza.action"
 
 type Props = {
   pizza: Pizza;
@@ -21,9 +20,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   const [isViewPizza, setIsViewPizza] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  const { mutate: removePizza } = useDeletePizza();
-  const { mutate: updatePizza } = useEditPizza();
-
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
   };
@@ -32,14 +28,14 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
     setIsEditPizza((previous) => !previous);
   };
 
-  const editPizzaHandler = (pizza: Pizza) => {
+  const editPizzaHandler = async (pizza: Pizza) => {
     console.log("pizza info edited : ", pizza);
 
     if (!pizza) {
       return <div>Please enter all values!</div>;
     }
 
-    updatePizza({ id, pizza });
+    const editedPizza = await editPizzaById(pizza);
 
     setIsEditPizza((previous) => !previous);
     setRefresh(!refresh);
@@ -58,10 +54,11 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
     setIsViewPizza((previous) => !previous);
   };
 
-  const deletePizzaHandler = (id: string) => {
+  const deletePizzaHandler = async (id: string) => {
     console.log("pizza info deleted : ", id);
 
-    removePizza(id);
+    //removePizza(id);
+    await deletePizzaById(id);
 
     setIsDeletePizza((previous) => !previous);
     setRefresh(!refresh);

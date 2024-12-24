@@ -32,7 +32,7 @@ export const deletePizzaById = async ( id: string ) => {
   return deletedPizza;
 };
 
-export const editPizzaById = async (formData: FormData) => {
+export const editOnePizza = async (formData: FormData) => {
   //----> Get the pizza to update from request.
   const { name, price, topping, quantity, image, description, userId, id } =
     Object.fromEntries(formData) as unknown as Pizza;
@@ -47,10 +47,10 @@ export const editPizzaById = async (formData: FormData) => {
     userId,
   });
   //----> Send back the response.
-  revalidatePath("/pizzas");
-  return redirect("/pizzas");
+  return editedPizza
 };
-export const editOnePizza = async (pizza: Pizza) => {
+
+export const editPizzaById = async (pizza: Pizza) => {
   //----> Get the pizza to update from request.
   const { name, price, topping, quantity, image, description, userId, id } =
     pizza;
@@ -65,10 +65,8 @@ export const editOnePizza = async (pizza: Pizza) => {
     userId,
   });
   //----> Send back the response.
-  revalidatePath("/pizzas");
-  return redirect("/pizzas");
+  return editedPizza
 };
-
 
 export const getAllPizza = async () => {
   //----> Get all pizzas from the database.
