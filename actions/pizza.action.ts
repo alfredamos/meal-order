@@ -10,7 +10,7 @@ export const createPizza = async (formData: FormData) => {
   const { name, price, topping, quantity, image, description, userId } =
     Object.fromEntries(formData) as unknown as Pizza;
   //----> Store the new pizza in the database.
-  await PizzaDb.createPizza({
+  return await PizzaDb.createPizza({
     name,
     price: +price,
     topping,
@@ -19,10 +19,7 @@ export const createPizza = async (formData: FormData) => {
     description,
     userId,
   });
-  //----> Send back the response.
-
-  revalidatePath("/pizzas/list");
-  return redirect("/pizzas/list");
+  
 };
 
 export const deletePizzaById = async ( id: string ) => {

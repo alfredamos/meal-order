@@ -1,3 +1,5 @@
+"use client";
+
 import { Pizza } from "@prisma/client";
 import CancelButton from "../authForms/cancelButton";
 import PizzaInputForm from "./pizzaInputForm.form";
@@ -19,7 +21,7 @@ export default function FormPizza({ formName, pizza }: Props) {
     } catch (error: any) {
       toast.error(`Pizza creation has failed! ${error.message}`);
     } finally {
-      router.push("/pizza/list");
+      router.push("/pizzas/list");
     }
   };
   return (

@@ -33,6 +33,7 @@ export default function RootLayout({
                 {children}
               </section>
             </main>
+            <ReactQueryDevtools/>
           </QueryClientContext>
         </ReduxContext>
       </body>

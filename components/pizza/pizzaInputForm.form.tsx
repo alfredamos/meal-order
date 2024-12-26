@@ -1,3 +1,5 @@
+"use client";
+
 import { Pizza } from "@prisma/client";
 import { ReactNode } from "react";
 
