@@ -1,14 +1,30 @@
+"use client";
+
 import { changePasswordAction } from "@/actions/auth.action";
 import { ChangePasswordModel } from "@/models/changePassword.model";
 import CancelButton from "./cancelButton";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: ChangePasswordModel;
 };
 export default function ChangePasswordForm({ user }: Props) {
+  const router = useRouter();
+  
+  const changePasswordSubmitHandler = async (formData: FormData) => {
+    try {
+      await changePasswordAction(formData); //----> Change password in the database.
+      toast.success("Password has been changed successfully!"); //----> Show toast for successful change of password.
+    } catch (error) {
+      toast.error("Password change failed!"); //----> Show toast for failed change of password.
+    }finally{
+      router.back();
+    }
+  }
   return (
     <form
-      action={changePasswordAction}
+      action={changePasswordSubmitHandler}
       className="bg-white text-slate-800 max-w-lg flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10 mt-10"
     >
       <h4 className="font-bold text-slate-800 text-2xl mb-6">

@@ -1,11 +1,27 @@
+"use client";
+
 import { loginAction } from "@/actions/auth.action";
-import Link from "next/link";
 import CancelButton from "./cancelButton";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
 
 export default function LoginForm() {
+  const router = useRouter();
+
+  const loginSubmitHandler = async (formData: FormData) => {
+    try {
+      await loginAction(formData); //----> Login.
+      toast.success("Login is successful!"); //----> Show toast for successful login.
+    } catch (error) {
+      toast.error("Login has failed!"); //----> Show toast for successful login.
+    }finally{
+      router.push("/");
+    }
+  }
   return (
     <form
-      action={loginAction}
+      action={loginSubmitHandler}
       className="bg-white text-slate-800 max-w-lg flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10 mt-10"
     >
       <h4 className="font-bold text-slate-800 text-2xl mb-6">Login Form</h4>

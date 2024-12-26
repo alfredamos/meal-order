@@ -7,26 +7,19 @@ import { EditProfileModel } from "@/models/editProfile.model";
 import { LoginModel } from "@/models/login.model";
 import { SignupModel } from "@/models/signup.model";
 import { UserInfoModel } from "@/models/userInfo.model";
-import { UserPayload } from "@/models/userPayload.model";
 import { UserRoleChangeModel } from "@/models/userRoleChange.model";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function changePasswordAction(formData: FormData) {
   //----> Get the payload.
   const { email, confirmPassword, oldPassword, newPassword } =
     Object.fromEntries(formData) as unknown as ChangePasswordModel;
   //----> Change the password and store the updated user credentials in the database.
-  await authDb.changePassword({
+  return await authDb.changePassword({
     email,
     confirmPassword,
     oldPassword,
     newPassword,
   });
-
-  //----> Send back the response.
-  revalidatePath("/");
-  return redirect("/");
 }
 
 export async function editProfileAction(formData: FormData) {
@@ -34,9 +27,9 @@ export async function editProfileAction(formData: FormData) {
   const { address, name, email, phone, image, gender, password } =
     Object.fromEntries(formData) as unknown as EditProfileModel;
   //----> edit user profile and store it in the database.
-  console.log({address, name, email, phone, image, gender, password});
-  
-  await authDb.editProfile({
+  console.log({ address, name, email, phone, image, gender, password });
+
+  return await authDb.editProfile({
     address,
     name,
     email,
@@ -45,10 +38,6 @@ export async function editProfileAction(formData: FormData) {
     gender,
     password,
   });
-
-  //----> Send back the response.
-  revalidatePath("/");
-  return redirect("/");
 }
 
 export async function loginAction(formData: FormData) {
@@ -59,19 +48,15 @@ export async function loginAction(formData: FormData) {
   //----> Destructure formData.
   const { email, password } = loginCredentials;
   //----> Login the user in.
-  await signIn("credentials", {
+  return await signIn("credentials", {
     email,
     password,
     redirect: false,
   });
-
-  //----> Send back the response.
-  revalidatePath("/");
-  return redirect("/");
 }
 
 export async function logoutAction() {
-  await signOut({ redirectTo: "/auth/login" });
+  await signOut({ redirect: true });
 }
 
 export async function signupAction(formData: FormData) {
@@ -88,7 +73,7 @@ export async function signupAction(formData: FormData) {
   } = Object.fromEntries(formData) as unknown as SignupModel;
 
   //----> Store the new user credentials in the database.
-  await authDb.signup({
+  return await authDb.signup({
     address,
     name,
     email,
@@ -98,10 +83,6 @@ export async function signupAction(formData: FormData) {
     confirmPassword,
     password,
   });
-
-  //----> Send back the response.
-  revalidatePath("/users");
-  return redirect("/auth/login");
 }
 
 export async function currentUserAction(id: string) {

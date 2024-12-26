@@ -1,11 +1,28 @@
+"use client";
+
 import { signupAction } from "@/actions/auth.action";
 import CancelButton from "./cancelButton";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 
 export default function MemberForm() {
+  const router = useRouter();
+
+  const signupSubmitHandler = async (formData: FormData) => {
+    try {
+      await signupAction(formData); //----> signup.
+      toast.success("Signup is successful!"); //----> Show toast for successful signup.
+    } catch (error) {
+      toast.error("Signup is not successful!"); //----> Show toast for failed signup.
+    }finally{
+      router.push("/");
+    }
+  }
+
   return (
     <form
-      action={signupAction}
+      action={signupSubmitHandler}
       className="bg-white text-slate-800 max-w-lg mx-auto rounded-xl shadow-2xl py-10 px-2 mt-10"
     >
       <h4 className="font-bold text-slate-800 text-2xl mb-6 flex justify-center items-center">

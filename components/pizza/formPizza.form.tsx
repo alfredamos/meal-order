@@ -16,12 +16,12 @@ export default function FormPizza({ formName, pizza }: Props) {
 
   const submitPizzaFormHandler = async (formData: FormData) => {
     try {
-      await createPizza(formData);
-      toast.success("Pizza has been successfully created!");
+      await createPizza(formData); //----> create new pizza.
+      toast.success("Pizza has been successfully created!"); //----> Show toast for successful creation of pizza.
     } catch (error: any) {
-      toast.error(`Pizza creation has failed! ${error.message}`);
+      toast.error(`Pizza creation has failed! ${error.message}`); //----> Show toast for failed creation of pizza.
     } finally {
-      router.push("/pizzas/list");
+      router.push("/pizzas/list"); //----> Redirect to pizza-list.
     }
   };
   return (
