@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/features/cartItemSlice";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Fragment} from "react";
 
 
@@ -9,6 +9,16 @@ export default function Checkout() {
 const carts = useCart()?.cartItems;
 
   let total = 0;
+  const router = useRouter();
+
+  const makePayment = () => {
+    router.push("/orders/payment")
+  }
+
+  const backToCart = () => {
+    router.push("/orders/cart")
+  }
+
 
   return carts?.length < 1 ? (
     <div className="bg-white p-12 shadow-xl rounded-lg text-indigo-500 max-w-md flex justify-center items-center font-bold mx-auto mt-96 text-4xl">
@@ -53,20 +63,20 @@ const carts = useCart()?.cartItems;
         <span className="font-semibold text-wrap">{total}</span>
       </p>
       <div className="flex gap-2 justify-center items-center w-full mt-8">
-        <Link
+        <button
           type="button"
           className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
-          href="/orders/payment"
+          onClick={makePayment}
         >
           Make Payment
-        </Link>
-        <Link
+        </button>
+        <button
           type="button"
-          href="/orders/cart"
+          onClick={backToCart}
           className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
         >
           Back To Cart
-        </Link>
+        </button>
       </div>
     </div>
   );

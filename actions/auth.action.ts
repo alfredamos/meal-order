@@ -58,7 +58,6 @@ export async function loginAction(formData: FormData) {
   ) as unknown as LoginModel;
   //----> Destructure formData.
   const { email, password } = loginCredentials;
-  console.log({ email, password });
   //----> Login the user in.
   await signIn("credentials", {
     email,
@@ -72,7 +71,6 @@ export async function loginAction(formData: FormData) {
 }
 
 export async function logoutAction() {
-  console.log("logout action clicked!!!");
   await signOut({ redirectTo: "/auth/login" });
 }
 

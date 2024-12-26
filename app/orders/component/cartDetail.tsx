@@ -11,10 +11,19 @@ import {
   useCart,
 } from "@/features/cartItemSlice";
 import { FaArrowLeft } from "react-icons/fa";
+<<<<<<< HEAD
+=======
+import { useRouter } from "next/navigation";
+import { LocalStorageService } from "@/app/services/localStorage.service";
+
+const localStorageService = new LocalStorageService<CartItem[]>
+>>>>>>> 4a9352fb424501ac5b0468491a6843f959db890f
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
   const [cartItems, setCartItems] = useState<CartItem[]>(carts);
+
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -37,7 +46,7 @@ export default function CartDetail() {
     }) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts")
   };
 
   const decreaseQuantity = (cartId: string) => {
@@ -62,7 +71,7 @@ export default function CartDetail() {
       .filter((cart) => cart?.quantity !== 0) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   const removePizza = (cartId: string) => {
@@ -78,7 +87,15 @@ export default function CartDetail() {
     }) as CartItem[];
 
     setCartItems(newCartItems);
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts");
+  };
+
+  const makeCheckout = () => {
+    router.push("/orders/checkout");
+  };
+
+  const backToPizzas = () => {
+    router.push("/pizzas");
   };
 
   return cartItems?.length < 1 ? (
@@ -88,7 +105,11 @@ export default function CartDetail() {
         <span className="flex justify-end items-center">
           <Link href="/pizzas" className="text-indigo-500">
             <span className="flex gap-2 justify-center items-center">
+<<<<<<< HEAD
               <FaArrowLeft size="20px"/>
+=======
+              <FaArrowLeft size="20px" />
+>>>>>>> 4a9352fb424501ac5b0468491a6843f959db890f
               <span className="text-2xl">Home</span>
             </span>
           </Link>
@@ -155,20 +176,20 @@ export default function CartDetail() {
         <span className="font-semibold text-wrap">{total}</span>
       </p>
       <div className="flex gap-2 justify-center items-center w-full mt-8">
-        <Link
+        <button
           type="button"
           className="border-indigo-900 border-2 bg-white text-indigo-900 hover:bg-indigo-900 hover:text-indigo-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
-          href="/orders/checkout"
+          onClick={makeCheckout}
         >
           Checkout
-        </Link>
-        <Link
+        </button>
+        <button
           type="button"
-          href="/pizzas"
+          onClick={backToPizzas}
           className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
         >
           Back To Pizza
-        </Link>
+        </button>
       </div>
     </div>
   );

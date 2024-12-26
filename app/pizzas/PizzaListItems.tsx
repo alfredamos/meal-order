@@ -13,10 +13,13 @@ import {
   editCartItem,
   useCart,
 } from "@/features/cartItemSlice";
+import { LocalStorageService } from "../services/localStorage.service";
 
 type Props = {
   pizzas: Pizza[];
 };
+
+const localStorageService = new LocalStorageService<CartItem[]>;
 
 export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
@@ -45,17 +48,12 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-    console.log("The cart-items to cart : ", { cartItems });
 
-    localStorage.setItem(
-      "carts",
-      JSON.stringify(cartItems?.filter((cart) => cart?.quantity !== 0))
-    );
+    localStorageService.setLocalStorage(cartItems, "carts")
     router.push("/orders/cart");
   };
 
   const increaseQuantity = (cartId: string) => {
-    console.log("Increase quantity of cart-id : ", cartId);
 
     const newCartItems = cartItems?.map((cart) => {
       if (cart.id === cartId) {
@@ -72,12 +70,10 @@ export default function PizzaListItems({ pizzas }: Props) {
       return cart;
     }) as CartItem[];
 
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts")
   };
 
   const decreaseQuantity = (cartId: string) => {
-    console.log("Decrease quantity of cart-id : ", cartId);
-
     const newCartItems = cartItems
       ?.map((cart) => {
 
@@ -97,7 +93,7 @@ export default function PizzaListItems({ pizzas }: Props) {
       })
       .filter((cart) => cart?.quantity !== 0) as CartItem[];
 
-    localStorage.setItem("carts", JSON.stringify(newCartItems));
+    localStorageService.setLocalStorage(newCartItems, "carts")
   };
 
   return (

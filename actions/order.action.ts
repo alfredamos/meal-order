@@ -2,6 +2,7 @@
 
 import { orderDb } from "@/db/order.db";
 import prisma from "@/db/prisma.db";
+import { OrderPayload } from "@/models/orderPayload.model";
 import { OrderProduct } from "@/models/orderProduct.model";
 import { Order } from "@prisma/client";
 
@@ -15,6 +16,14 @@ export const createOrder = async (formData: FormData) => {
     //----> Send back the response.
     return createdOrder;
   };
+
+export const orderCreate = async (orderPayload: OrderPayload) => {
+  //----> Store the new order info in the database.
+  const createdOrder = await orderDb.orderCreate(orderPayload);
+
+  //----> Send back the response.
+  return createdOrder;
+}
 
 export const deleteAllCartItemByOrderId = async (prevState: {orderId: string}) => {
     //----> Get the order id from params.
@@ -38,7 +47,6 @@ export const deleteOneCartItemByOrderId = async (prevState: {cartItemId: string;
     //----> Check to see if there is any cart-item left.
     if (filteredCartItems.length === 0) {
       //----> Delete the order.
-      console.log("No more cart-item to delete");
       await prisma.order.delete({ where: { id: orderId } });
       
       return { message: "Order is successfully deleted!", order: {} as Order}; 
@@ -48,8 +56,7 @@ export const deleteOneCartItemByOrderId = async (prevState: {cartItemId: string;
     return deletedOrder;
   };
 
-export const deleteOrderById = async (prevState: {id: string}) => {
-    const {id} = prevState;
+export const deleteOrderById = async (id: string) => {
     //----> Delete all associated cart-items.
     const deletedOrder = await orderDb.deleteOrderById(id);
     //----> Send back the response.
@@ -58,7 +65,6 @@ export const deleteOrderById = async (prevState: {id: string}) => {
 
 export const deleteOrdersByUserId = async (prevState:{userId: string}) => {
     const {userId} = prevState;
-    console.log("I'm in delete all orders by customerId", { userId });
 
     //----> Delete orders user id.
     await orderDb.deleteOrdersByUserId(userId);
@@ -80,20 +86,6 @@ export const editAllCartItemsByOrderId = async (prevState: OrderProduct) => {
     return { ...editedOrder, orders: updatedCartItems };
   };
 
-export const editOneCartItemByOrderId = async (prevState: {cartItemId: string, orderProduct: OrderProduct}) => {
-    //----> Retrieve the orderId and orderId from request params.
-    const { cartItemId} = prevState;
-    const { cartItems, order} = prevState.orderProduct;
-    //----> Edit one cart item by order id.
-    const editedOrder = await orderDb.editOneCartItemByOrderId(
-      cartItemId,
-      order.id,
-      cartItems
-    );
-
-    //----> Send back the response.
-    return editedOrder;
-  };
 
 export const editOrderById = async (formData: FormData) => {
     //----> Get the order payload to edit from request.
@@ -113,9 +105,7 @@ export const getAllOrders = async () => {
     return allOrders;
   };
 
-export const getAllOrdersByUserId = async (prevState: {userId: string}) => {
-    //----> Get query params.
-    const { userId } = prevState;
+export const getAllOrdersByUserId = async (userId: string) => {
     //----> Get all orders from the database.
     const allOrders = await orderDb.getAllOrdersByUserId(userId);
     //----> Send back the response.
@@ -131,22 +121,14 @@ export const getOrderById = async (prevState: {id: string}) => {
     return order;
   };
 
-export const orderDelivered = async (prevState: {orderId: string}) => {
-    //----> Extract the order id from params.
-    const { orderId } = prevState;
-    console.log("Order delivered!!!");
-
+export const orderDelivered = async (orderId: string) => {
     //----> Update the delivering information.
     const updatedOrder = await orderDb.orderDelivered(orderId);
     //----> Send back the response
     return updatedOrder;
   };
 
-export const orderShipped = async (prevState: {orderId: string}) => {
-    //----> Extract the order id from params.
-    const { orderId } = prevState;
-    console.log("Order Shipped!!!");
-
+export const orderShipped = async (orderId: string) => {
     //----> Update the shipping information.
     const updatedOrder = await orderDb.orderShipped(orderId);
     //----> Send back the response

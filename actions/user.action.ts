@@ -1,11 +1,6 @@
 "use server";
 
 import { UserDb } from "@/db/user.db";
-import { revalidatePath } from "next/cache";
-
-type Params = {
-  params: { id: string };
-};
 
 export const deleteUserById = async (id: string) => {
   //----> Delete the user from the database.
@@ -18,7 +13,7 @@ export const getAllUsers = async () => {
   //----> Get all users from the database.
   const users = await UserDb.getAllUsers();
   //----> Send back the response.
-  revalidatePath("/users/list");
+  //revalidatePath("/users/list");
   return users;
 };
 

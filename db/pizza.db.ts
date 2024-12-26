@@ -8,7 +8,6 @@ export class PizzaDb {
   constructor() {}
 
   static async createPizza(pizza: PizzaModel): Promise<Pizza> {
-    console.log("In PizzaDb : ", pizza);
     const newPizza = await prisma.pizza.create({ data: pizza as Pizza });
 
     if (!newPizza) {

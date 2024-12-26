@@ -1,11 +1,9 @@
-import { CartItem } from "../validations/cartItemValidation";
-import { Customer } from "../validations/customerValidation";
-import { Status } from "./Status";
+import { User, CartItem, Status } from "@prisma/client";
 
 export class OrderModel {
   id!: string;
-  customerId!: string;
-  customer?: Customer;
+  userId!: string;
+  user?: User;
   cartItems: CartItem[] = [];
   isDelivered?: boolean;
   isShipped?: boolean;

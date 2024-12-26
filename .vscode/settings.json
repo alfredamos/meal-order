@@ -79,6 +79,6 @@
   "files.autoSave": "afterDelay",
   "WillLuke.nextjs.addTypesOnSave": true,
   "WillLuke.nextjs.hasPrompted": true,
-  "css.lint.unknownAtRules": "ignore"
-  
+  "css.lint.unknownAtRules": "ignore",
+  "cSpell.words": ["datasource"]
 }

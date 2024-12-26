@@ -5,6 +5,8 @@ import UserDeleteAndViewButton from "./userDeleteAndViewButton";
 import Image from "next/image";
 import { useState, FormEvent } from "react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { deleteUser } from "@/features/userSlice";
 
 type Props = {
   users: User[];
@@ -12,6 +14,8 @@ type Props = {
 export default function UserListTable({ users }: Props) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [enteredUsers, setEnteredUsers] = useState<User[]>(users);
+
+  const dispatch = useDispatch();
 
   const searchHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +30,12 @@ export default function UserListTable({ users }: Props) {
     );
     setSearchTerm("");
   };
+
+  const deleteUserHandler = (userId: string) => {
+    setEnteredUsers(oldEnteredUsers => oldEnteredUsers?.filter(user => user.id !== userId));
+
+    dispatch(deleteUser({userId}));
+  }
 
   return (
     <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
@@ -72,7 +82,7 @@ export default function UserListTable({ users }: Props) {
                 <td>{user.phone}</td>
                 <td>{user.gender}</td>
                 <td>
-                  <UserDeleteAndViewButton user={user} />
+                  <UserDeleteAndViewButton user={user} onDelete={deleteUserHandler}/>
                 </td>
               </tr>
             );

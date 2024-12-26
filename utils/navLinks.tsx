@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { FaHome, FaEdit, FaUserEdit,  FaUsers } from 'react-icons/fa';    
+import { FaHome, FaEdit, FaUserEdit, FaUsers } from "react-icons/fa";
 import { GiFullPizza } from "react-icons/gi";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { SiGnuprivacyguard } from "react-icons/si";
@@ -13,9 +13,25 @@ export type NavLinkType = {
 export type SideLinkType = NavLinkType & {
   admin: boolean;
   icon: ReactNode;
-}
+};
 
 export const adminDropDownLinks: NavLinkType[] = [
+  {
+    path: "/orders/all-orders",
+    label: "All Orders",
+  },
+  {
+    path: "/orders/delivered-orders",
+    label: "Delivered Orders",
+  },
+  {
+    path: "/orders/pending-orders",
+    label: "Pending Orders",
+  },
+  {
+    path: "/orders/shipped-orders",
+    label: "Shipped Orders",
+  },
   {
     path: "/pizzas/list",
     label: "Pizzas",
@@ -33,6 +49,10 @@ export const dropDownLinks: NavLinkType[] = [
   {
     path: "/auth/edit-profile",
     label: "Edit Profile",
+  },
+  {
+    path: "/orders/my-orders",
+    label: "My Orders",
   },
 ];
 export const authLinks: NavLinkType[] = [
@@ -59,7 +79,7 @@ export const sideLinks: SideLinkType[] = [
     path: "/auth/change-password",
     label: "Edit Password",
     admin: false,
-    icon: <FaEdit size={40}/>,
+    icon: <FaEdit size={40} />,
   },
   {
     path: "/auth/edit-profile",

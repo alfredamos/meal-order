@@ -20,7 +20,6 @@ export default function PizzaEditCard({
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    console.log("formData : ", formData);
     const editedPizza = Object.fromEntries(
       formData.entries()
     ) as unknown as Pizza;
@@ -31,6 +30,7 @@ export default function PizzaEditCard({
     <form
       method="PATCH"
       className="bg-white text-slate-800 flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10"
+      
       onSubmit={(event) => submitHandler(event)}
     >
       <PizzaInputForm formName={formName} pizza={pizza}>

@@ -5,9 +5,11 @@ import { CartItemState } from "@/states/cartItemState";
 import { CartItem } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { LocalStorageService } from "../app/services/localStorage.service";
 
-const defaultValue = () =>
-  JSON.parse(localStorage.getItem("carts")!) as CartItem[];
+const localStorageService = new LocalStorageService<CartItem[]>();
+
+const defaultValue = () => localStorageService.getLocalStorage("carts") as CartItem[];
 
 const initialState: CartItemState = {
   cartItems: defaultValue() ?? [],
@@ -34,10 +36,13 @@ export const cartItemSlice = createSlice({
       );
       state.cartItems[index] = action.payload.cartItem;
     },
+    emptyCartItem: (state) => {
+      state.cartItems = [];
+    },
   },
 });
 
-export const { createCartItem, deleteCartItem, editCartItem } =
+export const { createCartItem, deleteCartItem, editCartItem, emptyCartItem } =
   cartItemSlice.actions;
 export default cartItemSlice.reducer;
 

@@ -25,8 +25,6 @@ async function EditProfilePage() {
   //----> Get the user info.
   const userInfo = { ...userCurrent, password: "" } as EditProfileModel;
 
-  console.log("userInfo : ", userInfo);
-
   return <ProfileEditForm user={userInfo} />;
 }
 export default EditProfilePage;

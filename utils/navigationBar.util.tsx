@@ -55,10 +55,17 @@ export default async function NavigationBar() {
                   )}
                 </ul>
               </div>
+<<<<<<< HEAD
               <LogoutLink style={inlineBlock} />
             </>
           ) : (
             <LoginAndSignupLinks authLinks={authLinks} />
+=======
+              <LogoutLink style={inlineBlock} type="dropDown" />
+            </>
+          ) : (
+            <LoginAndSignupLinks authLinks={authLinks} type="sideBar" />
+>>>>>>> 4a9352fb424501ac5b0468491a6843f959db890f
           )}
         </div>
       </div>

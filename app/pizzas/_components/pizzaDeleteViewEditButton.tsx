@@ -11,14 +11,19 @@ import {deletePizzaById, editPizzaById} from "@/actions/pizza.action"
 type Props = {
   pizza: Pizza;
   id: string;
+  onDelete: (pizzaId: string) => void;
+  onEdit: (pizza: Pizza) => void;
 };
 
-export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
+export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit }: Props) {
   const router = useRouter();
   const [isDeletePizza, setIsDeletePizza] = useState(false);
   const [isEditPizza, setIsEditPizza] = useState(false);
   const [isViewPizza, setIsViewPizza] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const { mutate: removePizza } = useDeletePizza();
+  const { mutate: updatePizza } = useEditPizza();
 
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
@@ -28,14 +33,16 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
     setIsEditPizza((previous) => !previous);
   };
 
-  const editPizzaHandler = async (pizza: Pizza) => {
+  const editPizzaHandler = (pizza: Pizza) => {
     console.log("pizza info edited : ", pizza);
 
     if (!pizza) {
       return <div>Please enter all values!</div>;
     }
 
-    const editedPizza = await editPizzaById(pizza);
+    pizza.id = id;
+
+    updatePizza({ id, pizza });
 
     setIsEditPizza((previous) => !previous);
     setRefresh(!refresh);
@@ -43,7 +50,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
   };
 
   const backToListHandler = () => {
-    console.log("At point 1", { isDeletePizza });
     if (isDeletePizza) setIsDeletePizza((previous) => !previous);
     if (isEditPizza) setIsEditPizza((previous) => !previous);
     if (isViewPizza) setIsViewPizza((previous) => !previous);
@@ -54,11 +60,10 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
     setIsViewPizza((previous) => !previous);
   };
 
-  const deletePizzaHandler = async (id: string) => {
+  const deletePizzaHandler = (id: string) => {
     console.log("pizza info deleted : ", id);
 
-    //removePizza(id);
-    await deletePizzaById(id);
+    removePizza(id);
 
     setIsDeletePizza((previous) => !previous);
     setRefresh(!refresh);
@@ -93,21 +98,21 @@ export default function PizzaDeleteViewEditButton({ id, pizza }: Props) {
       )}
       <div className="flex items-center w-full mt-2">
         <button
-          type="submit"
+          type="button"
           className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-2"
           onClick={viewPizzaHandler}
         >
           view
         </button>
         <button
-          type="submit"
+          type="button"
           className="py-2 px-4 border-2 border-yellow-500 hover:bg-orange-400 hover:text-yellow-100 text-orange-400 font-bold text-base rounded-lg mr-2"
           onClick={pizzaEditConfirmation}
         >
           Edit
         </button>
         <button
-          type="submit"
+          type="button"
           className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-2"
           onClick={pizzaDeleteConfirmation}
         >
