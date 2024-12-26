@@ -6,7 +6,8 @@ import { useState } from "react";
 import PizzaDeleteDialog from "./pizzaDeleteDialog";
 import PizzaViewDialog from "./pizzaViewDialog";
 import PizzaEditDialog from "./pizzaEditDialog";
-import {deletePizzaById, editPizzaById} from "@/actions/pizza.action"
+import { deletePizzaById, editPizzaById } from "@/actions/pizza.action";
+import toast from "react-hot-toast";
 
 type Props = {
   pizza: Pizza;
@@ -15,13 +16,17 @@ type Props = {
   onEdit: (pizza: Pizza) => void;
 };
 
-export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit }: Props) {
+export default function PizzaDeleteViewEditButton({
+  id,
+  pizza,
+  onDelete,
+  onEdit,
+}: Props) {
   const router = useRouter();
   const [isDeletePizza, setIsDeletePizza] = useState(false);
   const [isEditPizza, setIsEditPizza] = useState(false);
   const [isViewPizza, setIsViewPizza] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
 
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
@@ -40,13 +45,19 @@ export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit 
 
     pizza.id = id;
 
-    const updatedPizza = await editPizzaById(pizza);
+    try {
+      const updatedPizza = await editPizzaById(pizza);
 
-    onEdit(updatedPizza); //----> Updated the UI pizza-table
+      onEdit(updatedPizza); //----> Updated the UI pizza-table
 
-    setIsEditPizza((previous) => !previous);
-    setRefresh(!refresh);
-    router.refresh();
+      toast.success("Pizza has been edited successfully!!!");
+    } catch (error: any) {
+      toast.error(`Pizza edit has failed! - ${error.message}`);
+    } finally {
+      setIsEditPizza((previous) => !previous);
+      setRefresh(!refresh);
+      router.refresh();
+    }
   };
 
   const backToListHandler = () => {
