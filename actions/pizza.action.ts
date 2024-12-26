@@ -2,8 +2,6 @@
 
 import { PizzaDb } from "@/db/pizza.db";
 import { Pizza } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export const createPizza = async (formData: FormData) => {
   //----> Get the pizza from the request.

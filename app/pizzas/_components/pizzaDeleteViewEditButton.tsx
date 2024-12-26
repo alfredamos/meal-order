@@ -74,12 +74,20 @@ export default function PizzaDeleteViewEditButton({
   const deletePizzaHandler = async (id: string) => {
     console.log("pizza info deleted : ", id);
 
-    await deletePizzaById(id);
+    try {
+      await deletePizzaById(id);
 
-    setIsDeletePizza((previous) => !previous);
-    setRefresh(!refresh);
+      onDelete(id);
 
-    router.refresh();
+      toast.success("Pizza has been deleted successfully!!!");
+    } catch (error: any) {
+      toast.error(`Pizza deletion has failed!!! - ${error.message}`);
+    } finally {
+      setIsDeletePizza((previous) => !previous);
+      setRefresh(!refresh);
+
+      router.refresh();
+    }
   };
 
   return (
