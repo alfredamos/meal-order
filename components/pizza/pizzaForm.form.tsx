@@ -1,15 +1,35 @@
+"use client";
+
 import { Pizza } from "@prisma/client";
 import CancelButton from "../authForms/cancelButton";
+import { createPizza } from "@/actions/pizza.action";
+import toast from 'react-hot-toast';
+import { useRouter } from "next/navigation";
 
 type Props = {
   formName: string;
   pizza: Pizza;
-  action: (formData: FormData) => any;
 };
-export default function PizzaForm({ action, formName, pizza }: Props) {
+export default function PizzaForm({ formName, pizza }: Props) {
+  const router = useRouter();
+
+  const submitPizzaFormHandler = async (formData: FormData) => {
+
+    try {
+
+      await createPizza(formData);
+      toast.success("Pizza has been successfully created!");
+      
+    } catch (error: any) {
+      toast.error(`Pizza creation has failed! ${error.message}`)
+    }finally{
+      router.push("/pizza/list");
+    }
+
+  }
   return (
     <form
-      action={action}
+      action={submitPizzaFormHandler}
       className="bg-white text-slate-800 max-w-lg flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10 mt-10"
     >
       <h4 className="font-bold text-slate-800 text-2xl mb-6">

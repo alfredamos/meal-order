@@ -22,8 +22,6 @@ export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit 
   const [isViewPizza, setIsViewPizza] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
-  const { mutate: removePizza } = useDeletePizza();
-  const { mutate: updatePizza } = useEditPizza();
 
   const pizzaDeleteConfirmation = () => {
     setIsDeletePizza((previous) => !previous);
@@ -33,7 +31,7 @@ export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit 
     setIsEditPizza((previous) => !previous);
   };
 
-  const editPizzaHandler = (pizza: Pizza) => {
+  const editPizzaHandler = async (pizza: Pizza) => {
     console.log("pizza info edited : ", pizza);
 
     if (!pizza) {
@@ -42,7 +40,9 @@ export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit 
 
     pizza.id = id;
 
-    updatePizza({ id, pizza });
+    const updatedPizza = await editPizzaById(pizza);
+
+    onEdit(updatedPizza); //----> Updated the UI pizza-table
 
     setIsEditPizza((previous) => !previous);
     setRefresh(!refresh);
@@ -60,10 +60,10 @@ export default function PizzaDeleteViewEditButton({ id, pizza, onDelete, onEdit 
     setIsViewPizza((previous) => !previous);
   };
 
-  const deletePizzaHandler = (id: string) => {
+  const deletePizzaHandler = async (id: string) => {
     console.log("pizza info deleted : ", id);
 
-    removePizza(id);
+    await deletePizzaById(id);
 
     setIsDeletePizza((previous) => !previous);
     setRefresh(!refresh);

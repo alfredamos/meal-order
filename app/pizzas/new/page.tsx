@@ -1,4 +1,3 @@
-import { createPizza } from "@/actions/pizza.action";
 import { auth } from "@/auth";
 import FormPizza from "@/components/pizza/formPizza.form";
 
@@ -19,6 +18,6 @@ async function AddNewPizzaPage() {
   const userId = session.user.id;
   pizza.userId = userId;
 
-  return <FormPizza pizza={pizza} action={createPizza} formName="Create" />;
+  return <FormPizza pizza={pizza} formName="Create" />;
 }
 export default AddNewPizzaPage;
