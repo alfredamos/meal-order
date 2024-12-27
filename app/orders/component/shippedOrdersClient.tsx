@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { Status } from "@prisma/client";
+import toast from "react-hot-toast";
 
 type Props = {
   orders: OrderModel[];
@@ -41,6 +42,8 @@ export default function ShippedOrdersClient({ orders }: Props) {
     setAllOrders((orders) =>
       orders?.map((order) => (order.id === orderId ? mappedUpdatedOrder : order))?.filter(ord => ord.status === Status.Shipped)
     );
+
+    toast.success("Order has been delivered successfully!"); //----> Show toast for successful delivery.
 
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };

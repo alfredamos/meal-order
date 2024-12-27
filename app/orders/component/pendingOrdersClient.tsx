@@ -11,6 +11,7 @@ import { OrderModelDatesString } from "@/models/orderModeldatesString.model";
 import { Status } from "@prisma/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 type Props = {
@@ -51,6 +52,8 @@ export default function PendingOrdersClient({ orders }: Props) {
         ?.filter((ord) => ord.status === Status.Pending)
     );
 
+    toast.success("Order has been delivered successfully!"); //----> Show toast for successful delivery.
+
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
 
@@ -71,6 +74,8 @@ export default function PendingOrdersClient({ orders }: Props) {
         ?.filter((ord) => ord.status === Status.Pending)
     );
 
+    toast.success("Order is shipped successfully!"); //----> Show toast for orders shipped successfully.
+
     dispatch(editOrder({ order: mappedUpdatedOrder }));
   };
 
@@ -84,9 +89,7 @@ export default function PendingOrdersClient({ orders }: Props) {
       shippingDate: deletedOrder.shippingDate?.toDateString(),
     };
 
-    setAllOrders((orders) =>
-      orders.filter((order) => (order.id !== orderId))
-    );
+    setAllOrders((orders) => orders.filter((order) => order.id !== orderId));
 
     dispatch(deleteOrder({ order: mappedDeletedOrder }));
   };

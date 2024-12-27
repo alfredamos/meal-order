@@ -11,13 +11,11 @@ import {
   useCart,
 } from "@/features/cartItemSlice";
 import { FaArrowLeft } from "react-icons/fa";
-<<<<<<< HEAD
-=======
 import { useRouter } from "next/navigation";
 import { LocalStorageService } from "@/app/services/localStorage.service";
+import toast from "react-hot-toast";
 
 const localStorageService = new LocalStorageService<CartItem[]>
->>>>>>> 4a9352fb424501ac5b0468491a6843f959db890f
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
@@ -45,6 +43,8 @@ export default function CartDetail() {
       return cart;
     }) as CartItem[];
 
+    toast.success("Cart item is increased!"); //----> Show toast for increased item.
+
     setCartItems(newCartItems);
     localStorageService.setLocalStorage(newCartItems, "carts")
   };
@@ -70,6 +70,8 @@ export default function CartDetail() {
       })
       .filter((cart) => cart?.quantity !== 0) as CartItem[];
 
+    toast.success("Cart item is decreased!"); //----> Show toast for decreased item.
+
     setCartItems(newCartItems);
     localStorageService.setLocalStorage(newCartItems, "carts");
   };
@@ -86,11 +88,14 @@ export default function CartDetail() {
       return cart;
     }) as CartItem[];
 
+    toast.success("Cart item is removed successfully!"); //----> Show toast for removed item.
+
     setCartItems(newCartItems);
     localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   const makeCheckout = () => {
+    toast.success("Cart items selected!"); //----> Show toast for selected items.
     router.push("/orders/checkout");
   };
 
@@ -105,11 +110,8 @@ export default function CartDetail() {
         <span className="flex justify-end items-center">
           <Link href="/pizzas" className="text-indigo-500">
             <span className="flex gap-2 justify-center items-center">
-<<<<<<< HEAD
               <FaArrowLeft size="20px"/>
-=======
               <FaArrowLeft size="20px" />
->>>>>>> 4a9352fb424501ac5b0468491a6843f959db890f
               <span className="text-2xl">Home</span>
             </span>
           </Link>

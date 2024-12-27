@@ -29,7 +29,7 @@ export async function editProfileAction(formData: FormData) {
   //----> edit user profile and store it in the database.
   console.log({ address, name, email, phone, image, gender, password });
 
-  return await authDb.editProfile({
+  const updatedUser = await authDb.editProfile({
     address,
     name,
     email,
@@ -38,6 +38,8 @@ export async function editProfileAction(formData: FormData) {
     gender,
     password,
   });
+  //----> send back response.
+  return updatedUser
 }
 
 export async function loginAction(formData: FormData) {
@@ -73,7 +75,7 @@ export async function signupAction(formData: FormData) {
   } = Object.fromEntries(formData) as unknown as SignupModel;
 
   //----> Store the new user credentials in the database.
-  return await authDb.signup({
+  const newUser = await authDb.signup({
     address,
     name,
     email,
@@ -83,6 +85,9 @@ export async function signupAction(formData: FormData) {
     confirmPassword,
     password,
   });
+  //----> send back response.
+
+  return newUser
 }
 
 export async function currentUserAction(id: string) {

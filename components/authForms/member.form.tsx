@@ -4,14 +4,22 @@ import { signupAction } from "@/actions/auth.action";
 import CancelButton from "./cancelButton";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { createUser } from "@/features/userSlice";
+import { UserResponseModel } from "@/models/userResponse.model";
+import { User } from "@prisma/client";
 
 
 export default function MemberForm() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const signupSubmitHandler = async (formData: FormData) => {
     try {
-      await signupAction(formData); //----> signup.
+      const newUser = await signupAction(formData); //----> signup.
+      
+      dispatch(createUser({user: newUser as User })); //----> Update the user-list in the UI.
+      
       toast.success("Signup is successful!"); //----> Show toast for successful signup.
     } catch (error) {
       toast.error("Signup is not successful!"); //----> Show toast for failed signup.

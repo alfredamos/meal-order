@@ -6,7 +6,7 @@ import {
   PaymentElement,
   AddressElement,
 } from "@stripe/react-stripe-js";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { CartItem } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { OrderPayload } from "@/models/orderPayload.model";
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { emptyCartItem } from "@/features/cartItemSlice";
 import { LocalStorageService } from "@/app/services/localStorage.service";
 import { sumTotal } from "@/utils/sumTotal";
+import toast from "react-hot-toast";
 
 const localStorageService = new LocalStorageService<CartItem[]>
 
@@ -78,6 +79,8 @@ export default function StripeCheckout({
 
         await orderCreate(orderPayload);
 
+        toast.success("Order is successful!"); //----> Show toast for successful order.
+
         dispatch(emptyCartItem());
 
         localStorageService.removeLocalstorage("carts");
@@ -89,6 +92,7 @@ export default function StripeCheckout({
        );
       }
     } catch (error: any) {
+      toast.error("Order is not successful!"); //----> Show toast for failed order.
       setErrorMessage(error.message);
     } finally {
       setLoading(true);

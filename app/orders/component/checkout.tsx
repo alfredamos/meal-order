@@ -3,6 +3,7 @@
 import { useCart } from "@/features/cartItemSlice";
 import { useRouter } from "next/navigation";
 import { Fragment} from "react";
+import toast from "react-hot-toast";
 
 
 export default function Checkout() {
@@ -12,6 +13,7 @@ const carts = useCart()?.cartItems;
   const router = useRouter();
 
   const makePayment = () => {
+    toast.success("Items checkout successfully!"); //----> Show toast for items-checkout successfully.
     router.push("/orders/payment")
   }
 
