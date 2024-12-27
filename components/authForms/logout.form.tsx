@@ -14,6 +14,8 @@ export default function LogoutForm() {
       toast.success("Logout is successful!"); //----> Show toast for successful logout.
     } catch (error) {
       toast.error("Logout has failed!"); //----> Show toast for failed logout.
+    }finally{
+      router.push("/")
     }
   }
 

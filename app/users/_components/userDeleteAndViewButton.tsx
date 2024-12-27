@@ -5,19 +5,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UserDeleteDialog from "./userDeleteDialog";
 import UserViewDialog from "./userViewDialog";
-import { useDeleteUser } from "@/hooks/useDeleteUser";
+import { deleteUserById } from "@/actions/user.action";
+import toast from "react-hot-toast";
 
 type Props = {
   user: User;
   onDelete: (userId: string) => void;
-}
-export default function UserDeleteAndViewButton({user, onDelete}: Props) {
+};
+export default function UserDeleteAndViewButton({ user, onDelete }: Props) {
   const router = useRouter();
   const [isDeleteUser, setIsDeleteUser] = useState(false);
   const [isViewUser, setIsViewUser] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
-  const {mutate: deleteUser} = useDeleteUser();
 
   const userDeleteConfirmation = () => {
     setIsDeleteUser((previous) => !previous);
@@ -37,13 +36,19 @@ export default function UserDeleteAndViewButton({user, onDelete}: Props) {
   const deleteUserHandler = (id: string) => {
     console.log("user info deleted : ", id);
 
-    deleteUser(id);
+    try {
+      deleteUserById(id); //----> Delete user from the database.
 
-    onDelete(id);
-   
-    setIsDeleteUser((previous) => !previous);
-    setRefresh(!refresh);
-    router.refresh();
+      onDelete(id); //----> Update the user-table in the ui.
+
+      toast.success("User is deleted successfully!") //----> Show toast for successful deletion.
+    } catch (error) {
+      toast.error("User is deletion has failed!"); //----> Show toast for failed deletion.
+    } finally {
+      setIsDeleteUser((previous) => !previous);
+      setRefresh(!refresh);
+      router.refresh();
+    }
   };
 
   return (
