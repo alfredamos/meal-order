@@ -8,8 +8,8 @@ type Props = {
   carts: CartItem[];
   addToCart: (carts: CartItem[]) => void;
   backToPizza: () => void;
-  decreaseQuantity: (cartId: string) => void;
-  increaseQuantity: (cartId: string) => void;
+  decreaseQuantity: (cart: CartItem) => void;
+  increaseQuantity: (cart: CartItem) => void;
 };
 
 export default function PizzaAddToCartConfirmation({
@@ -46,7 +46,7 @@ export default function PizzaAddToCartConfirmation({
               <span className=" flex flex-col gap-4 justify-center items-center font-semibold text-end">
                 <button
                   className="border border-none text-end"
-                  onClick={() => increaseQuantity(cart.id)}
+                  onClick={() => increaseQuantity(cart)}
                 >
                   <FaPlus size="15px" className="text-indigo-500" />
                 </button>
@@ -55,7 +55,7 @@ export default function PizzaAddToCartConfirmation({
 
                 <button
                   className="border border-none text-end"
-                  onClick={() => decreaseQuantity(cart.id)}
+                  onClick={() => decreaseQuantity(cart)}
                 >
                   <FaMinus size="15px" className="text-rose-500" />
                 </button>

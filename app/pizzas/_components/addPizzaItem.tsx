@@ -10,8 +10,8 @@ type Props = {
   isAddToCart: boolean;
   addToCart: (cartItems: CartItem[]) => void;
   backToList: () => void;
-  decreaseQuantity: (cartId: string) => void;
-  increaseQuantity: (cartId: string) => void;
+  decreaseQuantity: (cart: CartItem) => void;
+  increaseQuantity: (cart: CartItem) => void;
 };
 
 export default function AddPizzaItem({

@@ -6,14 +6,12 @@ import AddPizzaItem from "./_components/addPizzaItem";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { makeCartItems } from "@/utils/makeCartItems";
 import { useDispatch } from "react-redux";
 import {
-  deleteCartItem,
-  editCartItem,
   useCart,
 } from "@/features/cartItemSlice";
 import { LocalStorageService } from "../services/localStorage.service";
+import { CartUtil } from "@/components/utils/cart.util";
 
 type Props = {
   pizzas: Pizza[];
@@ -36,7 +34,7 @@ export default function PizzaListItems({ pizzas }: Props) {
     console.log("Add to cart");
     setIsAddToCart((previous) => !previous);
 
-    makeCartItems(pizza, cartItems, dispatch);
+    CartUtil.makeCartItems(pizza, cartItems, dispatch); //----> Get items into cart
 
     router.refresh();
   };
@@ -53,47 +51,27 @@ export default function PizzaListItems({ pizzas }: Props) {
     router.push("/orders/cart");
   };
 
-  const increaseQuantity = (cartId: string) => {
+  const increaseQuantity = (cart: CartItem) => {
 
-    const newCartItems = cartItems?.map((cart) => {
-      if (cart.id === cartId) {
+    const updateCart = CartUtil.increaseQuantity(cart, dispatch); //----> Increase cart quantity.
 
-        const newCart = {
-          ...cart,
-          quantity: cart.quantity >= 19 ? 20 : cart.quantity + 1,
-        };
-        dispatch(editCartItem({ cartItem: newCart }));
-
-        return newCart;
-      }
-
-      return cart;
-    }) as CartItem[];
-
+    //----> Update cart-items.
+    const newCartItems = cartItems?.map(cartItem => cartItem.id === cart.id ? updateCart: cartItem)
+    
+    //----> Update local-storage.
     localStorageService.setLocalStorage(newCartItems, "carts")
   };
 
-  const decreaseQuantity = (cartId: string) => {
-    const newCartItems = cartItems
-      ?.map((cart) => {
+  const decreaseQuantity = (cart: CartItem) => {
+    const updateCart = CartUtil.decreaseQuantity(cart, dispatch); //----> Decrease quantity in cart-item.
 
-        if (cart.id === cartId) {
-          const newCart = {
-            ...cart,
-            quantity: cart.quantity <= 1 ? 1 : cart.quantity - 1,
-          };
-          if (cart?.quantity === 0)
-            dispatch(deleteCartItem({ cartItemId: cart.id }));
-          if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
+    //----> Update cart-items.
+    const newCartItems = cartItems?.map((cartItem) =>
+      cartItem.id === cart.id ? updateCart : cartItem
+    );
 
-          return newCart;
-        }
-
-        return cart;
-      })
-      .filter((cart) => cart?.quantity !== 0) as CartItem[];
-
-    localStorageService.setLocalStorage(newCartItems, "carts")
+    //----> Update local-storage.
+    localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   return (

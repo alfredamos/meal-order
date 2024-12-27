@@ -1,7 +1,5 @@
 import { getAllUsers } from "@/actions/user.action";
-import UserDeleteAndViewButton from "./_components/userDeleteAndViewButton";
 import { auth } from "@/auth";
-import Image from "next/image";
 import UserListTable from "./_components/userListTable";
 
 async function ListUserPage() {

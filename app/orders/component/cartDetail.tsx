@@ -14,6 +14,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { LocalStorageService } from "@/app/services/localStorage.service";
 import toast from "react-hot-toast";
+import { CartUtil } from "@/components/utils/cart.util";
 
 const localStorageService = new LocalStorageService<CartItem[]>
 
@@ -27,71 +28,45 @@ export default function CartDetail() {
 
   let total = 0;
 
-  const increaseQuantity = (cartId: string) => {
-    console.log("Increase quantity of cart-id : ", cartId);
-    const newCartItems = cartItems?.map((cart) => {
-      if (cart.id === cartId) {
-        const newCart = {
-          ...cart,
-          quantity: cart.quantity >= 20 ? 20 : cart.quantity + 1,
-        };
-        dispatch(editCartItem({ cartItem: newCart }));
+  const increaseQuantity = (cart: CartItem) => {
+    console.log("Increase quantity of cart-id : ", cart.id);
+    const updatedCart = CartUtil.increaseQuantity(cart, dispatch)
+    
+  //----> Update the cartItems.
+   setCartItems((oldCartItems) =>
+     oldCartItems?.map((cartItem) =>
+       cartItem.id === cart.id ? updatedCart : cart
+     )
+   );
 
-        return newCart;
-      }
-
-      return cart;
-    }) as CartItem[];
-
-    toast.success("Cart item is increased!"); //----> Show toast for increased item.
-
-    setCartItems(newCartItems);
-    localStorageService.setLocalStorage(newCartItems, "carts")
+   //----> Update the local-storage
+    localStorageService.setLocalStorage(cartItems, "carts")
   };
 
-  const decreaseQuantity = (cartId: string) => {
-    console.log("Decrease quantity of cart-id : ", cartId);
+  const decreaseQuantity = (cart: CartItem) => {
+    console.log("Decrease quantity of cart-id : ", cart.id);
 
-    const newCartItems = cartItems
-      ?.map((cart) => {
-        if (cart.id === cartId) {
-          const newCart = {
-            ...cart,
-            quantity: cart.quantity <= 1 ? 1 : cart.quantity - 1,
-          };
-          if (cart?.quantity === 0)
-            dispatch(deleteCartItem({ cartItemId: cart.id }));
-          if (cart?.quantity > 0) dispatch(editCartItem({ cartItem: newCart }));
+    const updatedCart = CartUtil.decreaseQuantity(cart, dispatch);
 
-          return newCart;
-        }
+    //----> Update the cartItems.
+    setCartItems((oldCartItems) =>
+      oldCartItems?.map((cartItem) => (cartItem.id === cart.id ? updatedCart : cart))
+    );
 
-        return cart;
-      })
-      .filter((cart) => cart?.quantity !== 0) as CartItem[];
-
-    toast.success("Cart item is decreased!"); //----> Show toast for decreased item.
-
-    setCartItems(newCartItems);
-    localStorageService.setLocalStorage(newCartItems, "carts");
+    //----> Update the local-storage.
+    localStorageService.setLocalStorage(cartItems, "carts");
   };
 
-  const removePizza = (cartId: string) => {
-    console.log("Increase quantity of cart-id : ", cartId);
+  const removePizza = (cart: CartItem) => {
+    console.log("Increase quantity of cart-id : ", cart.id);
 
-    const newCartItems = cartItems?.filter((cart) => {
-      if (cart.id === cartId) {
-        dispatch(deleteCartItem({ cartItemId: cart.id }));
-        return;
-      }
+    CartUtil.removePizza(cart, dispatch)
 
-      return cart;
-    }) as CartItem[];
+    //----> Update cart-items.
+    setCartItems(oldCartItems => oldCartItems.filter(cartItem => cartItem.id !== cart.id));
 
-    toast.success("Cart item is removed successfully!"); //----> Show toast for removed item.
-
-    setCartItems(newCartItems);
-    localStorageService.setLocalStorage(newCartItems, "carts");
+    //----> Local-storage.
+    localStorageService.setLocalStorage(cartItems, "carts");
   };
 
   const makeCheckout = () => {
@@ -138,7 +113,7 @@ export default function CartDetail() {
                   <FaPlus
                     size="20px"
                     className="cursor-pointer text-indigo-900 text-end"
-                    onClick={() => increaseQuantity(cart.id)}
+                    onClick={() => increaseQuantity(cart)}
                   />
                 </span>
               </p>
@@ -149,7 +124,7 @@ export default function CartDetail() {
                   <FaMinus
                     size="20px"
                     className="cursor-pointer text-amber-500"
-                    onClick={() => decreaseQuantity(cart.id)}
+                    onClick={() => decreaseQuantity(cart)}
                   />
                 </span>
               </p>
@@ -160,7 +135,7 @@ export default function CartDetail() {
                   <FaTrash
                     size="20px"
                     className="cursor-pointer text-rose-700"
-                    onClick={() => removePizza(cart.id)}
+                    onClick={() => removePizza(cart)}
                   />
                 </span>
               </p>
