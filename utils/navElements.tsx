@@ -8,7 +8,7 @@ import LogoutLink from "./logoutLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import { dropDownLinks, adminDropDownLinks, authLinks } from "./navLinks";
 import { useCart } from "@/features/cartItemSlice";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
 
 const inlineBlock: CSSProperties = {
@@ -21,12 +21,17 @@ type Props = {
 
 export default function NavElements({ session }: Props) {
   const cartItems = useCart().cartItems;
-  const [open, setOpen] = useState(true);
+  const [open, _setOpen] = useState(true);
+  const [totalQuantity, setTotalQuantity] = useState(1);
 
-  const totalQuantity = cartItems?.reduce(
-    (accumulator, current) => current?.quantity + accumulator,
-    0
-  );
+  useEffect(() => {
+    setTotalQuantity(
+      cartItems?.reduce(
+        (accumulator, current) => current?.quantity + accumulator,
+        0
+      )
+    );
+  }, [cartItems]);
 
   return (
     <header>
@@ -50,7 +55,11 @@ export default function NavElements({ session }: Props) {
             </Link>
           </div>
         </div>
-        <HomeLink path="/" image={session?.user?.image as string} name={session?.user?.name as string} />
+        <HomeLink
+          path="/"
+          image={session?.user?.image as string}
+          name={session?.user?.name as string}
+        />
         <div className={open ? "flex items-center gap-2 mr-2" : "hidden"}>
           {session?.user ? (
             <>
