@@ -2,7 +2,6 @@
 
 import PizzaInputForm from "@/components/pizza/pizzaInputForm.form";
 import { Pizza } from "@prisma/client";
-import { FormEvent } from "react";
 import ClientCancelButton from "./clientCancelButton";
 
 type Props = {
