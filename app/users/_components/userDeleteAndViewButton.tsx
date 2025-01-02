@@ -41,7 +41,7 @@ export default function UserDeleteAndViewButton({ user, onDelete }: Props) {
 
       onDelete(id); //----> Update the user-table in the ui.
 
-      toast.success("User is deleted successfully!") //----> Show toast for successful deletion.
+      toast.success("User is deleted successfully!"); //----> Show toast for successful deletion.
     } catch (error) {
       toast.error("User is deletion has failed!"); //----> Show toast for failed deletion.
     } finally {
@@ -68,20 +68,21 @@ export default function UserDeleteAndViewButton({ user, onDelete }: Props) {
           isView={isViewUser}
         />
       )}
-      <button
-        type="submit"
-        className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-4 md:m-1"
-        onClick={viewUserHandler}
-      >
-        view
-      </button>
-      <button
-        type="submit"
-        className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-4 md:m-1"
-        onClick={userDeleteConfirmation}
-      >
-        Delete
-      </button>
+      <form action={viewUserHandler}>
+        <button
+          type="submit"
+          className="py-2 px-4 border-2 border-violet-900 hover:bg-violet-900 hover:text-indigo-100 text-violet-900 font-bold text-base rounded-lg mr-4 md:m-1"
+        >
+          view
+        </button>
+        <button
+          type="button"
+          className="py-2 px-4 border-2 border-rose-900 hover:bg-rose-900 hover:text-rose-100 text-rose-900 font-bold text-base rounded-lg mr-4 md:m-1"
+          onClick={userDeleteConfirmation}
+        >
+          Delete
+        </button>
+      </form>
     </>
   );
 }

@@ -32,10 +32,12 @@ export default function UserListTable({ users }: Props) {
   };
 
   const deleteUserHandler = (userId: string) => {
-    setEnteredUsers(oldEnteredUsers => oldEnteredUsers?.filter(user => user.id !== userId));
+    setEnteredUsers((oldEnteredUsers) =>
+      oldEnteredUsers?.filter((user) => user.id !== userId)
+    );
 
-    dispatch(deleteUser({userId}));
-  }
+    dispatch(deleteUser({ userId }));
+  };
 
   return (
     <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
@@ -72,9 +74,10 @@ export default function UserListTable({ users }: Props) {
                   <Image
                     src={user?.image ? user.image : ""}
                     alt={user.name}
-                    width={80}
+                    width={60}
                     height={60}
-                    className="object-cover h-20 w-20 rounded-full"
+                    priority
+                    className="aspect-square object-cover w-20 h-auto rounded-full"
                   />
                 </td>
                 <td>{user.name}</td>
@@ -82,7 +85,10 @@ export default function UserListTable({ users }: Props) {
                 <td>{user.phone}</td>
                 <td>{user.gender}</td>
                 <td>
-                  <UserDeleteAndViewButton user={user} onDelete={deleteUserHandler}/>
+                  <UserDeleteAndViewButton
+                    user={user}
+                    onDelete={deleteUserHandler}
+                  />
                 </td>
               </tr>
             );

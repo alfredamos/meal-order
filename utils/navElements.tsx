@@ -50,7 +50,7 @@ export default function NavElements({ session }: Props) {
             </Link>
           </div>
         </div>
-        <HomeLink path="/" label="Home" name={session?.user?.name as string} />
+        <HomeLink path="/" image={session?.user?.image as string} name={session?.user?.name as string} />
         <div className={open ? "flex items-center gap-2 mr-2" : "hidden"}>
           {session?.user ? (
             <>

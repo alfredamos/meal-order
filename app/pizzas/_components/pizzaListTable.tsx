@@ -82,13 +82,14 @@ export default function PizzaListTable({ pizzas }: Props) {
             return (
               <tr key={pizza.id} className="text-base text-black">
                 <td>
-                 <Image
+                  <Image
                     src={pizza.image}
                     alt={pizza.name}
                     width={80}
                     height={80}
-                    className="object-cover w-20 h-20"
-                  /> 
+                    className="aspect-square object-cover w-20 h-auto"
+                    priority
+                  />
                 </td>
                 <td>{pizza.name}</td>
                 <td>{pizza.price}</td>

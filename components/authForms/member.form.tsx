@@ -6,9 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { createUser } from "@/features/userSlice";
-import { UserResponseModel } from "@/models/userResponse.model";
 import { User } from "@prisma/client";
-
 
 export default function MemberForm() {
   const router = useRouter();
@@ -17,16 +15,16 @@ export default function MemberForm() {
   const signupSubmitHandler = async (formData: FormData) => {
     try {
       const newUser = await signupAction(formData); //----> signup.
-      
-      dispatch(createUser({user: newUser as User })); //----> Update the user-list in the UI.
-      
+
+      dispatch(createUser({ user: newUser as User })); //----> Update the user-list in the UI.
+
       toast.success("Signup is successful!"); //----> Show toast for successful signup.
     } catch (error) {
       toast.error("Signup is not successful!"); //----> Show toast for failed signup.
-    }finally{
+    } finally {
       router.push("/");
     }
-  }
+  };
 
   return (
     <form
@@ -114,7 +112,7 @@ export default function MemberForm() {
             Confirm Password
           </label>
           <input
-            id="password"
+            id="confirmPassword"
             name="confirmPassword"
             type="password"
             className="border-solid border-2 border-gray-300 focus:border-indigo-600 focus:outline-none bg-slate-200 w-full p-2 rounded-lg text-black"

@@ -7,9 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import {
-  useCart,
-} from "@/features/cartItemSlice";
+import { useCart } from "@/features/cartItemSlice";
 import { LocalStorageService } from "../services/localStorage.service";
 import { CartUtil } from "@/components/utils/cart.util";
 
@@ -17,13 +15,13 @@ type Props = {
   pizzas: Pizza[];
 };
 
-const localStorageService = new LocalStorageService<CartItem[]>;
+const localStorageService = new LocalStorageService<CartItem[]>();
 
 export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
   console.log("Initial-redux", { cartItems });
   //----> Set states for the following
-  const [isAddToCart, setIsAddToCart] = useState(false);  
+  const [isAddToCart, setIsAddToCart] = useState(false);
 
   //----> Get dispatch function
   const dispatch = useDispatch();
@@ -46,20 +44,20 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-
-    localStorageService.setLocalStorage(cartItems, "carts")
+    localStorageService.setLocalStorage(cartItems, "carts");
     router.push("/orders/cart");
   };
 
   const increaseQuantity = (cart: CartItem) => {
-
     const updateCart = CartUtil.increaseQuantity(cart, dispatch); //----> Increase cart quantity.
 
     //----> Update cart-items.
-    const newCartItems = cartItems?.map(cartItem => cartItem.id === cart.id ? updateCart: cartItem)
-    
+    const newCartItems = cartItems?.map((cartItem) =>
+      cartItem.id === cart.id ? updateCart : cartItem
+    );
+
     //----> Update local-storage.
-    localStorageService.setLocalStorage(newCartItems, "carts")
+    localStorageService.setLocalStorage(newCartItems, "carts");
   };
 
   const decreaseQuantity = (cart: CartItem) => {
@@ -90,6 +88,7 @@ export default function PizzaListItems({ pizzas }: Props) {
                   height={80}
                   width={80}
                   className="object-cover w-full h-48"
+                  priority
                 />
               </figure>
               <div className="card-body">
