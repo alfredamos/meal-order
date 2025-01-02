@@ -14,9 +14,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { LocalStorageService } from "@/app/services/localStorage.service";
 import toast from "react-hot-toast";
-import { CartUtil } from "@/components/utils/cart.util";
+import { CartUtil } from "@/app/services/cartUtil.service";
 
-const localStorageService = new LocalStorageService<CartItem[]>
+const localStorageService = new LocalStorageService<CartItem[]>();
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
@@ -30,17 +30,17 @@ export default function CartDetail() {
 
   const increaseQuantity = (cart: CartItem) => {
     console.log("Increase quantity of cart-id : ", cart.id);
-    const updatedCart = CartUtil.increaseQuantity(cart, dispatch)
-    
-  //----> Update the cartItems.
-   setCartItems((oldCartItems) =>
-     oldCartItems?.map((cartItem) =>
-       cartItem.id === cart.id ? updatedCart : cart
-     )
-   );
+    const updatedCart = CartUtil.increaseQuantity(cart, dispatch);
 
-   //----> Update the local-storage
-    localStorageService.setLocalStorage(cartItems, "carts")
+    //----> Update the cartItems.
+    setCartItems((oldCartItems) =>
+      oldCartItems?.map((cartItem) =>
+        cartItem.id === cart.id ? updatedCart : cart
+      )
+    );
+
+    //----> Update the local-storage
+    localStorageService.setLocalStorage(cartItems, "carts");
   };
 
   const decreaseQuantity = (cart: CartItem) => {
@@ -50,7 +50,9 @@ export default function CartDetail() {
 
     //----> Update the cartItems.
     setCartItems((oldCartItems) =>
-      oldCartItems?.map((cartItem) => (cartItem.id === cart.id ? updatedCart : cart))
+      oldCartItems?.map((cartItem) =>
+        cartItem.id === cart.id ? updatedCart : cart
+      )
     );
 
     //----> Update the local-storage.
@@ -60,13 +62,17 @@ export default function CartDetail() {
   const removePizza = (cart: CartItem) => {
     console.log("Increase quantity of cart-id : ", cart.id);
 
-    CartUtil.removePizza(cart, dispatch)
+    CartUtil.removePizza(cart, dispatch);
 
     //----> Update cart-items.
-    setCartItems(oldCartItems => oldCartItems.filter(cartItem => cartItem.id !== cart.id));
+    setCartItems((oldCartItems) =>
+      oldCartItems.filter((cartItem) => cartItem.id !== cart.id)
+    );
 
     //----> Local-storage.
     localStorageService.setLocalStorage(cartItems, "carts");
+    if (cartItems?.length === 1)
+      localStorageService.removeLocalstorage("carts");
   };
 
   const makeCheckout = () => {
@@ -85,7 +91,7 @@ export default function CartDetail() {
         <span className="flex justify-end items-center">
           <Link href="/pizzas" className="text-indigo-500">
             <span className="flex gap-2 justify-center items-center">
-              <FaArrowLeft size="20px"/>
+              <FaArrowLeft size="20px" />
               <FaArrowLeft size="20px" />
               <span className="text-2xl">Home</span>
             </span>

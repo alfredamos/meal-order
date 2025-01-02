@@ -1,4 +1,8 @@
-import { createCartItem, deleteCartItem, editCartItem } from "@/features/cartItemSlice";
+import {
+  createCartItem,
+  deleteCartItem,
+  editCartItem,
+} from "@/features/cartItemSlice";
 import { CartItem, Pizza } from "@prisma/client";
 import { Dispatch } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";

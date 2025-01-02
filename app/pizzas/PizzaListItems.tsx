@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useCart } from "@/features/cartItemSlice";
 import { LocalStorageService } from "../services/localStorage.service";
-import { CartUtil } from "@/components/utils/cart.util";
+import { CartUtil } from "../services/cartUtil.service";
 
 type Props = {
   pizzas: Pizza[];
