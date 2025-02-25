@@ -1,15 +1,15 @@
+import { EditProfileModel } from "./../models/editProfile.model";
+import { ChangePasswordModel } from "../models/changePassword.model";
+import { LoginModel } from "../models/login.model";
+import { SignupModel } from "../models/signup.model";
 import catchError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import prisma from "./prisma.db";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { Role, User } from "@prisma/client";
-import { AuthResponseModel } from "@/models/authResponse.model";
-import { ChangePasswordModel } from "@/models/changePassword.model";
-import { EditProfileModel } from "@/models/editProfile.model";
-import { LoginModel } from "@/models/login.model";
-import { SignupModel } from "@/models/signup.model";
-import { UserInfoModel } from "@/models/userInfo.model";
+import { AuthResponseModel } from "../models/authResponse.model";
+import { UserInfoModel } from "../models/userInfo.model";
 
 export class AuthDb {
   constructor() {}
@@ -28,7 +28,10 @@ export class AuthDb {
     const user = await this.getUserByEmail(email);
 
     //----> Check that the old password is correct.
-    await this.comparePassword(oldPassword, user.password);
+    const isMatch = await this.comparePassword(oldPassword, user);
+    if (!isMatch) {
+      throw catchError(StatusCodes.UNAUTHORIZED, "Invalid credentials ");
+    }
 
     //----> Hash the new password.
     const hashNewPassword = await this.passwordHarsher(newPassword);
@@ -44,9 +47,9 @@ export class AuthDb {
     return rest;
   }
 
-  async currentUser(userId: string) {
+  async currentUser(id: string) {
     //----> Retrieve the current user from the database.
-    const currentUser = await this.getOneUser(userId);
+    const currentUser = await this.getUserById(id);
 
     //----> Remove role and password from the user object.
     const { password, ...rest } = currentUser;
@@ -62,7 +65,7 @@ export class AuthDb {
     const user = await this.getUserByEmail(email);
 
     //----> Compare the new password with old password.
-    await this.comparePassword(password, user.password);
+    const isMatch = await this.comparePassword(password, user);
 
     //----> Store the updated user in the database.
     const updatedUser = await prisma.user.update({
@@ -83,7 +86,7 @@ export class AuthDb {
     const user = await this.getUserByEmail(email);
 
     //----> Compare the new password with old password.
-    await this.comparePassword(password, user.password);
+    const isMatch = await this.comparePassword(password, user);
 
     //----> Get json web token.
     const token = this.getJsonToken(user.id, user.name, user.role);
@@ -112,7 +115,7 @@ export class AuthDb {
 
     //----> Store the new user in the database.
     const newUser = await prisma.user.create({
-      data: { ...rest, role: Role.User, password: hashNewPassword, email },
+      data: { ...rest, password: hashNewPassword, email },
     });
 
     const { password: userPassword, ...restOfData } = newUser;
@@ -145,11 +148,19 @@ export class AuthDb {
     const userUpdated = await prisma.user.update({
       where: { email },
       data: { ...user, role },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        gender: true,
+        role: true,
+
+      }
     });
 
-    const { password, ...restOfData } = userUpdated; //----> Do not send back the password.
 
-    return restOfData;
+    return userUpdated;
   }
 
   private matchPassword(newPassword: string, oldPassword: string) {
@@ -158,21 +169,7 @@ export class AuthDb {
     return isMatch;
   }
 
-  private async getUserById(id: string, includeAddresses: boolean = false) {
-    //----> Get the user.
-    const user = await prisma.user.findUnique({
-      where: { id },
-      // include: { addresses: includeAddresses },
-    });
-    //----> Check for existence of user.
-    if (!user) {
-      throw catchError(StatusCodes.NOT_FOUND, "Invalid credentials!");
-    }
-
-    return user;
-  }
-
-  private async getOneUser(id: string) {
+  private async getUserById(id: string,) {
     //----> Get the user.
     const user = await prisma.user.findUnique({
       where: { id },
@@ -197,12 +194,9 @@ export class AuthDb {
     return user;
   }
 
-  private async comparePassword(
-    oldPassword: string,
-    oldPasswordHashed: string
-  ) {
+  private async comparePassword(oldPassword: string, user: User) {
     //----> Compare the new password with old password.
-    const isMatch = await bcrypt.compare(oldPassword, oldPasswordHashed);
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
 
     //----> Check if the two passwords match.
     if (!isMatch) {
