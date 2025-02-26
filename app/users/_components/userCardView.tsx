@@ -9,7 +9,6 @@ type Props = {
   onCancel: () => void;
 };
 export default function UserCardView({ user, onCancel }: Props) {
-  console.log("UserCard : ", user);
   return (
     <div className="bg-slate-100 max-w-lg shadow-2xl flex flex-col gap-2 rounded-2xl overflow-hidden items-center justify-center">
       <div className="flex 1 w-full h-full">

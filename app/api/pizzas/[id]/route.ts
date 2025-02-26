@@ -1,4 +1,4 @@
-import { deletePizzaById, editOnePizza } from "@/actions/pizza.action";
+import { deletePizzaById, editPizzaById } from "@/actions/pizza.action";
 import { Pizza } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -10,8 +10,6 @@ type Params = {
 
 export const DELETE = async (_request: NextRequest, { params }: Params) => {
   const { id } = params;
-
-  console.log("Delete pizza with id in the route-api : ", id);
 
   //----> Delete the pizza from the database.
   const deletedPizza = await deletePizzaById(id);
@@ -32,17 +30,11 @@ export const PATCH = async (request: NextRequest, { params }: Params) => {
 
   pizza.id = id;
 
-  console.log("Edit pizza with id in the route-api : ", id);
-
   //----> Edit the pizza from the database.
-  const editedPizza = await editOnePizza(pizza);
+  await editPizzaById(pizza);
 
   revalidatePath("/pizzas/list");
   redirect(`/pizzas/${id}`);
-  //----> Send back the response.
-  /* return NextResponse.json({
-    pizza: editedPizza,
-    message: "Pizza edited successfully.",
-  }); */
+  
 };
 

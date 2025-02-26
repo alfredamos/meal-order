@@ -1,7 +1,6 @@
 "use client"
 
 import { useCart } from "@/features/cartItemSlice";
-import { makeCartItems } from "@/utils/makeCartItems";
 import { CartItem, Pizza } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import AddPizzaItem from "./_components/addPizzaItem";
 import { LocalStorageService } from "../services/localStorage.service";
+import { CartUtil } from "../services/cartUtil.service";
 
 const localStorageService = new LocalStorageService<CartItem[]>;
 
@@ -18,7 +18,6 @@ type Props = {
 };
 export default function PizzaCard({ pizza }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
-  console.log("Initial-redux", { cartItems });
   //----> Set states for the following
   const [isAddToCart, setIsAddToCart] = useState(false);
   //const [carts, setCarts] = useState<CartItem[]>(cartItems);
@@ -29,22 +28,19 @@ export default function PizzaCard({ pizza }: Props) {
   const router = useRouter();
 
   const addToCart = (pizza: Pizza) => {
-    console.log("Add to cart");
     setIsAddToCart((previous) => !previous);
 
-    makeCartItems(pizza, cartItems, dispatch);
+    CartUtil.makeCartItems(pizza, cartItems, dispatch);
 
     router.refresh();
   };
 
   const backToList = () => {
-    console.log("You must close now!!!");
     setIsAddToCart(false);
     router.refresh();
   };
 
   const toCart = (cartItems: CartItem[]) => {
-    console.log("The cart-items to cart : ", { cartItems });
      localStorageService.setLocalStorage(cartItems, "carts");
      router.push("/orders/cart")
   };

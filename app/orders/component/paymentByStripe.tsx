@@ -13,8 +13,6 @@ import Image from "next/image";
 
 const STRIPE_PUBLIC_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!;
 
-console.log("STRIPE_KEY : ", STRIPE_PUBLIC_KEY);
-
 if (STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined!");
 }
@@ -37,7 +35,6 @@ export default function PaymentByStripe({ userId }: Props) {
     setIsLoading(true);
     const totalPrice = convertToSubCurrency(sumTotal(cartItems));
     const { client_secret, id } = await createPaymentIntent(totalPrice,"description");
-    console.log({ clientSecret: client_secret, paymentId: id });
 
     setClientSecret(client_secret);
     setPaymentId(id);

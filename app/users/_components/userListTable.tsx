@@ -19,7 +19,7 @@ export default function UserListTable({ users }: Props) {
 
   const searchHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("searchTerm : ", searchTerm);
+    
     setEnteredUsers(
       users.filter(
         (user) =>

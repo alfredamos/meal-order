@@ -9,7 +9,6 @@ type Props = {
   onCancel: () => void;
 };
 export default function PizzaCardView({ pizza, onCancel }: Props) {
-  console.log("PizzaCard : ", pizza);
   return (
     <div className="card lg:card-side bg-base-100 shadow-xl w-3/5 mx-auto mt-16">
       <figure>

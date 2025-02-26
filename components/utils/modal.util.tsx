@@ -12,7 +12,6 @@ export default function Modal({ open, children, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    console.log({ dialogRef });
     if (open) {
       //dialogRef.current!.showModal();
       dialogRef.current!.showModal();

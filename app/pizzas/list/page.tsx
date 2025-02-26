@@ -4,10 +4,10 @@ import PizzaListTable from "../_components/pizzaListTable";
 
 type Props = {};
 export default async function PizzaListPage({}: Props) {
-  const session = await auth();
+  /* const session = await auth();
 
   if (session?.user.role !== "Admin")
-    return <div>You are not authorized to view this page</div>;
+    return <div>You are not authorized to view this page</div>; */
 
   const pizzas = await getAllPizza();
 

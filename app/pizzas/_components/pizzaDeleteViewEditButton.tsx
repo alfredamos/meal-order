@@ -37,7 +37,6 @@ export default function PizzaDeleteViewEditButton({
   };
 
   const editPizzaHandler = async (pizza: Pizza) => {
-    console.log("pizza info edited : ", pizza);
 
     if (!pizza) {
       return <div>Please enter all values!</div>;
@@ -72,8 +71,6 @@ export default function PizzaDeleteViewEditButton({
   };
 
   const deletePizzaHandler = async (id: string) => {
-    console.log("pizza info deleted : ", id);
-
     try {
       await deletePizzaById(id);
 

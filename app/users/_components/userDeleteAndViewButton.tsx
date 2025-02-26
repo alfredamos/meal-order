@@ -23,7 +23,6 @@ export default function UserDeleteAndViewButton({ user, onDelete }: Props) {
   };
 
   const backToListHandler = () => {
-    console.log("At point 1", { isDeleteUser });
     if (isDeleteUser) setIsDeleteUser((previous) => !previous);
     if (isViewUser) setIsViewUser((previous) => !previous);
     router.refresh();
@@ -34,8 +33,6 @@ export default function UserDeleteAndViewButton({ user, onDelete }: Props) {
   };
 
   const deleteUserHandler = (id: string) => {
-    console.log("user info deleted : ", id);
-
     try {
       deleteUserById(id); //----> Delete user from the database.
 

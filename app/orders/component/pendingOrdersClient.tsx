@@ -23,10 +23,7 @@ export default function PendingOrdersClient({ orders }: Props) {
   const [order, setOrder] = useState<OrderModelDatesString>({} as OrderModelDatesString);
   const dispatch = useDispatch();
 
-  console.log({ allOrders });
-
   useEffect(() => {
-    console.log({ orders });
     const mappedOrders: OrderModelDatesString[] = orders?.map((order) => ({
       ...order,
       orderDate: order.orderDate.toDateString(),
@@ -42,7 +39,6 @@ export default function PendingOrdersClient({ orders }: Props) {
   }
 
   const shippedOrderHandler = async (orderId: string) => {
-    console.log("In pending-orders, orderId : ", orderId);
     const updatedOrder = await orderShipped(orderId);
 
     const mappedUpdatedOrder: OrderModelDatesString = {

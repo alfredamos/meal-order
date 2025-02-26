@@ -18,17 +18,13 @@ export default function UserDeleteDialog({ user }: Props) {
   };
 
   const backToListHandler = () => {
-    console.log("At point 1", { modalIsOpen });
     //router.push("/users");
     setModalIsOpen((previous) => {
-      console.log(previous);
       return !previous;
     });
-    console.log("At point 2", { modalIsOpen });
   };
 
   const userDeleteHandler = (id: string) => {
-    console.log("Delete user with id : ", id);
   };
 
   return (

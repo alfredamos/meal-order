@@ -9,7 +9,6 @@ type Props = {
   type: "navbar" | "sideBar";
 };
 export default function NavLink({ icon, label, path, style, type }: Props) {
-  console.log({ icon, label, path, style, type });
   
   return (
     <Link

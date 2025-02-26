@@ -27,7 +27,6 @@ export async function editProfileAction(formData: FormData) {
   const { address, name, email, phone, image, gender, password } =
     Object.fromEntries(formData) as unknown as EditProfileModel;
   //----> edit user profile and store it in the database.
-  console.log({ address, name, email, phone, image, gender, password });
 
   const updatedUser = await authDb.editProfile({
     address,

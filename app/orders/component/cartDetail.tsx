@@ -29,7 +29,6 @@ export default function CartDetail() {
   let total = 0;
 
   const increaseQuantity = (cart: CartItem) => {
-    console.log("Increase quantity of cart-id : ", cart.id);
     const updatedCart = CartUtil.increaseQuantity(cart, dispatch);
 
     //----> Update the cartItems.
@@ -44,8 +43,6 @@ export default function CartDetail() {
   };
 
   const decreaseQuantity = (cart: CartItem) => {
-    console.log("Decrease quantity of cart-id : ", cart.id);
-
     const updatedCart = CartUtil.decreaseQuantity(cart, dispatch);
 
     //----> Update the cartItems.
@@ -60,8 +57,6 @@ export default function CartDetail() {
   };
 
   const removePizza = (cart: CartItem) => {
-    console.log("Increase quantity of cart-id : ", cart.id);
-
     CartUtil.removePizza(cart, dispatch);
 
     //----> Update cart-items.

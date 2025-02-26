@@ -80,5 +80,10 @@
   "WillLuke.nextjs.addTypesOnSave": true,
   "WillLuke.nextjs.hasPrompted": true,
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["datasource"]
+  "cSpell.words": [
+    "datasource"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

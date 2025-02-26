@@ -21,7 +21,6 @@ export const cartItemSlice = createSlice({
   initialState,
   reducers: {
     createCartItem: (state, action: PayloadAction<{ cartItem: CartItem }>) => {
-      console.log("In create-cart-item, action : ", action.payload.cartItem);
       state.cartItems.push(action.payload.cartItem);
     },
     deleteCartItem: (state, action: PayloadAction<{ cartItemId: string }>) => {

@@ -19,7 +19,6 @@ const localStorageService = new LocalStorageService<CartItem[]>();
 
 export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
-  console.log("Initial-redux", { cartItems });
   //----> Set states for the following
   const [isAddToCart, setIsAddToCart] = useState(false);
 
@@ -29,7 +28,6 @@ export default function PizzaListItems({ pizzas }: Props) {
   const router = useRouter();
 
   const addToCart = (pizza: Pizza) => {
-    console.log("Add to cart");
     setIsAddToCart((previous) => !previous);
 
     CartUtil.makeCartItems(pizza, cartItems, dispatch); //----> Get items into cart
@@ -38,7 +36,6 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const backToList = () => {
-    console.log("You must close now!!!");
     setIsAddToCart(false);
     router.refresh();
   };

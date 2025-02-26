@@ -8,7 +8,6 @@ export class OrderDb {
   constructor() {}
 
   async orderCreate(orderPayload: OrderPayload) {
-    console.log({ orderPayload });
 
     const { cartItems, ...rest } = orderPayload;
 
