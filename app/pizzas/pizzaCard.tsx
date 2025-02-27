@@ -8,10 +8,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import AddPizzaItem from "./_components/addPizzaItem";
-import { LocalStorageService } from "../services/localStorage.service";
 import { CartUtil } from "../services/cartUtil.service";
+import * as ls from "local-storage"
 
-const localStorageService = new LocalStorageService<CartItem[]>;
 
 type Props = {
   pizza: Pizza;
@@ -41,7 +40,7 @@ export default function PizzaCard({ pizza }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-     localStorageService.setLocalStorage(cartItems, "carts");
+     ls.set<CartItem[]>("carts", cartItems);
      router.push("/orders/cart")
   };
 

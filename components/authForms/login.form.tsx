@@ -4,14 +4,16 @@ import { loginAction } from "@/actions/auth.action";
 import CancelButton from "./cancelButton";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import {useDispatch} from "react-redux"
 
 
 export default function LoginForm() {
   const router = useRouter();
-
+  const dispatch = useDispatch()
   const loginSubmitHandler = async (formData: FormData) => {
     try {
-      await loginAction(formData); //----> Login.
+      const response = await loginAction(formData); //----> Login.
+      console.log("In login : ", {response})
       toast.success("Login is successful!"); //----> Show toast for successful login.
     } catch (error) {
       toast.error("Login has failed!"); //----> Show toast for successful login.

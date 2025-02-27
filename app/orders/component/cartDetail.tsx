@@ -6,17 +6,14 @@ import { Fragment, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import {
-  deleteCartItem,
-  editCartItem,
   useCart,
 } from "@/features/cartItemSlice";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { LocalStorageService } from "@/app/services/localStorage.service";
 import toast from "react-hot-toast";
 import { CartUtil } from "@/app/services/cartUtil.service";
-
-const localStorageService = new LocalStorageService<CartItem[]>();
+import * as ls from "local-storage"
+//import { Dispatch } from '@reduxjs/toolkit';
 
 export default function CartDetail() {
   const carts = useCart()?.cartItems;
@@ -39,7 +36,7 @@ export default function CartDetail() {
     );
 
     //----> Update the local-storage
-    localStorageService.setLocalStorage(cartItems, "carts");
+    ls.set<CartItem[]>("carts", cartItems);
   };
 
   const decreaseQuantity = (cart: CartItem) => {
@@ -53,7 +50,7 @@ export default function CartDetail() {
     );
 
     //----> Update the local-storage.
-    localStorageService.setLocalStorage(cartItems, "carts");
+    ls.set<CartItem[]>("carts", cartItems);
   };
 
   const removePizza = (cart: CartItem) => {
@@ -65,9 +62,9 @@ export default function CartDetail() {
     );
 
     //----> Local-storage.
-    localStorageService.setLocalStorage(cartItems, "carts");
+    ls.set<CartItem[]>("carts", cartItems);
     if (cartItems?.length === 1)
-      localStorageService.removeLocalstorage("carts");
+      ls.remove("carts");
   };
 
   const makeCheckout = () => {

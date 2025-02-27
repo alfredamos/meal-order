@@ -5,11 +5,9 @@ import { CartItemState } from "@/states/cartItemState";
 import { CartItem } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-import { LocalStorageService } from "../app/services/localStorage.service";
+import * as ls from "local-storage"
 
-const localStorageService = new LocalStorageService<CartItem[]>();
-
-const defaultValue = () => localStorageService.getLocalStorage("carts") as CartItem[];
+const defaultValue = () => ls.get<CartItem[]>("carts");
 
 const initialState: CartItemState = {
   cartItems: defaultValue() ?? [],

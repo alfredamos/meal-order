@@ -1,6 +1,6 @@
 "use client";
 
-import { Session } from "next-auth";
+import {Session} from "next-auth"
 import AdminDropDownLinks from "./adminDropDownLinks";
 import DropDownLinks from "./dropDownLinks.util";
 import HomeLink from "./homeLink";
@@ -10,19 +10,24 @@ import { dropDownLinks, adminDropDownLinks, authLinks } from "./navLinks";
 import { useCart } from "@/features/cartItemSlice";
 import { CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
+import avatar from "@/public/avatar3.jpg"
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
 };
 
 type Props = {
+  isAdmin: boolean;
   session: Session | null;
+
 };
 
-export default function NavElements({ session }: Props) {
+export default function NavElements({ isAdmin, session }: Props) {
   const cartItems = useCart().cartItems;
   const [open, _setOpen] = useState(true);
   const [totalQuantity, setTotalQuantity] = useState(1);
+  
+  const user = session?.user;
 
   useEffect(() => {
     setTotalQuantity(
@@ -57,17 +62,17 @@ export default function NavElements({ session }: Props) {
         </div>
         <HomeLink
           path="/"
-          image={session?.user?.image as string}
-          name={session?.user?.name as string}
+          image={!!user? user?.image as string : avatar as unknown as string}
+          name={user?.name as string}
         />
         <div className={open ? "flex items-center gap-2 mr-2" : "hidden"}>
-          {session?.user ? (
+          {user ? (
             <>
               <details className="dropdown" style={inlineBlock}>
                 <summary>Settings</summary>
                 <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                   <DropDownLinks navLinks={dropDownLinks} />
-                  {session?.user?.role === "Admin" && (
+                  {isAdmin && (
                     <AdminDropDownLinks navLinks={adminDropDownLinks} />
                   )}
                 </ul>

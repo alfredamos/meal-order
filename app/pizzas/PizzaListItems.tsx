@@ -8,14 +8,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useCart } from "@/features/cartItemSlice";
-import { LocalStorageService } from "../services/localStorage.service";
 import { CartUtil } from "../services/cartUtil.service";
+import * as ls from "local-storage"
 
 type Props = {
   pizzas: Pizza[];
 };
-
-const localStorageService = new LocalStorageService<CartItem[]>();
 
 export default function PizzaListItems({ pizzas }: Props) {
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
@@ -41,7 +39,7 @@ export default function PizzaListItems({ pizzas }: Props) {
   };
 
   const toCart = (cartItems: CartItem[]) => {
-    localStorageService.setLocalStorage(cartItems, "carts");
+    ls.set<CartItem[]>("carts", cartItems);
     router.push("/orders/cart");
   };
 
@@ -54,7 +52,7 @@ export default function PizzaListItems({ pizzas }: Props) {
     );
 
     //----> Update local-storage.
-    localStorageService.setLocalStorage(newCartItems, "carts");
+    ls.set<CartItem[]>("carts", newCartItems);
   };
 
   const decreaseQuantity = (cart: CartItem) => {
@@ -66,7 +64,7 @@ export default function PizzaListItems({ pizzas }: Props) {
     );
 
     //----> Update local-storage.
-    localStorageService.setLocalStorage(newCartItems, "carts");
+    ls.set<CartItem[]>("carts", newCartItems);
   };
 
   return (

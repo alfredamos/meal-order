@@ -1,18 +1,24 @@
-import { auth } from "@/auth";
 import Link from "next/link";
 import { CSSProperties } from "react";
 import LogoutLink from "./logoutLink.util";
 import LoginAndSignupLinks from "./loginAndSignup.util";
 import { authLinks } from "./navLinks";
+import { auth } from "@/auth";
+import {Role} from "@prisma/client"
 
 const inlineBlock: CSSProperties = {
   marginRight: "32px",
 };
 
 export default async function NavigationBar() {
-  const session = await auth();
-  const admin = session?.user?.role === "Admin";
-  return (
+ //----> Get the admin-auth-user.
+ const session = await auth();
+ //----> Get the user.
+ const user = session?.user;
+ //----> Get the admin flag.
+ const isAdmin = user?.role === Role.Admin
+  
+ return (
     // <div className="navbar bg-base-300 rounded-box">
     <div className="navbar bg-white text-black rounded-box">
       <div className="flex-1 px-2 lg:flex-none">
@@ -23,7 +29,7 @@ export default async function NavigationBar() {
       </div>
       <div className="flex flex-1 justify-end px-2">
         <div className="flex items-stretch">
-          {session?.user ? (
+          {user ? (
             <>
               <div className="dropdown dropdown-end">
                 <div
@@ -43,7 +49,7 @@ export default async function NavigationBar() {
                   <li>
                     <Link href="/auth/edit-profile">Edit Profile</Link>
                   </li>
-                  {admin && (
+                  {isAdmin && (
                     <>
                       <li>
                         <Link href="/pizzas">Pizzas</Link>

@@ -13,11 +13,9 @@ import { OrderPayload } from "@/models/orderPayload.model";
 import { orderCreate } from "@/actions/order.action";
 import { useDispatch } from "react-redux";
 import { emptyCartItem } from "@/features/cartItemSlice";
-import { LocalStorageService } from "@/app/services/localStorage.service";
 import { sumTotal } from "@/utils/sumTotal";
 import toast from "react-hot-toast";
-
-const localStorageService = new LocalStorageService<CartItem[]>
+import * as ls from "local-storage"
 
 type Props = {
   cartItems: CartItem[];
@@ -83,7 +81,7 @@ export default function StripeCheckout({
 
         dispatch(emptyCartItem());
 
-        localStorageService.removeLocalstorage("carts");
+        ls.remove("carts");
 
 
 

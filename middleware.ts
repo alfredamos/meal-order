@@ -7,28 +7,24 @@ import { StatusCodes } from "http-status-codes";
 
 export async function middleware(request: NextRequest) {
   //----> Get the authentication and admin user functions from auth-user
-  const { isUserAuthenticated,
-    isUserAdmin } = authUser();
-    
-  //-----> Get the current route.
-  const { nextUrl } = request; 
-
-  //----> Get the login status of user
-  const { isLoggedIn } = await isUserAuthenticated();
+  const { getAuthInfo } = authUser();
   
-  //----> Get admin-user
-  const { isAdmin: adminUser } = await isUserAdmin()
+  //-----> Get the current route.
+  const { nextUrl } = request;
 
   //----> Get the path.
-  const path = nextUrl.pathname; 
+  const path = nextUrl.pathname;
   //----> Public routes.
-  const isPublic = isPublicRoutes(path); 
+  const isPublic = isPublicRoutes(path);
   //----> Admin routes.
   const isRouteOfAdmin = isAdminRoute(path);
   //----> Protected routes.
   const isProtected = isProtectedRoute(path);
 
-  console.log({ isLoggedIn, adminUser, isPublic, isRouteOfAdmin, isProtected })
+  //----> Get authenticated and admin flag.
+  const {isAdmin, isLoggedIn } = await getAuthInfo(isRouteOfAdmin);
+
+  console.log({ isLoggedIn, isAdmin, isPublic, isRouteOfAdmin, isProtected })
 
   //----> Public route case-1.
   if (isPublic) {
@@ -43,13 +39,13 @@ export async function middleware(request: NextRequest) {
   }
 
   //----> Admin user Only case-3.
-  if (isRouteOfAdmin && adminUser) {
+  if (isRouteOfAdmin && isAdmin) {
     console.log("Case 3, admin route and admin user!", path);
     return NextResponse.next()
   }
 
   //----> Check for authentication, not public and not authenticated case-4.
-  if (!isPublic && !isLoggedIn) {
+  if (!isPublic && !isLoggedIn && isProtected) {
     console.log("Case 4, not public route, not authenticated!", path);
     console.log({ path });
     return NextResponse.json({
@@ -58,32 +54,38 @@ export async function middleware(request: NextRequest) {
     })
   }
 
-  //----> Not public nor authenticated nor admin case-5.
-  if (!isPublic && !isLoggedIn && !adminUser) {
-    console.log("Case 5, not public route, not authenticated and not admin", path);
-    return NextResponse.json({
-      statusCode: StatusCodes.UNAUTHORIZED,
-      statusMessage: "Invalid credentials, please login!"
-    })
-  }
-
-  //----> Authenticated case-6.
-  if (isLoggedIn && !adminUser && isRouteOfAdmin) {
-    console.log("Case 6, authenticated but not admin", path);
+  //----> Authenticated case-5.
+  if (isLoggedIn && !isAdmin && isRouteOfAdmin) {
+    console.log("Case 5, authenticated but not admin", path);
     return NextResponse.json({
       statusCode: StatusCodes.FORBIDDEN,
       statusMessage: "You are not allowed on this page!"
     })
   }
 
-  console.log("Case 7, in the middle of no where", path)
-  return NextResponse.json({
-    statusCode: StatusCodes.BAD_REQUEST,
-    statusMessage: "Bad request"
-  })
+  //----> Not public nor authenticated nor admin case-6.
+  if (!isPublic && !isAdmin && isRouteOfAdmin) {
+    console.log("Case 6, not public route, not authenticated and not admin", path);
+    return NextResponse.json({
+      statusCode: StatusCodes.UNAUTHORIZED,
+      statusMessage: "Invalid credentials, please login!"
+    })
+  }
+
+  //----> Not public nor authenticated nor admin nor admin-route and not protected-route case-7.
+  if(!isLoggedIn && !isAdmin && !isPublic && !isRouteOfAdmin && !isProtected){
+  console.log("Case 7, all flags are false!", path)
+  return NextResponse.redirect(new URL('/', nextUrl))
+  }
+
+  //----> All others case-8
+  console.log("Case 8, in the middle of no where", path)
+  return NextResponse.redirect(new URL('/login', nextUrl))
+
 }
+
 
 // Routes Middleware should not run on
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/((?!api|login|favicon|_next/static|_next/image).*)'],
 }

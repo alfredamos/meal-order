@@ -13,19 +13,19 @@ type Props = {
 };
 export default function HomeLink({ path, name, image, style }: Props) {
   const pathname = usePathname();
-  const isActive = pathname === path;
+  const isActive = !!path ? pathname === path : false;
 
   return (
     <>
       <Link
-        href={path}
+        href={path || '/'}
         style={style}
         className="relative flex gap-4 justify-center items-center"
       >
         <span className="text-base text-black">
           <Image
             src={image}
-            alt={name}
+            alt={!!name? name : 'No-avatar'}
             width={50}
             height={50}
             priority
