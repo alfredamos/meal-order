@@ -24,7 +24,6 @@ export default function PizzaEditCard({
 
   return (
     <form
-      method="PATCH"
       className="bg-white text-slate-800 flex flex-col justify-center items-center mx-auto rounded-xl shadow-2xl py-10"
       action={submitHandler}
     >
