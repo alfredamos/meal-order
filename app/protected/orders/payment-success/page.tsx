@@ -14,7 +14,7 @@ export default function PaymentSuccessPage({
           ${amount}
         </div>
         <Link
-          href="/pizzas"
+          href="/"
           className="flex justify-end items-end text-indigo-100 mt-6 font-bold"
         >
           Back Home
