@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isPublicRoutes } from "./utils/publicRoute";
 import { isAdminRoute } from "./utils/adminRoutes";
 import { authUser } from "./utils/authUser";
-import { isProtectedRoute } from './utils/protectedRoute';
+import { isProtectedRoute, protectedRoute } from './utils/protectedRoute';
 import { StatusCodes } from "http-status-codes";
 
 export async function middleware(request: NextRequest) {
@@ -17,9 +17,11 @@ export async function middleware(request: NextRequest) {
   //----> Public routes.
   const isPublic = isPublicRoutes(path);
   //----> Admin routes.
-  const isRouteOfAdmin = isAdminRoute(path);
+  const isRouteOfAdmin = request.nextUrl.pathname.startsWith('/admin')
+  //const isRouteOfAdmin = isAdminRoute(path);
   //----> Protected routes.
-  const isProtected = isProtectedRoute(path);
+  const isProtected = request.nextUrl.pathname.startsWith('/protected')
+  //const isProtected = isProtectedRoute(path.startsWith('/admin'));
 
   //----> Get authenticated and admin flag.
   const { isAdmin, isLoggedIn } = await getAuthInfo(isRouteOfAdmin);
@@ -35,12 +37,6 @@ export async function middleware(request: NextRequest) {
   //----> User authenticated case-2-A.
   if (isLoggedIn && isProtected) {
     console.log("Case 2-A, protected route and authenticated!", path);
-    return NextResponse.next()
-  }
-
-  //----> User authenticated case-2-B.
-  if (isLoggedIn && nextUrl.pathname.startsWith('/pizzas')) {
-    console.log("Case 2-B, protected route and authenticated!", path);
     return NextResponse.next()
   }
 
@@ -83,10 +79,6 @@ export async function middleware(request: NextRequest) {
     console.log("Case 7, all flags are false!", path)
     return NextResponse.redirect(new URL('/', nextUrl))
   }
-
-  //----> All others case-8
-  console.log("Case 8, in the middle of no where", path)
-  return NextResponse.redirect(new URL('/login', nextUrl))
 
 }
 

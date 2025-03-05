@@ -1,9 +1,9 @@
-const protectedRoute = [
-  '/orders/my-orders',
-  '/auth/change-password',
-  '/auth/edit-profile',
-  '/auth/logout',
-  '/pizzas/:id'
+export const protectedRoute = [
+  '/protected/orders/my-orders',
+  '/protected/auth/change-password',
+  '/protected/auth/edit-profile',
+  '/protected/auth/logout',
+  '/protected/pizzas/:id'
 
 ];
 

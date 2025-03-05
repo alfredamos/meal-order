@@ -1,5 +1,5 @@
 import { getAllPizza } from "@/actions/pizza.action";
-import PizzaListItems from "./PizzaListItems";
+import PizzaListItems from "../admin/pizzas/_components/PizzaListItems";
 
 async function ListPizzaPage() {
   

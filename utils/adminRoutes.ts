@@ -1,12 +1,13 @@
-const adminRoutes = [
-  '/pizzas/new',
-  '/pizzas/list',
-  '/orders/all-orders',
-  '/orders/delivered-orders',
-  '/orders/shipped-orders',
-  '/orders/pending-orders',
-  '/users',
-  '/users/:id*',
+export const adminRoutes = [
+  '/admin/pizzas/new',
+  '/admin/pizzas/list',
+  '/admin/orders/all-orders',
+  '/admin/orders/delivered-orders',
+  '/admin/orders/shipped-orders',
+  '/admin/orders/pending-orders',
+  '/admin/users',
+  '/admin/users/:id',
+  '/admin/pizza/:id'
 ]
 
 export const isAdminRoute = (route: string) => adminRoutes.includes(route)

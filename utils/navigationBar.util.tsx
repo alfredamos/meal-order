@@ -44,18 +44,18 @@ export default async function NavigationBar() {
                   className="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow"
                 >
                   <li>
-                    <Link href="/auth/change-password">Change Password</Link>
+                    <Link href="/open/auth/change-password">Change Password</Link>
                   </li>
                   <li>
-                    <Link href="/auth/edit-profile">Edit Profile</Link>
+                    <Link href="/open/auth/edit-profile">Edit Profile</Link>
                   </li>
                   {isAdmin && (
                     <>
                       <li>
-                        <Link href="/pizzas">Pizzas</Link>
+                        <Link href="/admin/pizzas">Pizzas</Link>
                       </li>
                       <li>
-                        <Link href="/users">Users</Link>
+                        <Link href="/admin/users">Users</Link>
                       </li>
                     </>
                   )}

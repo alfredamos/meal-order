@@ -17,52 +17,52 @@ export type SideLinkType = NavLinkType & {
 
 export const adminDropDownLinks: NavLinkType[] = [
   {
-    path: "/orders/all-orders",
+    path: "/admin/orders/all-orders",
     label: "All Orders",
   },
   {
-    path: "/orders/delivered-orders",
+    path: "/admin/orders/delivered-orders",
     label: "Delivered Orders",
   },
   {
-    path: "/orders/pending-orders",
+    path: "/admin/orders/pending-orders",
     label: "Pending Orders",
   },
   {
-    path: "/orders/shipped-orders",
+    path: "/admin/orders/shipped-orders",
     label: "Shipped Orders",
   },
   {
-    path: "/pizzas/list",
+    path: "/admin/pizzas/list",
     label: "Pizzas",
   },
   {
-    path: "/users",
+    path: "/admin/users",
     label: "Users",
   },
 ];
 export const dropDownLinks: NavLinkType[] = [
   {
-    path: "/auth/change-password",
+    path: "/protected/auth/change-password",
     label: "Edit Password",
   },
   {
-    path: "/auth/edit-profile",
+    path: "/protected/auth/edit-profile",
     label: "Edit Profile",
   },
   {
-    path: "/orders/my-orders",
+    path: "/protected/orders/my-orders",
     label: "My Orders",
   },
 ];
 export const authLinks: NavLinkType[] = [
   {
-    path: "/auth/login",
+    path: "/open/auth/login",
     label: "Login",
     icon: <RiLoginBoxLine size={40} color="blue" />,
   },
   {
-    path: "/auth/signup",
+    path: "/open/auth/signup",
     label: "Signup",
     icon: <SiGnuprivacyguard size={40} color="blue" />,
   },
@@ -76,25 +76,25 @@ export const sideLinks: SideLinkType[] = [
     icon: <FaHome size={40} />,
   },
   {
-    path: "/auth/change-password",
+    path: "/protected/auth/change-password",
     label: "Edit Password",
     admin: false,
     icon: <FaEdit size={40} />,
   },
   {
-    path: "/auth/edit-profile",
+    path: "/protected/auth/edit-profile",
     label: "Edit Profile",
     admin: false,
     icon: <FaUserEdit size={40} />,
   },
   {
-    path: "/pizzas/list",
+    path: "/admin/pizzas/list",
     label: "Pizzas",
     admin: true,
     icon: <GiFullPizza size={40} />,
   },
   {
-    path: "/users",
+    path: "/admin/users",
     label: "Users",
     admin: true,
     icon: <FaUsers size={40} />,
