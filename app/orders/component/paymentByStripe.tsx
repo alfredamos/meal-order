@@ -99,7 +99,7 @@ export default function PaymentByStripe({ userId }: Props) {
               </button>
               <Link
                 type="button"
-                href="/orders/checkout"
+                href="/protected/orders/checkout"
                 className="border-rose-900 border-2 bg-white text-rose-900 hover:bg-rose-900 hover:text-rose-100 rounded-lg px-2 py-4 font-semibold w-1/2 flex justify-center items-center"
               >
                 Back To Checkout

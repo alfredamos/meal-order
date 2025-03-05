@@ -69,11 +69,11 @@ export default function CartDetail() {
 
   const makeCheckout = () => {
     toast.success("Cart items selected!"); //----> Show toast for selected items.
-    router.push("/orders/checkout");
+    router.push("/protected/orders/checkout");
   };
 
   const backToPizzas = () => {
-    router.push("/pizzas");
+    router.push("/");
   };
 
   return cartItems?.length < 1 ? (
@@ -81,7 +81,7 @@ export default function CartDetail() {
       <p className="flex flex-col gap-10">
         <span className="text-4xl">No order to display</span>
         <span className="flex justify-end items-center">
-          <Link href="/pizzas" className="text-indigo-500">
+          <Link href="/protected/pizzas" className="text-indigo-500">
             <span className="flex gap-2 justify-center items-center">
               <FaArrowLeft size="20px" />
               <FaArrowLeft size="20px" />

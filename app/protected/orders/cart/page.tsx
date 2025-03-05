@@ -1,6 +1,5 @@
+import CartDetail from "@/app/orders/component/cartDetail"
 
-import { auth } from "@/auth";
-import CartDetail from "../component/cartDetail"
 
 async function AddToCartPage() {
   /*  const session = await auth();

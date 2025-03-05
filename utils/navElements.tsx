@@ -55,7 +55,7 @@ export default function NavElements({ isAdmin, session }: Props) {
                 : "hidden"
             }
           >
-            <Link href="/orders/cart">
+            <Link href="/protected/orders/cart">
               {totalQuantity ? totalQuantity : undefined}
             </Link>
           </div>

@@ -54,7 +54,7 @@ export default function StripeCheckout({
       const results = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `http://localhost:3000/orders/payment-success?amount=${totalPrice}`,
+          return_url: `http://localhost:3000/protected/orders/payment-success?amount=${totalPrice}`,
         },
          redirect: "if_required",
       });

@@ -1,4 +1,4 @@
-import Checkout from "../component/checkout";
+import Checkout from "@/app/orders/component/checkout";
 
 async function CheckoutPage() {
 

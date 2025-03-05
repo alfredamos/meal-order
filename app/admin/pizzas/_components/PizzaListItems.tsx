@@ -42,7 +42,7 @@ export default function PizzaListItems({ pizzas }: Props) {
 
   const toCart = (cartItems: CartItem[]) => {
     ls.set<CartItem[]>("carts", cartItems);
-    router.push("/orders/cart");
+    router.push("/protected/orders/cart");
   };
 
   const increaseQuantity = (cart: CartItem) => {

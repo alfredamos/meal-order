@@ -14,11 +14,11 @@ const carts = useCart()?.cartItems;
 
   const makePayment = () => {
     toast.success("Items checkout successfully!"); //----> Show toast for items-checkout successfully.
-    router.push("/orders/payment")
+    router.push("/protected/orders/payment")
   }
 
   const backToCart = () => {
-    router.push("/orders/cart")
+    router.push("/protected/orders/cart")
   }
 
 

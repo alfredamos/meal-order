@@ -16,25 +16,56 @@ type Props = {
 }
 
 export default function DetailPizzaClient({pizza}: Props) {
-  //----> State
-  const [isAddToCart, setIsAddToCart] = useState(false)
-  
-  //----> Computed values.
   const cartItems = useCart()?.cartItems; //---> Retrieve cartItems from redux store
-
-  //----> Get dispatch function
-  const dispatch = useDispatch();
-
-  const router = useRouter();
-
-  const addToCart = (pizza: Pizza) => {
-    console.log("pizza : ", pizza)
-    //CartUtil.makeCartItems(pizza, cartItems, dispatch); //----> Get items into cart
+  //----> State
+  const [isAddToCart, setIsAddToCart] = useState(false);
   
-   // router.refresh();
-  };
+    //----> Get dispatch function
+    const dispatch = useDispatch();
   
+    const router = useRouter();
   
+    const addToCart = (pizza: Pizza) => {
+      setIsAddToCart((previous) => !previous);
+  
+      CartUtil.makeCartItems(pizza, cartItems, dispatch); //----> Get items into cart
+  
+      router.refresh();
+    };
+  
+    const backToList = () => {
+      setIsAddToCart(false);
+      router.refresh();
+    };
+  
+    const toCart = (cartItems: CartItem[]) => {
+      ls.set<CartItem[]>("carts", cartItems);
+      router.push("/protected/orders/cart");
+    };
+  
+    const increaseQuantity = (cart: CartItem) => {
+      const updateCart = CartUtil.increaseQuantity(cart, dispatch); //----> Increase cart quantity.
+  
+      //----> Update cart-items.
+      const newCartItems = cartItems?.map((cartItem) =>
+        cartItem.id === cart.id ? updateCart : cartItem
+      );
+  
+      //----> Update local-storage.
+      ls.set<CartItem[]>("carts", newCartItems);
+    };
+  
+    const decreaseQuantity = (cart: CartItem) => {
+      const updateCart = CartUtil.decreaseQuantity(cart, dispatch); //----> Decrease quantity in cart-item.
+  
+      //----> Update cart-items.
+      const newCartItems = cartItems?.map((cartItem) =>
+        cartItem.id === cart.id ? updateCart : cartItem
+      );
+  
+      //----> Update local-storage.
+      ls.set<CartItem[]>("carts", newCartItems);
+    };
   
   return (
     <>
@@ -68,7 +99,16 @@ export default function DetailPizzaClient({pizza}: Props) {
   </div>
 </div>
 </div>
-
+{isAddToCart && (
+        <AddPizzaItem
+          isAddToCart={isAddToCart}
+          carts={cartItems}
+          addToCart={toCart}
+          backToList={backToList}
+          decreaseQuantity={decreaseQuantity}
+          increaseQuantity={increaseQuantity}
+        />
+      )}
 </>
   );
 }
