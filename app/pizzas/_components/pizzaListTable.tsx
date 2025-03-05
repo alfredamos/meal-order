@@ -12,6 +12,8 @@ type Props = {
   pizzas: Pizza[];
 };
 export default function PizzaListTable({ pizzas }: Props) {
+  //----> States
+  const [isShowMore, setIsShowMore] = useState(false)
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [enteredPizzas, setEnteredPizzas] = useState<Pizza[]>(pizzas);
 
@@ -48,6 +50,16 @@ export default function PizzaListTable({ pizzas }: Props) {
 
     dispatch(editPizza({ pizza: updatedPizza }));
   };
+
+  const showMoreTextHandler = (pizzaId: string) => {
+    console.log("Pizza-id : ", pizzaId)
+    pizzas?.forEach(pizza =>  {
+        if(pizza.id === pizzaId){
+          console.log("loop-id : ", pizza.id , " , ", "given-id : ", pizzaId)
+          setIsShowMore(showMore => !showMore)
+        }
+    })
+  }
 
   return (
     <div className="overflow-x-auto bg-white m-6 shadow-inner rounded mx-4 p-3">
@@ -94,7 +106,10 @@ export default function PizzaListTable({ pizzas }: Props) {
                 <td>{pizza.name}</td>
                 <td>{pizza.price}</td>
                 <td>{pizza.quantity}</td>
-                <td>{pizza.description}</td>
+                <td>
+                  <span className="text-muted mr-4">{isShowMore ? pizza.description : pizza.description.substring(0,40) }</span>
+                  <button className="bg-zinc-200 text-indigo-900 hover:text-zinc-200 hover:bg-indigo-900 py-1 px-2 text-sm rounded-lg flex justify-center items-center text-muted font-semibold" onClick={() => showMoreTextHandler(pizza.id)} type="button">{isShowMore ? "Less" : "More"}</button>
+                </td>
                 <td>{pizza.topping}</td>
                 <td>
                   <PizzaDeleteViewEditButton

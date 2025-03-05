@@ -1,14 +1,18 @@
+
 import { getPizzaById } from "@/actions/pizza.action";
 import PizzaCard from "../../pizzaCard";
-import { Params } from "../edit/page";
+export type Params = {
+  params: { id: string };
+};
 
-async function DetailPizzaPage({ params }: Params) {
+async function PizzaDetailOnePage({ params }: Params) {
   /* const session = await auth();
   if (!session) return <div>Invalid credentials, please login again!</div>;
  */
   const pizzaId = params.id;
   const pizza = await getPizzaById(pizzaId);
 
-  return <PizzaCard pizza={pizza} />;
+  return <PizzaCard pizza={ pizza } />;
 }
-export default DetailPizzaPage;
+export default PizzaDetailOnePage;
+

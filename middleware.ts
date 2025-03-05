@@ -8,7 +8,7 @@ import { StatusCodes } from "http-status-codes";
 export async function middleware(request: NextRequest) {
   //----> Get the authentication and admin user functions from auth-user
   const { getAuthInfo } = authUser();
-  
+
   //-----> Get the current route.
   const { nextUrl } = request;
 
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   const isProtected = isProtectedRoute(path);
 
   //----> Get authenticated and admin flag.
-  const {isAdmin, isLoggedIn } = await getAuthInfo(isRouteOfAdmin);
+  const { isAdmin, isLoggedIn } = await getAuthInfo(isRouteOfAdmin);
 
   console.log({ isLoggedIn, isAdmin, isPublic, isRouteOfAdmin, isProtected })
 
@@ -32,9 +32,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  //----> User authenticated case-2.
+  //----> User authenticated case-2-A.
   if (isLoggedIn && isProtected) {
-    console.log("Case 2, protected route and authenticated!", path);
+    console.log("Case 2-A, protected route and authenticated!", path);
+    return NextResponse.next()
+  }
+
+  //----> User authenticated case-2-B.
+  if (isLoggedIn && nextUrl.pathname.startsWith('/pizzas')) {
+    console.log("Case 2-B, protected route and authenticated!", path);
     return NextResponse.next()
   }
 
@@ -73,9 +79,9 @@ export async function middleware(request: NextRequest) {
   }
 
   //----> Not public nor authenticated nor admin nor admin-route and not protected-route case-7.
-  if(!isLoggedIn && !isAdmin && !isPublic && !isRouteOfAdmin && !isProtected){
-  console.log("Case 7, all flags are false!", path)
-  return NextResponse.redirect(new URL('/', nextUrl))
+  if (!isLoggedIn && !isAdmin && !isPublic && !isRouteOfAdmin && !isProtected) {
+    console.log("Case 7, all flags are false!", path)
+    return NextResponse.redirect(new URL('/', nextUrl))
   }
 
   //----> All others case-8
@@ -87,5 +93,5 @@ export async function middleware(request: NextRequest) {
 
 // Routes Middleware should not run on
 export const config = {
-  matcher: ['/((?!api|login|favicon|_next/static|_next/image).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
 }

@@ -3,6 +3,7 @@ const protectedRoute = [
   '/auth/change-password',
   '/auth/edit-profile',
   '/auth/logout',
+  '/pizzas/:id'
 
 ];
 

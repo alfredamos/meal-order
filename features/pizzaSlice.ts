@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 const initialState: PizzaState = {
   pizzas: [],
+  pizza: null
 };
 
 export const pizzaSlice = createSlice({
@@ -23,10 +24,13 @@ export const pizzaSlice = createSlice({
       const index = state.pizzas.findIndex((pizza) => pizza.id === action.payload.pizza.id);
       state.pizzas[index] = action.payload.pizza;
     },
+    updateOnePizza: (state, action: PayloadAction<{pizza: Pizza}>) => {
+      state.pizza = action.payload.pizza;
+    }
   },
 });
 
-export const { createPizza, deletePizza, editPizza } = pizzaSlice.actions;
+export const { createPizza, deletePizza, editPizza, updateOnePizza } = pizzaSlice.actions;
 export default pizzaSlice.reducer;
 
 
