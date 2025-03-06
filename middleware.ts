@@ -50,28 +50,31 @@ export async function middleware(request: NextRequest) {
   if (!isPublic && !isLoggedIn && isProtected) {
     console.log("Case 4, not public route, not authenticated!", path);
     console.log({ path });
-    return NextResponse.json({
+    /* return NextResponse.json({
       statusCode: StatusCodes.UNAUTHORIZED,
       statusMessage: "Invalid credentials, please login!"
-    })
+    }) */
+   return NextResponse.redirect(new URL('/', nextUrl))
   }
 
   //----> Authenticated case-5.
   if (isLoggedIn && !isAdmin && isRouteOfAdmin) {
     console.log("Case 5, authenticated but not admin", path);
-    return NextResponse.json({
+    /* return NextResponse.json({
       statusCode: StatusCodes.FORBIDDEN,
       statusMessage: "You are not allowed on this page!"
-    })
+    }) */
+   return NextResponse.redirect(new URL('/', nextUrl))
   }
 
   //----> Not public nor authenticated nor admin case-6.
   if (!isPublic && !isAdmin && isRouteOfAdmin) {
     console.log("Case 6, not public route, not authenticated and not admin", path);
-    return NextResponse.json({
+    /* return NextResponse.json({
       statusCode: StatusCodes.UNAUTHORIZED,
       statusMessage: "Invalid credentials, please login!"
-    })
+    }) */
+   return NextResponse.redirect(new URL('/', nextUrl))
   }
 
   //----> Not public nor authenticated nor admin nor admin-route and not protected-route case-7.
@@ -81,7 +84,6 @@ export async function middleware(request: NextRequest) {
   }
 
 }
-
 
 // Routes Middleware should not run on
 export const config = {

@@ -58,10 +58,10 @@ export default async function SideBar() {
       ) : (
         <ul className="flex flex-col justify-end items-center mt-10 font-semibold text-indigo-900">
           <li className="px-4" style={{ marginBottom: "80px" }}>
-            <NavLink path="/auth/signup" label="Signup" style={inlineBlock} type="sideBar" icon={<FaUser size={40} />} />
+            <NavLink path="/open/auth/signup" label="Signup" style={inlineBlock} type="sideBar" icon={<FaUser size={40} />} />
           </li>
           <li className="px-4" style={marginBottom}>
-            <NavLink path="/auth/login" label="Login" style={inlineBlock} type="sideBar" icon={<RiLoginBoxLine size={40}/>} />
+            <NavLink path="/open/auth/login" label="Login" style={inlineBlock} type="sideBar" icon={<RiLoginBoxLine size={40}/>} />
           </li> 
         </ul>
       )}

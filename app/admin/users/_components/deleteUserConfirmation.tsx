@@ -13,7 +13,10 @@ export default function DeleteUserConfirmation({
   user,
 }: Props) {
   return (
-    <div className="bg-white p-12 max-width-2xl text-black rounded-2xl shadow-2xl w-1/4">
+    <div className="bg-white p-12 max-width-2xl text-black rounded-2xl shadow-2xl w-1/2">
+      <span className="flex justify-end items-center">
+        <button type="button" className=" text-rose-900 hover:text-zinc-200 hover:bg-indigo-900 py-1 px-2 text-sm rounded-lg flex justify-center items-center text-muted font-semibold" onClick={onCancel}>Close</button>
+      </span>
       <h2 className="font-semibold border-b-2 text-3xl">
         User Delete Confirmation!
       </h2>

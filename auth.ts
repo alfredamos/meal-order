@@ -4,7 +4,9 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import { User } from "@prisma/client";
-import {authConfig} from "./authConfig"
+import {authConfig} from "./authConfig";
+import { Store } from "@reduxjs/toolkit";
+import { store } from "./store";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -39,6 +41,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           user.password
         );
         if (!isPasswordMatch) throw new Error("Invalid credentials!");
+        
         //----> Send back the jwt payload.
         return user;
       },
