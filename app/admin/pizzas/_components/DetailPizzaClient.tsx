@@ -80,7 +80,7 @@ export default function DetailPizzaClient({pizza}: Props) {
         alt={pizza.name}
         height="500"
         width="500"
-        className="object-fit w-full min-h-screen"
+        className="object-fit w-full min-h-screen rounded-xl"
       />
     </figure>
   </div>
